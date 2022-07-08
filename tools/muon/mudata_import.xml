@@ -1,0 +1,45 @@
+ <tool id="mudata_import" name="Create a MuData object out of AnnData objects" version="0.1.0">
+    <requirements>
+        <requirement type="package" version="0.1.0">muon</requirement>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+        @CMD@
+    ]]></command>
+    <configfiles>
+        <configfile name="script_file"><![CDATA[
+            @CMD_imports@
+            import muon as mu
+
+            mdata = mu.MuData({'rna': '$rna_input', 'atac': '$atac_input'})
+            mu.pp.intersect_obs(mdata)
+            mdata.write("rna_atac.h5")
+            #end if
+        ]]></configfile>
+    </configfiles>
+    <inputs>
+        <param name="rna_input" type="data" format="h5ad" label="RNA data matrix"/>
+        <param name="atac_input" type="data" format="h5ad" label="ATAC data matrix"/>
+    </inputs>
+    <outputs>
+        <data name="rna_atac" format="h5ad" label="MuData">
+            <filter>format == "h5ad"</filter>
+        </data>
+    </outputs>
+    <tests>
+        <test>
+            <output name="rna_atac" file="rna_atac.h5"/>
+        </test>
+    </tests>
+    <help><![CDATA[
+    **What it does**
+        Import MuData from AnnData is a tool that allows creating a muon.MuData object out of two AnnData objects
+        for multimodal omics factorial analysis.
+        Furthermore, it runs pp.intersect_obs to keep only entries present in both modalities (AnnData objects) in the
+        final MuData file.
+
+    ]]></help>
+    <citations>
+        <citation type="bibtex">
+}</citation>
+    </citations>
+</tool>
