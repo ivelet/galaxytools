@@ -1,33 +1,28 @@
 <tool id="mofa" name="Multi omics factorial analysis with muon" version="0.1.0">
     <requirements>
         <requirement type="package" version="0.1.0">muon</requirement>
-        <requirement type="package" version="1.7.0">scanpy</requirement>
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
-        @CMD@
+        pip install muon &&
+        python '$rna_atac_input' > '$script_file' > '$rna_atac_integration'
+        import muon as mu
+        import scanpy as sc
     ]]></command>
     <configfiles>
-        <configfile name="script_file"><![CDATA[
-            @CMD_imports@
-            import muon as mu
-            import scanpy as sc
-
-            mdata = mu.read('$rna_atac_input')
-            mu.tl.mofa(mdata)
-            sc.tl.umap(mdata)
-            sc.pl.umap(mdata)
-            mdata.write(mdata, "rna_atac_integration.h5")
-
-            #end if
-        ]]></configfile>
+        <configfile name="script_file"><![CDATA[import muon as mu
+import scanpy as sc
+mdata = mu.read("rna_atac_input.h5")
+mu.tl.mofa(mdata)
+sc.tl.umap(mdata)
+sc.pl.umap(mdata)
+mdata.write("rna_atac_integration.h5")
+]]></configfile>
     </configfiles>
     <inputs>
-        <param name="rna_atac_input" type="data" format="h5ad" label="Multi Omics RNA ATAC data matrix"/>
+        <param name="rna_atac_input" type="data" format="h5" label="Multi Omics RNA ATAC data matrix"/>
     </inputs>
     <outputs>
-        <data name="rna_atac_integration" format="h5ad" label="Integrated Multi Omic Factorial Analysis Result">
-            <filter>format == "h5ad"</filter>
-        </data>
+        <data name="rna_atac_integration" format="h5" label="Integrated Multi Omic Factorial Analysis Result"/>
     </outputs>
     <tests>
         <test>

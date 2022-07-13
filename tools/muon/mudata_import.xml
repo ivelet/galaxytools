@@ -1,29 +1,29 @@
- <tool id="mudata_import" name="Create a MuData object out of AnnData objects" version="0.1.0">
+<tool id="mudata_import" name="Create a MuData object out of AnnData objects" version="0.1.0">
     <requirements>
-        <requirement type="package" version="0.1.0">muon</requirement>
+        <requirement type="package" version="1.7.0">scanpy</requirement>
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
-        @CMD@
-    ]]></command>
+        pip install muon &&
+        python '$script_file' > '$rna_atac'
+        import muon as mu
+        import scanpy as sc
+]]></command>
     <configfiles>
-        <configfile name="script_file"><![CDATA[
-            @CMD_imports@
-            import muon as mu
-
-            mdata = mu.MuData({'rna': '$rna_input', 'atac': '$atac_input'})
-            mu.pp.intersect_obs(mdata)
-            mdata.write("rna_atac.h5")
-            #end if
-        ]]></configfile>
+        <configfile name="script_file"><![CDATA[import scanpy as sc
+import muon as mu
+rna_data = sc.read_h5ad('$rna_input')
+atac_data = sc.read_h5ad('$atac_input')
+mdata = mu.MuData({'rna': rna_data, 'atac': atac_data})
+mu.pp.intersect_obs(mdata)
+mdata.write("rna_atac.h5")
+]]></configfile>
     </configfiles>
     <inputs>
-        <param name="rna_input" type="data" format="h5ad" label="RNA data matrix"/>
-        <param name="atac_input" type="data" format="h5ad" label="ATAC data matrix"/>
+        <param name="rna_input" type="data" format="h5ad" label="RNA h5ad Matrix"/>
+        <param name="atac_input" type="data" format="h5ad" label="ATAC h5ad Matrix"/>
     </inputs>
     <outputs>
-        <data name="rna_atac" format="h5ad" label="MuData">
-            <filter>format == "h5ad"</filter>
-        </data>
+        <data name="rna_atac" format="h5" label="MuData"/>
     </outputs>
     <tests>
         <test>
