@@ -1,12 +1,10 @@
-<tool id="mudata_import" name="Create a MuData object out of AnnData objects" version="0.1.0">
+<tool id="mudata_import" name="Create MuData from AnnData" version="0.1.0">
     <requirements>
         <requirement type="package" version="1.7.0">scanpy</requirement>
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
         pip install muon &&
-        python '$script_file' > '$rna_atac'
-        import muon as mu
-        import scanpy as sc
+        python '$script_file'
 ]]></command>
     <configfiles>
         <configfile name="script_file"><![CDATA[import scanpy as sc
@@ -15,7 +13,7 @@ rna_data = sc.read_h5ad('$rna_input')
 atac_data = sc.read_h5ad('$atac_input')
 mdata = mu.MuData({'rna': rna_data, 'atac': atac_data})
 mu.pp.intersect_obs(mdata)
-mdata.write("rna_atac.h5")
+mdata.write("rna_atac.h5mu")
 ]]></configfile>
     </configfiles>
     <inputs>
@@ -23,12 +21,9 @@ mdata.write("rna_atac.h5")
         <param name="atac_input" type="data" format="h5ad" label="ATAC h5ad Matrix"/>
     </inputs>
     <outputs>
-        <data name="rna_atac" format="h5" label="MuData"/>
+        <data name="rna_atac" format="h5mu" label="MuData" from_work_dir="rna_atac.h5mu"/>
     </outputs>
     <tests>
-        <test>
-            <output name="rna_atac" file="rna_atac.h5"/>
-        </test>
     </tests>
     <help><![CDATA[
     **What it does**
