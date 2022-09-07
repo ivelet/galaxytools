@@ -1,0 +1,48 @@
+<tool id="compare_annotations" name="Compare cell type annotations" version="0.1.0">
+    <requirements>
+        <requirement type="package" version="1.7.0">scanpy</requirement>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+        python '$script_file'
+]]></command>
+    <configfiles>
+        <configfile name="script_file"><![CDATA[import scanpy as sc
+import muon as mu
+from sklearn.metrics import adjusted_rand_score as ari
+import seaborn as sns
+mdata = mu.read_h5mu('$rna_atac_input')
+ari(mdata.obs['rna:celltype'], mdata.obs['atac:celltype'])
+df_total = (mdata.obs.groupby("atac:celltype").size().reset_index(name="n_total").set_index("atac:celltype"))
+df = (mdata.obs.groupby(["atac:celltype", "rna:celltype"]).size().reset_index(name="n").set_index("atac:celltype").join(df_total).reset_index())
+df_frac = df.assign(frac = lambda x: x.n / x.n_total)
+df_wide = df_frac.set_index("atac:celltype").pivot(columns="rna:celltype", values="frac")
+heatmap_plot = sns.heatmap(df_wide, cmap="Greys")
+fig = heatmap_plot.get_figure()
+fig.savefig("rna_atac_comparison_heatmap.png")
+]]></configfile>
+    </configfiles>
+    <inputs>
+        <param name="rna_atac_input" type="data" format="h5mu" label="RNA ATAC MuData Object"/>
+    </inputs>
+    <outputs>
+        <data name="rna_atac_comparison_heatmap" format="png" label="RNA ATAC Comparison Heatmap" from_work_dir="rna_atac_comparison_heatmap.png"/>
+    </outputs>
+    <tests>
+        <test>
+            <param name="rna_atac_input" value="rna_atac.h5mu"/>
+            <output name="rna_atac_comparison_heatmap" file="rna_atac_comparison_heatmap.png"/>
+        </test>
+    </tests>
+    <help><![CDATA[
+    **What it does**
+        This tool compares how the cell type annotations in individual modalities match each other.
+        We first use the adjusted Rand index to calculate a general score to compare the two modalities.
+        Then we look at how these cell type annotations match per cell and then make it into a wide table and
+        visualize it with a heatmap.
+
+    ]]></help>
+    <citations>
+        <citation type="bibtex">
+}</citation>
+    </citations>
+</tool>
