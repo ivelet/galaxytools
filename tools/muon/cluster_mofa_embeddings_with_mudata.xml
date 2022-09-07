@@ -1,0 +1,57 @@
+<tool id="cluster_mofa_embeddings_with_mudata" name="Cluster MOFA Embeddings" version="0.1.0">
+    <requirements>
+        <requirement type="package" version="1.7.0">scanpy</requirement>
+
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+        python '$script_file'
+]]></command>
+    <configfiles>
+        <configfile name="script_file"><![CDATA[import scanpy as sc
+import muon as mu
+from scanpy import tl
+mdata = mu.read_h5mu('$rna_atac_mofa_input')
+sc.tl.leiden(mdata,
+key_added='$key_added',
+resolution=$resolution,
+random_state=$random_state,
+use_weights=$use_weights,
+n_iterations=$n_iterations
+)
+sc.pl.umap(mdata, color="leiden_joint", legend_loc='on data')
+mu.pl.umap(mdata, color=["KLF4", "chr9:107480158-107492721"])
+mdata.write("rna_atac_mofa_clustering.h5mu")
+]]></configfile>
+    </configfiles>
+    <inputs>
+        <param name="rna_atac_mofa_input" type="data" format="h5mu" label="RNA ATAC with MOFA embeddings"/>
+
+        <param name="resolution" type="float" value="1" label="Coarseness of the clustering" help="Higher values lead to more clusters (resolution in sc.tl.leiden)"/>
+        <param name="random_state" type="integer" value="0" label="Random state" help="Change the initialization of the optimization (random_state in sc.tl.leiden)"/>
+        <param name="key_added" type="text" value="leiden_joint" label="Key under which to add the cluster labels" help="(key_added in sc.tl.leiden)"/>
+        <param name="use_weights" type="boolean" truevalue="True" falsevalue="False" checked="true" label="Use weights from KNN graph?" help="(use_weights in sc.tl.leiden)"/>
+        <param name="n_iterations" type="integer" value="-1" label="Number of iterations of the Leiden clustering algorithm to perform" help="Positive values above 2 define the total number of iterations to perform, -1 has the algorithm run until it reaches its optimal clustering. (n_iterations in sc.tl.leiden)"/>
+    </inputs>
+    <outputs>
+        <data name="rna_atac_mofa_clustering" format="h5mu" label="MOFA embeddings with clustering" from_work_dir="rna_atac_mofa_clustering.h5mu"/>
+    </outputs>
+    <tests>
+        <test>
+            <param name="rna_atac_mofa_input" value="rna_atac_integration.h5mu"/>
+            <output name="rna_atac_mofa_clustering" file="rna_atac_mofa_clustering.h5mu"/>
+        </test>
+    </tests>
+    <help><![CDATA[
+    **What it does**
+        This tool reads MuData from a h5mu file that contains the data of multiple modalities after multi-omics
+        factorial analysis has been applied to it and performs conventional clustering based on the MOFA embeddingsn
+        using sc.tl.leiden which uses the Leiden algorithm.
+
+        This can then be visualized using sc.pl.umap and mu.pl.umap for the individual features from modalities.
+
+    ]]></help>
+    <citations>
+        <citation type="bibtex">
+}</citation>
+    </citations>
+</tool>
