@@ -1,0 +1,72 @@
+<tool id="assign_cell_type_labels_mudata" name="Assign Cell Type Labels for MuData" version="0.1.0">
+    <requirements>
+        <requirement type="package" version="1.7.0">scanpy</requirement>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+        python '$script_file'
+]]></command>
+    <configfiles>
+        <configfile name="script_file"><![CDATA[import scanpy as sc
+import muon as mu
+import matplotlib
+import matplotlib.pyplot as plt
+import numpy as np
+import umap.plot
+mdata = mu.read_h5mu('$rna_atac_input')
+new_cluster_names = {
+    "0": "CD4+ naïve T", "8": "CD4+ naïve T", "22": "CD4+ naïve T",
+    "1": "CD4+ memory T", "6": "CD4+ memory T", "17": "CD4+ memory T",
+    "2": "CD8+ naïve T", "5": "CD8+ naïve T", "20": "CD8+ naïve T",
+    "10": "CD8+ cytotoxic effector T", "11": "CD8+ transitional effector T",
+    "19": "MAIT", "12": "NK",
+    "16": "naïve B", "15": "memory B",
+    "3": "classical mono", "7": "classical mono", "9": "classical mono", "14": "classical mono",
+    "4": "intermediate mono", "13": "non-classical mono",
+    "18": "mDC", "21": "pDC",
+}
+mdata.obs['celltype'] = mdata.obs.leiden_joint.astype("str")
+mdata.obs.celltype = mdata.obs.celltype.map(new_cluster_names).astype("category")
+mdata.obs.celltype.cat.reorder_categories([
+    'CD4+ naïve T', 'CD4+ memory T',
+    'CD8+ naïve T', 'CD8+ transitional effector T', 'CD8+ cytotoxic effector T',
+    'MAIT', 'NK',
+    'naïve B', 'memory B',
+    'classical mono', 'intermediate mono', 'non-classical mono',
+    'mDC', 'pDC'], inplace=True)
+cmap = plt.get_cmap('rainbow')
+colors = cmap(np.linspace(0, 1, len(mdata.obs.celltype.cat.categories)))
+mdata.uns["celltype_colors"] = list(map(matplotlib.colors.to_hex, colors))
+umap_plot = mu.pl.umap(mdata, color="celltype", legend_loc="on data", frameon=False)
+umap_plot.plot.points()
+mdata.write("rna_atac_assigned_celltype_labels.h5mu")
+]]></configfile>
+    </configfiles>
+    <inputs>
+        <param name="rna_atac_input" type="data" format="h5mu" label="RNA ATAC Data Matrix"/>
+    </inputs>
+    <outputs>
+        <data name="celltype_umap_plot" format="png" label="RNA ATAC Celltype UMAP Plot"
+              from_work_dir="celltype_umap_plot.png"/>
+        <data name="rna_atac_assigned_celltype_labels" format="h5mu" label="RNA ATAC with Assigned Celltype Labels"
+              from_work_dir="rna_atac_assigned_celltype_labels.h5mu"/>
+    </outputs>
+    <tests>
+        <test>
+            <param name="rna_atac_input" value="ranked_rna_atac.h5mu"/>
+            <output name="rna_atac_assigned_celltype_labels" file="rna_atac_assigned_celltype_labels.h5mu"/>
+            <output name="celltype_umap_plot" file="celltype_umap_plot.png"/>
+        </test>
+    </tests>
+    <help><![CDATA[
+    **What it does**
+        This tool takes Multimodal data that has been clustered and then assigns new cluster names to it, re-orders
+        its categories and then plots as a UMAP.
+
+        Returns the UMAP plot as a png file and the MuData object after processing for further processing as a h5mu file.
+
+    ]]></help>
+    <citations>
+        <citation type="bibtex">
+}</citation>
+    </citations>
+</tool>
