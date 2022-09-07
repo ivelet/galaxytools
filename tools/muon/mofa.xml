@@ -3,15 +3,13 @@
         <requirement type="package" version="1.7.0">scanpy</requirement>
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
-        pip install muon &&
-        pip install mofapy2 &&
         python '$script_file'
 ]]></command>
     <configfiles>
         <configfile name="script_file"><![CDATA[import scanpy as sc
 import muon as mu
 mdata = mu.read_h5mu('$rna_atac_input')
-mu.tl.mofa(mdata)
+mu.tl.mofa(mdata, gpu_mode=True)
 sc.pp.neighbors(mdata, use_rep="X_mofa")
 sc.tl.umap(mdata)
 sc.pl.umap(mdata)
@@ -25,11 +23,19 @@ mdata.write("rna_atac_integration.h5mu")
         <data name="rna_atac_integration" format="h5mu" label="Mofa MuData" from_work_dir="rna_atac_integration.h5mu"/>
     </outputs>
     <tests>
+        <test>
+            <param name="rna_atac_input" value="rna_atac.h5mu"/>
+            <output name="rna_atac_integration" file="rna_atac_integration.h5mu"/>
+        </test>
     </tests>
     <help><![CDATA[
     **What it does**
-        This tool performs multi omics factor analysis using muon.tl.mofa() on an h5mu matrix containing multimodal data.
+        This tool performs multi omics factor analysis using muon.tl.mofa() on a h5mu matrix containing multimodal data.
 
+        Multi-omic factor analysis (MOFA) is a group factor analysis method that allows to learn an interpretable latent
+        space jointly on multiple modalities.
+
+        Intuitively, it can be viewed as a generalization of PCA for multi-omics data.
     ]]></help>
     <citations>
         <citation type="bibtex">
