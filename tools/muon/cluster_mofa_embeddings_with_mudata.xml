@@ -9,6 +9,7 @@
     <configfiles>
         <configfile name="script_file"><![CDATA[import scanpy as sc
 import muon as mu
+import matplotlib
 from scanpy import tl
 mdata = mu.read_h5mu('$rna_atac_mofa_input')
 sc.tl.leiden(mdata,
@@ -18,8 +19,16 @@ random_state=$random_state,
 use_weights=$use_weights,
 n_iterations=$n_iterations
 )
-sc.pl.umap(mdata, color="leiden_joint", legend_loc='on data')
-mu.pl.umap(mdata, color=["KLF4", "chr9:107480158-107492721"])
+figure_clustering = sc.pl.umap(mdata,g
+color="$sc_umap_color",
+legend_loc='$sc_umap_legend_loc',
+return_fig=True)
+figure_clustering.savefig("figure_clustering.png")
+#set $mu_umap_color = ([x.strip() for x in str($mu_umap_color).split(',')])
+figure_individual_features = mu.pl.umap(mdata,
+color=$mu_umap_color,
+return_fig=True)
+figure_individual_features.savefig("figure_individual_features.png")
 mdata.write("rna_atac_mofa_clustering.h5mu")
 ]]></configfile>
     </configfiles>
@@ -31,9 +40,16 @@ mdata.write("rna_atac_mofa_clustering.h5mu")
         <param name="key_added" type="text" value="leiden_joint" label="Key under which to add the cluster labels" help="(key_added in sc.tl.leiden)"/>
         <param name="use_weights" type="boolean" truevalue="True" falsevalue="False" checked="true" label="Use weights from KNN graph?" help="(use_weights in sc.tl.leiden)"/>
         <param name="n_iterations" type="integer" value="-1" label="Number of iterations of the Leiden clustering algorithm to perform" help="Positive values above 2 define the total number of iterations to perform, -1 has the algorithm run until it reaches its optimal clustering. (n_iterations in sc.tl.leiden)"/>
+
+        <param name="sc_umap_color" type="text" value="leiden_joint" label="Keys for annotations of observations/cells or variables/genes" help="color in sc.pl.umap"/>
+        <param name="sc_umap_legend_loc" type="text" value="on data" label="Location of legend" help="legend_loc in sc.pl.umap"/>
+
+        <param name="mu_umap_color" type="text" value="" label="Keys for annotations of observations/cells or variables/genes" help="Should be separated by comma (color in mu.pl.umap)"/>
     </inputs>
     <outputs>
         <data name="rna_atac_mofa_clustering" format="h5mu" label="MOFA embeddings with clustering" from_work_dir="rna_atac_mofa_clustering.h5mu"/>
+        <data name="figure_clustering" format="png" label="UMAP Clustering Scatterplot" from_work_dir="figure_clustering.png"/>
+        <data name="figure_individual_features" format="png" label="UMAP Individual Feature Embeddings Scatterplot" from_work_dir="figure_individual_features.png"/>
     </outputs>
     <tests>
         <test>
