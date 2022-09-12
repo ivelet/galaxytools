@@ -11,16 +11,26 @@ import muon as mu
 from muon import atac as ac
 import pandas as pd
 mdata = mu.read_h5mu('$rna_atac_input')
-mdata['rna'].obs['leiden_joint'] = mdata.obs.leiden_joint
-mdata['atac'].obs['leiden_joint'] = mdata.obs.leiden_joint
-sc.tl.rank_genes_groups(mdata['rna'], 'leiden_joint', method='t-test_overestim_var')
-ac.tl.rank_peaks_groups(mdata['atac'], 'leiden_joint', method='t-test_overestim_var')
+method = 't-test_overestim_var'
+#if $rank_genes_peaks_method == 't-test'
+method = 't-test'
+#else if $rank_genes_peaks_method == 'Wilcoxon-Rank-Sum'
+method = 'wilcoxon'
+#else if $rank_genes_peaks_method == 'logistic_regression'
+method = 'logreg'
+#else if $rank_genes_peaks_method == 't-test_overestim_var'
+method = 't-test_overestim_var'
+#end if
+mdata['$first_mod_name'].obs['$rank_genes_peaks_groupby'] = mdata.obs.leiden_joint
+mdata['$second_mod_name'].obs['$rank_genes_peaks_groupby'] = mdata.obs.leiden_joint
+sc.tl.rank_genes_groups(mdata['$first_mod_name'], '$rank_genes_peaks_groupby', method=method)
+ac.tl.rank_peaks_groups(mdata['$second_mod_name'], '$rank_genes_peaks_groupby', method=method)
 result = {}
-result['rna'] = mdata['rna'].uns['rank_genes_groups']
-result['rna']['genes'] = result['rna']['names']
-result['atac'] = mdata['atac'].uns['rank_genes_groups']
-groups = result['rna']['names'].dtype.names
-pd.set_option("display.max_columns", 200)
+result['$first_mod_name'] = mdata['$first_mod_name'].uns['rank_genes_groups']
+result['$first_mod_name']['genes'] = result['$first_mod_name']['names']
+result['$second_mod_name'] = mdata['$second_mod_name'].uns['rank_genes_groups']
+groups = result['$first_mod_name']['names'].dtype.names
+pd.set_option("display.max_columns", $pd_display_max_columns)
 differential_list = pd.DataFrame(
     {mod + ':' + group + '_' + key[:1]: result[mod][key][group][:10]
     for group in groups for key in ['names', 'genes', 'pvals']
@@ -31,6 +41,17 @@ differential_list.to_csv('differentially_expressed_genes_accessible_peaks.csv')
     </configfiles>
     <inputs>
         <param name="rna_atac_input" type="data" format="h5mu" label="RNA ATAC Clustered Multimodal Data"/>
+        <param argument="rank_genes_peaks_groupby" type="text" label="The key of the observations grouping to consider" value="leiden_joint"
+                       help="(groupby in 'tl.rank_genes_groups')"/>
+        <param argument="rank_genes_peaks_method" type="select" label="Method" help="(method in 'tl.rank_genes_groups')" value="t-test_overestim_var">
+                    <option value="t-test">t-test</option>
+                    <option value="Wilcoxon-Rank-Sum">Wilcoxon-Rank-Sum</option>
+                    <option value="t-test_overestim_var">t-test_overestim_var</option>
+                    <option value="logistic_regression">Logistic Regression</option>
+            </param>
+        <param name="first_mod_name" type="text" label="The name of the RNA modality in MuData object" value="rna" help="(for listing differentially expressed genes)"/>
+        <param name="second_mod_name" type="text" label="The name of the ATAC modality in MuData object" value="atac" help="(for listing differentially accessible peaks)"/>
+        <param name="pd_display_max_columns" type="integer" label="Maximum number of columns in list" value="200" help="(display.max_columns in pandas.set_option())"/>
     </inputs>
     <outputs>
         <data name="ranked_rna_atac" format="h5mu" label="RNA ATAC with Ranked Genes and Peaks" from_work_dir="ranked_rna_atac.h5mu"/>
@@ -40,7 +61,7 @@ differential_list.to_csv('differentially_expressed_genes_accessible_peaks.csv')
     </outputs>
     <tests>
         <test>
-            <param name="rna_atac_input" value="rna_atac.h5mu"/>
+            <param name="rna_atac_input" value="rna_atac_mofa_clustering.h5mu"/>
             <output name="ranked_rna_atac" file="ranked_rna_atac.h5mu"/>
             <output name="differentially_expressed_genes_accessible_peaks" file="differentially_expressed_genes_accessible_peaks.csv"/>
         </test>
