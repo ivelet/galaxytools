@@ -19,7 +19,7 @@ random_state=$random_state,
 use_weights=$use_weights,
 n_iterations=$n_iterations
 )
-figure_clustering = sc.pl.umap(mdata,g
+figure_clustering = sc.pl.umap(mdata,
 color="$sc_umap_color",
 legend_loc='$sc_umap_legend_loc',
 return_fig=True)
