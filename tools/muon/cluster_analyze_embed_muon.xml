@@ -33,7 +33,6 @@ mdata,
 mu.tl.umap(
 mdata,
 )
-#end if
 mdata.write("mudata_with_preprocessing.h5mu")
 ]]></configfile>
     </configfiles>

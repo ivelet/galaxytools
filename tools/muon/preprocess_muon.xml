@@ -42,7 +42,6 @@ weight_key=$method.neighbors_weight_key,
 add_weights_to_modalities=$method.neighbors_add_weights_to_modalities,
 eps=$method.neighbors_eps
 )
-#end if
 mdata.write("mudata_with_preprocessing.h5mu")
 ]]></configfile>
     </configfiles>

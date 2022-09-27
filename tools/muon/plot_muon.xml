@@ -61,7 +61,6 @@ n_points=$method.mofa_loadings_n_points,
 return_fig=True
 )
 mofa_loadings_plot.savefig("mofa_loadings_plot.png")
-#end if
 ]]></configfile>
     </configfiles>
     <inputs>
