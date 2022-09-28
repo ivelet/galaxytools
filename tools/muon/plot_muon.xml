@@ -5,11 +5,11 @@
     <command detect_errors="exit_code"><![CDATA[
         python '$script_file'
 ]]></command>
-    <configfiles>
+    <configfiles>s
         <configfile name="script_file"><![CDATA[import scanpy as sc
 import muon as mu
 mdata = mu.read_h5mu('$mudata_input')
-# if $method.method == 'embedding'
+#if $method.method == 'embedding'
 embeddings_plot = mu.pl.embedding(
 mdata,
 basis=$method.embedding_basis,
@@ -26,7 +26,7 @@ color=$method.mofa_color,
 components=$method.mofa_components,
 return_fig=True
 )
-mofa_plot.savefig("mofa_plot.png")
+mofa_plot.savefig("plot.png")
 #else if $method.method == 'scatter'
 scatter_plot = mu.pl.scatter(
 mdata,
@@ -37,13 +37,13 @@ use_raw=$method.scatter_use_raw,
 layers=$method.use_layers,
 return_fig=True
 )
-scatter_plot.savefig("scatter_plot.png")
+scatter_plot.savefig("plot.png")
 #else if $method.method == 'umap'
 umap_plot = mu.pl.umap(
 mdata,
 return_fig=True
 )
-umap_plot.savefig("umap_plot.png")
+umap_plot.savefig("plot.png")
 #else if $method.method == 'histogram'
 histogram_plot = mu.pl.histogram(
 mdata,
@@ -51,8 +51,8 @@ keys=$method.histogram_keys,
 groupby=$method.histogram_groupby,
 return_fig=True
 )
-histogram_plot.savefig("histogram_plot.png")
-#else
+histogram_plot.savefig("plot.png")
+#else if $method.method == 'mofa_loadings'
 mofa_loadings_plot = mu.pl.mofa_loadings(
 mdata,
 factors=$method.mofa_loadings_factors,
@@ -60,7 +60,8 @@ include_lowest=$method.mofa_loadings_include_lowest,
 n_points=$method.mofa_loadings_n_points,
 return_fig=True
 )
-mofa_loadings_plot.savefig("mofa_loadings_plot.png")
+mofa_loadings_plot.savefig("plot.png")
+#end if
 ]]></configfile>
     </configfiles>
     <inputs>
@@ -109,9 +110,8 @@ mofa_loadings_plot.savefig("mofa_loadings_plot.png")
     </outputs>
     <tests>
         <test>
-            <param name="rna_input" value="rna_data.h5ad"/>
-            <param name="atac_input" value="atac_data.h5ad"/>
-            <output name="rna_atac" file="rna_atac.h5mu"/>
+            <param name="mudata_input" value="mudata_input.h5ad"/>
+            <output name="plot" file="plot.png"/>
         </test>
     </tests>
     <help><![CDATA[
@@ -120,10 +120,7 @@ mofa_loadings_plot.savefig("mofa_loadings_plot.png")
         for multimodal omics factorial analysis.
         Furthermore, it runs pp.intersect_obs to keep only entries present in both modalities (AnnData objects) in the
         final MuData file.
-
     ]]></help>
-    <citations>/
-        <citation type="bibtex">
-}</citation>
+    <citations>
     </citations>
 </tool>
