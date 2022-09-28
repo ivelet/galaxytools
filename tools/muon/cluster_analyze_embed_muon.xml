@@ -9,37 +9,47 @@
         <configfile name="script_file"><![CDATA[import scanpy as sc
 import muon as mu
 mdata = mu.read_h5mu('$mudata_input')
-# if $method.method == 'leiden'
+#if $method.method == 'leiden'
 mu.tl.leiden(
 mdata,
+key_added='$method.leiden_key_added',
+resolution=$method.leiden_resolution,
+random_state=$method.leiden_random_state,
+mod_weights=$method.leiden_mod_weights,
+n_iterations=$method.leiden_n_iterations
 )
-# else if $method.method == 'louvain'
+#else if $method.method == 'louvain'
 mu.tl.louvain(
 mdata,
+key_added='$method.louvain_key_added',
+resolution=$method.louvain_resolution,
+random_state=$method.louvain_random_state,
+mod_weights=$method.louvain_mod_weights
 )
-# else if $method.method == 'ica'
+#else if $method.method == 'ica'
 mu.tl.ica(
 mdata,
 )
-# else if $method.method == 'mofa'
+#else if $method.method == 'mofa'
 mu.tl.mofa(
 mdata,
 )
-# else if $method.method == 'snf'
+#else if $method.method == 'snf'
 mu.tl.snf(
 mdata,
 )
-# else
+#else
 mu.tl.umap(
 mdata,
 )
-mdata.write("mudata_with_preprocessing.h5mu")
+#end if
+mdata.write("mudata_with_processing.h5mu")
 ]]></configfile>
     </configfiles>
     <inputs>
-        <param name="mudata_input" type="data" format="h5mu" label="MuData input file to run preprocessing" help="(.h5mu)"/>
+        <param name="mudata_input" type="data" format="h5mu" label="MuData input file to run processing" help="(.h5mu)"/>
         <conditional name="method">
-            <param argument="method" type="select" label="Method used for plotting">
+            <param argument="method" type="select" label="Method used for processing">
                     <option value="leiden">Cluster: Cluster cells using the Leiden algorithm, using 'muon.tl.leiden'</option>
                     <option value="louvain">Cluster: Cluster cells using the Louvain algorithm, using 'muon.tl.louvain'</option>
                     <option value="ica">Analyze: Run Independent Component Analysis, using 'muon.tl.ica'</option>
@@ -48,10 +58,18 @@ mdata.write("mudata_with_preprocessing.h5mu")
                     <option value="umap">Embed: Embed the multimodal neighborhood graph using UMAP, using 'muon.tl.mofa'</option>
             </param>
             <when value="leiden">
-                <param argument="filter_obs_var" type="text" label="Column name in .obs or in .X to be used for filtering" help="(var)"/>
+                <param name="leiden_resolution" type="float" value="1" label="Coarseness of the clustering" help="Higher values lead to more clusters (resolution)"/>
+                <param name="leiden_random_state" type="integer" value="0" label="Random seed" help="Change the initialization of the optimization (random_state)"/>
+                <param name="leiden_key_added" type="text" value="leiden_joint" label="Key under which to add the cluster labels" help="(key_added)"/>
+                <param name="leiden_mod_weights" type="float" value="1" label="Weight for each modality to control contribution" help="(mod_weights)"/>
+                <param name="leiden_n_iterations" type="integer" value="-1" label="Number of iterations of the Leiden clustering algorithm to perform" help="Positive values above 2 define the total number of iterations to perform, -1 has the algorithm run until it reaches its optimal clustering. (n_iterations)"/>
+
             </when>
             <when value="louvain">
-                <param argument="filter_obs_var" type="text" label="Column name in .obs or in .X to be used for filtering" help="(var)"/>
+                <param name="louvain_resolution" type="float" value="1" label="Coarseness of the clustering" help="Higher values lead to more clusters (resolution)"/>
+                <param name="louvain_random_state" type="integer" value="0" label="Random seed" help="Change the initialization of the optimization (random_state)"/>
+                <param name="louvain_key_added" type="text" value="leiden_joint" label="Key under which to add the cluster labels" help="(key_added)"/>
+                <param name="louvain_mod_weights" type="float" value="1" label="Weight for each modality to control contribution" help="(mod_weights)"/>
             </when>
             <when value="ica">
             </when>
@@ -67,12 +85,12 @@ mdata.write("mudata_with_preprocessing.h5mu")
         </conditional>
     </inputs>
     <outputs>
-        <data name="mudata_with_preprocessing" format="h5mu" label="MuData with Preprocessing" from_work_dir="mudata_with_preprocessing.h5mu"/>
+        <data name="mudata_with_processing" format="h5mu" label="MuData with Processing" from_work_dir="mudata_with_processing.h5mu"/>
     </outputs>
     <tests>
         <test>
             <param name="mudata_input" value="mudata_input.h5mu"/>
-            <output name="mudata_with_preprocessing" file="mudata_with_preprocessing.h5mu"/>
+            <output name="mudata_with_processing" file="mudata_with_processing.h5mu"/>
         </test>
     </tests>
     <help><![CDATA[
