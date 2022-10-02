@@ -9,61 +9,68 @@
         <configfile name="script_file"><![CDATA[import scanpy as sc
 import muon as mu
 mdata = mu.read_h5mu('$mudata_input')
+
 #if $method.method == 'leiden'
 mu.tl.leiden(
-mdata,
-key_added='$method.leiden_key_added',
-resolution=$method.leiden_resolution,
-random_state=$method.leiden_random_state,
-mod_weights=$method.leiden_mod_weights,
-n_iterations=$method.leiden_n_iterations
+    mdata,
+    key_added='$method.leiden_key_added',
+    resolution=$method.leiden_resolution,
+    random_state=$method.leiden_random_state,
+    mod_weights=$method.leiden_mod_weights,
+    n_iterations=$method.leiden_n_iterations
 )
+
 #else if $method.method == 'louvain'
 mu.tl.louvain(
 mdata,
-key_added='$method.louvain_key_added',
-resolution=$method.louvain_resolution,
-random_state=$method.louvain_random_state,
-mod_weights=$method.louvain_mod_weights
+    key_added='$method.louvain_key_added',
+    resolution=$method.louvain_resolution,
+    random_state=$method.louvain_random_state,
+    mod_weights=$method.louvain_mod_weights
 )
+
 #else if $method.method == 'ica'
 mu.tl.ica(
-mdata,
-basis='$method.ica_basis',
-n_components=$method.ica_n_components,
-random_state=$method.ica_random_state,
-scale=$method.ica_scale
+    mdata,
+    basis='$method.ica_basis',
+    n_components=$method.ica_n_components,
+    random_state=$method.ica_random_state,
+    scale=$method.ica_scale
 )
+
 #else if $method.method == 'mofa'
 mu.tl.mofa(
-mdata,
-n_factors=$method.mofa_n_factors
+    mdata,
+    n_factors=$method.mofa_n_factors
 )
+
 #else if $method.method == 'snf'
 mu.tl.snf(
-mdata,
-n_neighbors=$method.snf_n_neighbors,
-neighbor_keys=$method.snf_neighbor_keys,
-key_added=$method.snf_key_added,
-n_iterations=$method.snf_n_iterations,
-sigma=$method.snf_sigma
+    mdata,
+    n_neighbors=$method.snf_n_neighbors,
+    neighbor_keys=$method.snf_neighbor_keys,
+    key_added=$method.snf_key_added,
+    n_iterations=$method.snf_n_iterations,
+    sigma=$method.snf_sigma
 )
+
 #else if $method.method == 'umap'
 mu.tl.umap(
-mdata,
-min_dist=$method.umap_min_dist,
-spread=$method.umap_spread,
-n_components=$method.umap_n_components,
-maxiter=$method.umap_maxiter,
-alpha=$method.umap_alpha,
-gamma=$method.umap_gamma,
-negative_sample_rate=$method.umap_negative_sample_rate,
-init_pos='$method.umap_init_pos',
-random_state=$method.umap_random_state,
-a=$method.umap_a,
-b=$method.umap_b,
-neighbors_key=$method.umap_neighbors_key
+    mdata,
+    min_dist=$method.umap_min_dist,
+    spread=$method.umap_spread,
+    n_components=$method.umap_n_components,
+    maxiter=$method.umap_maxiter,
+    alpha=$method.umap_alpha,
+    gamma=$method.umap_gamma,
+    negative_sample_rate=$method.umap_negative_sample_rate,
+    init_pos='$method.umap_init_pos',
+    random_state=$method.umap_random_state,
+    a=$method.umap_a,
+    b=$method.umap_b,
+    neighbors_key=$method.umap_neighbors_key
 )
+
 #end if
 mdata.write("mudata_with_processing.h5mu")
 ]]></configfile>
@@ -135,10 +142,7 @@ mdata.write("mudata_with_processing.h5mu")
     </tests>
     <help><![CDATA[
     **What it does**
-        Import MuData from AnnData is a tool that allows creating a muon.MuData object out of two AnnData objects
-        for multimodal omics factorial analysis.
-        Furthermore, it runs pp.intersect_obs to keep only entries present in both modalities (AnnData objects) in the
-        final MuData file.
+        This tool implements all the functions from the muon.tl processing tools suite.
 
     ]]></help>
     <citations>/

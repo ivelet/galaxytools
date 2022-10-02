@@ -35,14 +35,19 @@ fig.savefig("rna_atac_comparison_heatmap.png")
     <tests>
         <test>
             <param name="rna_atac_input" value="rna_atac.h5mu"/>
+            <param name="first_mod_name" value="rna"/>
+            <param name="second_mod_name" value="atac"/>
+            <param name="first_mod_annotation_name" value="rna:celltype"/>
+            <param name="second_mod_annotation_name" value="atac:celltype"/>
+            <param name="mofa_plot_components" value="1,2 . 3,4"/>
             <output name="rna_atac_comparison_heatmap" file="rna_atac_comparison_heatmap.png"/>
         </test>
     </tests>
     <help><![CDATA[
     **What it does**
         This tool compares how the cell type annotations in individual modalities match each other.
-        We first use the adjusted Rand index to calculate a general score to compare the two modalities.
-        Then we look at how these cell type annotations match per cell and then make it into a wide table and
+        It first uses the adjusted Rand index to calculate a general score to compare the two modalities.
+        Then it looks at how these cell type annotations match per cell as a wide table then
         visualize it with a heatmap.
 
     ]]></help>

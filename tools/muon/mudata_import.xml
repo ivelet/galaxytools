@@ -58,15 +58,21 @@ mdata.write("rna_atac.h5mu")
     </outputs>
     <tests>
         <test>
+            <!--Test for RNA and ATAC modalities integration-->
             <param name="rna_input" value="rna_data.h5ad"/>
+            <param name="first_modality" value="rna"/>
+            <param name="rna_name" value="rna"/>
+            <param name="second_modality" value="atac"/>
+            <param name="atac_name" value="atac"/>
             <param name="atac_input" value="atac_data.h5ad"/>
-            <output name="rna_atac" file="rna_atac.h5mu"/>
+            <output name="rna_atac_input" file="rna_atac.h5mu"/>
         </test>
     </tests>
     <help><![CDATA[
     **What it does**
-        Import MuData from AnnData is a tool that allows creating a muon.MuData object out of two AnnData objects
-        for multimodal omics factorial analysis.
+        Create MuData from AnnData is a tool that allows creating a muon.MuData object out of two AnnData objects
+        for multimodal omics factorial analysis. The multimodal data is created by combining two AnnData objects as
+        h5ad files into a MuData object as a h5mu file using muon.
         Furthermore, it runs pp.intersect_obs to keep only entries present in both modalities (AnnData objects) in the
         final MuData file.
 

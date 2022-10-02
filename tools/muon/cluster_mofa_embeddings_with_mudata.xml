@@ -12,31 +12,35 @@ import muon as mu
 import matplotlib
 from scanpy import tl
 mdata = mu.read_h5mu('$rna_atac_mofa_input')
+
 #if $clustering_method.clustering_method == 'leiden'
 sc.tl.leiden(mdata,
-key_added='$clustering_method.key_added',
-resolution=$clustering_method.resolution,
-random_state=$clustering_method.random_state,
-use_weights=$clustering_method.use_weights,
-n_iterations=$clustering_method.n_iterations
+    key_added='$clustering_method.key_added',
+    resolution=$clustering_method.resolution,
+    random_state=$clustering_method.random_state,
+    use_weights=$clustering_method.use_weights,
+    n_iterations=$clustering_method.n_iterations
 )
 #else
 sc.tl.louvain(mdata,
-key_added='$clustering_method.key_added',
-resolution=$clustering_method.resolution,
-random_state=$clustering_method.random_state,
-use_weights=$clustering_method.use_weights
+    key_added='$clustering_method.key_added',
+    resolution=$clustering_method.resolution,
+    random_state=$clustering_method.random_state,
+    use_weights=$clustering_method.use_weights
 )
 #end if
 figure_clustering = sc.pl.umap(mdata,
-color="$clustering_method.key_added",
-legend_loc='$sc_umap_legend_loc',
-return_fig=True)
+    color="$clustering_method.key_added",
+    legend_loc='$sc_umap_legend_loc',
+    return_fig=True
+    )
 figure_clustering.savefig("figure_clustering.png")
+
 #set $mu_umap_color = ([x.strip() for x in str($mu_umap_color).split(',')])
 figure_individual_features = mu.pl.umap(mdata,
-color=$mu_umap_color,
-return_fig=True)
+    color=$mu_umap_color,
+    return_fig=True
+    )
 figure_individual_features.savefig("figure_individual_features.png")
 mdata.write("rna_atac_mofa_clustering.h5mu")
 ]]></configfile>
@@ -73,7 +77,24 @@ mdata.write("rna_atac_mofa_clustering.h5mu")
     </outputs>
     <tests>
         <test>
+            <!--Test for leiden clustering-->
             <param name="rna_atac_mofa_input" value="rna_atac_integration.h5mu"/>
+            <param name="clustering_method" value="leiden"/>
+            <param name="resolution" value="1"/>
+            <param name="random_state" value="0"/>
+            <param name="key_added"  value="leiden_joint"/>
+            <param name="use_weights" value="True"/>
+            <param name="n_iterations" value="-1" />
+            <output name="rna_atac_mofa_clustering" file="rna_atac_mofa_clustering.h5mu"/>
+        </test>
+        <test>
+            <!--Test for louvain clustering-->
+            <param name="rna_atac_mofa_input" value="rna_atac_integration.h5mu"/>
+            <param name="clustering_method" value="louvain"/>
+            <param name="resolution" value="1"/>
+            <param name="random_state" value="0"/>
+            <param name="key_added"  value="leiden_joint"/>
+            <param name="use_weights" value="True"/>
             <output name="rna_atac_mofa_clustering" file="rna_atac_mofa_clustering.h5mu"/>
         </test>
     </tests>
@@ -81,7 +102,7 @@ mdata.write("rna_atac_mofa_clustering.h5mu")
     **What it does**
         This tool reads MuData from a h5mu file that contains the data of multiple modalities after multi-omics
         factorial analysis has been applied to it and performs conventional clustering based on the MOFA embeddingsn
-        using sc.tl.leiden which uses the Leiden algorithm.
+        using sc.tl.leiden which uses the Leiden algorithm, or sc.tl.louvain which uses the Louvain algorithm for clustering.
 
         This can then be visualized using sc.pl.umap and mu.pl.umap for the individual features from modalities.
 

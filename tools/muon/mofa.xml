@@ -46,8 +46,10 @@ mdata.write("rna_atac_integration.h5mu")
             <when value="True">
                 <param name="mofax_model" type="data" format="hdf5" label="Trained mofax model to use for MOFA"/>
             </when>
+            <when value="False">
+                <param name="mofa_n_factors" type="integer" label="Number of factors to train the MOFA model with" value="10" help="(n_factors in muon.tl.mofa()), ignored if loading trained model"/>
+            </when>
         </conditional>
-        <param name="mofa_n_factors" type="integer" label="Number of factors to train the MOFA model with" value="10" help="(n_factors in muon.tl.mofa()), ignored if loading trained model"/>
         <param name="celltype_colors" type="text" label="Name of the color for each modality (Plotting)" value="celltype_colors" help="should be stored in mdata.uns[] for your MuData file"/>
         <param name="first_mod_annotation_name" type="text" label="Cell type annotation color of first modality (Plotting)" value="celltype" help="(color in muon.pl.mofa())"/>
         <param name="second_mod_annotation_name" type="text" label="Cell type annotation name of second modality (Plotting)" value="celltype" help="(color in muon.pl.mofa())"/>
@@ -62,7 +64,33 @@ mdata.write("rna_atac_integration.h5mu")
     </outputs>
     <tests>
         <test>
+            <!--Test to train a MOFA model from scratch-->
             <param name="rna_atac_input" value="rna_atac.h5mu"/>
+            <param name="first_mod_name" value="rna"/>
+            <param name="second_mod_name" value="atac"/>
+            <param name="load_mofax_model" value="False"/>
+            <param name="mofax_model" value="mofa_model.hdf5"/>
+            <param name="mofa_n_factors" value="10"/>
+            <param name="celltype_colors" value="celltype_colors"/>
+            <param name="first_mod_annotation_name" value="celltype"/>
+            <param name="second_mod_annotation_name" value="celltype"/>
+            <param name="mofa_plot_components" value="1,2 . 3,4"/>
+            <output name="rna_atac_integration" file="rna_atac_integration.h5mu"/>
+            <output name="umap_plot" file="mofa_umap_plot.png"/>
+            <output name="rna_mofa_annotations" file="rna_mofa_annotation.png"/>
+            <output name="atac_mofa_annotations" file="atac_mofa_annotation.png"/>
+        </test>
+        <test>
+            <!--Test to use an existing MOFA model-->
+            <param name="rna_atac_input" value="rna_atac.h5mu"/>
+            <param name="first_mod_name" value="rna"/>
+            <param name="second_mod_name" value="atac"/>
+            <param name="load_mofax_model" value="True"/>
+            <param name="mofa_n_factors" value="10"/>
+            <param name="celltype_colors" value="celltype_colors"/>
+            <param name="first_mod_annotation_name" value="celltype"/>
+            <param name="second_mod_annotation_name" value="celltype"/>
+            <param name="mofa_plot_components" value="1,2 . 3,4"/>
             <output name="rna_atac_integration" file="rna_atac_integration.h5mu"/>
             <output name="umap_plot" file="mofa_umap_plot.png"/>
             <output name="rna_mofa_annotations" file="rna_mofa_annotation.png"/>
@@ -71,12 +99,16 @@ mdata.write("rna_atac_integration.h5mu")
     </tests>
     <help><![CDATA[
     **What it does**
-        This tool performs multi omics factor analysis using muon.tl.mofa() on a h5mu matrix containing multimodal data.
+        This tool performs multi omics factor analysis using muon.tl.mofa() on a h5mu matrix containing multimodal data
+        and then plots the MOFA embeddings using muon.pl.mofa().
 
         Multi-omic factor analysis (MOFA) is a group factor analysis method that allows to learn an interpretable latent
         space jointly on multiple modalities.
 
         Intuitively, it can be viewed as a generalization of PCA for multi-omics data.
+
+        This tool allows you to use an existing trained mofa model or to train one from scratch and then save the model
+        to use it next time and save processing time.
     ]]></help>
     <citations>
         <citation type="bibtex">
