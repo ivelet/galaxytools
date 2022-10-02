@@ -42,7 +42,7 @@
                 {
                     "label": "MuData",
                     "output_name": "rna_atac",
-                    "uuid": "3ac56fa1-6590-496c-ab9b-d7e87b352d33"
+                    "uuid": "d5610c81-091c-465c-bac3-99f6c454adb3"
                 }
             ]
         },
@@ -84,7 +84,7 @@
             ],
             "position": {
                 "left": 412.984375,
-                "top": 0
+                "top": 0.0
             },
             "post_job_actions": {},
             "tool_id": "mofa",
@@ -96,27 +96,27 @@
                 {
                     "label": null,
                     "output_name": "rna_atac_integration",
-                    "uuid": "0489e915-6351-476f-9440-e1cd3b537bf6"
+                    "uuid": "68a8f1fe-752c-40fa-bab2-f5dc4ab5a712"
                 },
                 {
                     "label": null,
                     "output_name": "umap_plot",
-                    "uuid": "38dce317-9fab-4aac-be08-e4428d95bf89"
+                    "uuid": "c34c0c38-406a-4c1b-9f47-951fe518c54b"
                 },
                 {
                     "label": null,
                     "output_name": "rna_mofa_annotations",
-                    "uuid": "0de1c1e1-7a8c-4eb4-a698-65eb02935e87"
+                    "uuid": "9008654c-f46f-42ff-88fe-5d941917a05f"
                 },
                 {
                     "label": null,
                     "output_name": "atac_mofa_annotations",
-                    "uuid": "d9096f5e-f2ae-49b5-a58d-911010ddd8e5"
+                    "uuid": "9ac7b808-5e79-4c24-82ed-3e86310810b1"
                 },
                 {
                     "label": null,
                     "output_name": "rna_atac_mofa_model",
-                    "uuid": "3e796419-7ca9-4487-9679-ab2f84b9d29d"
+                    "uuid": "eb70d342-0178-4f80-9726-aa9f91db76cf"
                 }
             ]
         },
@@ -154,7 +154,7 @@
                 {
                     "label": "RNA ATAC Comparison Heatmap",
                     "output_name": "rna_atac_comparison_heatmap",
-                    "uuid": "7846a3e9-00ed-40c2-b9f5-1cf826aaf0af"
+                    "uuid": "e8d3b2b8-204b-4aae-bf64-c189d0cf7f99"
                 }
             ]
         },
@@ -200,17 +200,17 @@
                 {
                     "label": "MOFA embeddings with clustering",
                     "output_name": "rna_atac_mofa_clustering",
-                    "uuid": "53d500d4-57e2-4335-87be-bd730903a20b"
+                    "uuid": "e46f4c3e-5df6-4428-9e7b-79fbac044350"
                 },
                 {
                     "label": null,
                     "output_name": "figure_clustering",
-                    "uuid": "5dcc1961-d5e8-4fea-a2e2-c7dcb25a554e"
+                    "uuid": "d0371f34-0721-43bc-883a-58ced9eda93c"
                 },
                 {
                     "label": null,
                     "output_name": "figure_individual_features",
-                    "uuid": "246633b3-2ec1-4d68-b0b5-a30ff3319212"
+                    "uuid": "1e10ab4b-5621-4e43-881f-c9cd879d4bde"
                 }
             ]
         },
@@ -252,12 +252,12 @@
                 {
                     "label": "RNA ATAC with Ranked Genes and Peaks",
                     "output_name": "ranked_rna_atac",
-                    "uuid": "b37c2c65-a5e3-46aa-b024-3e5b0f398a53"
+                    "uuid": "4d4be9be-3824-4947-9429-f88688e2a7c7"
                 },
                 {
                     "label": null,
                     "output_name": "differentially_expressed_genes_accessible_peaks",
-                    "uuid": "1ea7eed0-eb05-4e23-a823-52c3553cfa07"
+                    "uuid": "602c4dec-b90c-417e-b33a-60ad37265533"
                 }
             ]
         },
@@ -272,7 +272,12 @@
                     "output_name": "ranked_rna_atac"
                 }
             },
-            "inputs": [],
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool Assign Cell Type Labels for MuData",
+                    "name": "rna_atac_input"
+                }
+            ],
             "label": null,
             "name": "Assign Cell Type Labels for MuData",
             "outputs": [
@@ -291,7 +296,7 @@
             },
             "post_job_actions": {},
             "tool_id": "assign_cell_type_labels_mudata",
-            "tool_state": "{\"get_cmap_name\": \"rainbow\", \"new_cluster_names_keys\": \"0,8,22,1,6,17,2,5,20,10,11,19,12,16,15,3,7,9,14,4,13,18,21\", \"new_cluster_names_values\": \"CD4+ na\\u00efve T, CD4+ na\\u00efve T, CD4+ na\\u00efve T, CD4+ memory T, CD4+ memory T, CD4+ memory T, CD8+ na\\u00efve T, CD8+ na\\u00efve T, CD8+ na\\u00efve T, CD8+ cytotoxic effector T, CD8+ transitional effector T, MAIT, NK, na\\u00efve B, memory B, classical mono, classical mono, classical mono, classical mono, intermediate mono, non-classical mono, mDC, pDC\", \"reorder_cat_list\": \"CD4+ na\\u00efve T,CD4+ memory T,CD8+ na\\u00efve T, CD8+ transitional effector T, CD8+ cytotoxic effector T,MAIT, NK,na\\u00efve B, memory B,classical mono,intermediate mono, non-classical mono,mDC, pDC\", \"rna_atac_input\": {\"__class__\": \"ConnectedValue\"}, \"umap_color\": \"celltype\", \"umap_frame_on\": \"true\", \"umap_legend_loc\": \"on data\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_state": "{\"get_cmap_name\": \"rainbow\", \"new_cluster_names_keys\": \"0,8,22,1,6,17,2,5,20,10,11,19,12,16,15,3,7,9,14,4,13,18,21\", \"new_cluster_names_values\": \"CD4+ na\\u00efve T, CD4+ na\\u00efve T, CD4+ na\\u00efve T, CD4+ memory T, CD4+ memory T, CD4+ memory T, CD8+ na\\u00efve T, CD8+ na\\u00efve T, CD8+ na\\u00efve T, CD8+ cytotoxic effector T, CD8+ transitional effector T, MAIT, NK, na\\u00efve B, memory B, classical mono, classical mono, classical mono, classical mono, intermediate mono, non-classical mono, mDC, pDC\", \"reorder_cat_list\": \"CD4+ na\\u00efve T,CD4+ memory T,CD8+ na\\u00efve T, CD8+ transitional effector T, CD8+ cytotoxic effector T,MAIT, NK,na\\u00efve B, memory B,classical mono,intermediate mono, non-classical mono,mDC, pDC\", \"rna_atac_input\": {\"__class__\": \"RuntimeValue\"}, \"umap_color\": \"celltype\", \"umap_frame_on\": \"true\", \"umap_legend_loc\": \"on data\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
             "tool_version": "0.1.0",
             "type": "tool",
             "uuid": "4910c8c5-241c-47e1-ac87-0638098fc649",
@@ -299,12 +304,12 @@
                 {
                     "label": "RNA ATAC Celltype UMAP Plot",
                     "output_name": "celltype_umap_plot",
-                    "uuid": "c40b9997-0c4b-41ed-83c7-96a45cf1c405"
+                    "uuid": "ca01efca-e44a-456a-b7de-3e0a7b52270c"
                 },
                 {
                     "label": "RNA ATAC with Assigned Celltype Labels",
                     "output_name": "rna_atac_assigned_celltype_labels",
-                    "uuid": "5460c183-7e61-4437-9cdb-469ea71e695a"
+                    "uuid": "f3332951-df87-4c70-8691-e2f19b4af805"
                 }
             ]
         },
@@ -319,7 +324,12 @@
                     "output_name": "rna_atac_assigned_celltype_labels"
                 }
             },
-            "inputs": [],
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool Visualize Markers with MuData",
+                    "name": "rna_atac_input"
+                }
+            ],
             "label": "Visualize Markers with MuData",
             "name": "Visualize Markers with MuData",
             "outputs": [
@@ -342,7 +352,7 @@
             },
             "post_job_actions": {},
             "tool_id": "visualise_markers_mudata",
-            "tool_state": "{\"first_mod\": \"rna\", \"groupby\": \"leiden_joint\", \"marker_genes\": \"\", \"marker_peaks\": \"\", \"rna_atac_input\": {\"__class__\": \"ConnectedValue\"}, \"second_mod\": \"atac\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_state": "{\"first_mod\": \"rna\", \"groupby\": \"leiden_joint\", \"marker_genes\": \"IL7R, TRAC, GATA3, LEF1, FHIT, RORA, ITGB1, CD8A, CD8B, CD248, CCL5, KLRB1, SLC4A10, IL32, GNLY, NKG7, CD79A, MS4A1, IGHD, IGHM, IL4R, TNFRSF13C, KLF4, LYZ, S100A8, ITGAM, CD14, DPYD, ITGAM, FCGR3A, MS4A7, CST3, CLEC10A, IRF8, TCF4\", \"marker_peaks\": \"chr14:99255246-99275454, chr10:33135632-33141841, chr1:1210271-1220028, chr2:86783559-86792275, chr12:10552886-10555668, chr11:114072228-114076352, chr5:150385442-150415310, chr22:41931503-41942227, chr22:41917087-41929835, chr6:167111604-167115345, chr9:107480158-107492721, chr5:1476663-1483241, chr10:75399596-75404660, chr1:220876295-220883526, chr17:81425658-81431769, chr7:98641522-98642532\", \"rna_atac_input\": {\"__class__\": \"RuntimeValue\"}, \"second_mod\": \"atac\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
             "tool_version": "0.1.0",
             "type": "tool",
             "uuid": "cee90a20-47ac-4f73-80e6-82aede5a1c31",
@@ -350,22 +360,22 @@
                 {
                     "label": "RNA Marker Genes Plot",
                     "output_name": "rna_marker_genes",
-                    "uuid": "850749c3-8f55-4064-b27f-44e93ce6eb5f"
+                    "uuid": "a3274c7e-a0dd-4b98-bcca-7659d730ee34"
                 },
                 {
                     "label": "ATAC Marker Genes Plot",
                     "output_name": "atac_marker_peaks",
-                    "uuid": "0159fdc9-46aa-4a97-b6b0-bc191ebb5346"
+                    "uuid": "0d7c8358-540e-46b7-b230-b0b0d00c14a4"
                 },
                 {
                     "label": "RNA ATAC with Marker Genes and Peaks",
                     "output_name": "rna_atac_marker_genes_peaks",
-                    "uuid": "c9e86d7a-eb65-4c46-b038-53911958c88e"
+                    "uuid": "32554bf8-dfa8-46a4-aded-b4ac7b146d01"
                 }
             ]
         }
     },
     "tags": [],
-    "uuid": "5516174f-07e9-4afb-8e03-ff8a61e34143",
-    "version": 6
+    "uuid": "0e790267-bd01-4ac0-81f7-5ef870e43464",
+    "version": 1
 }
