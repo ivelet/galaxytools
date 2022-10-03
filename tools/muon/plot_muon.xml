@@ -5,60 +5,66 @@
     <command detect_errors="exit_code"><![CDATA[
         python '$script_file'
 ]]></command>
-    <configfiles>s
+    <configfiles>
         <configfile name="script_file"><![CDATA[import scanpy as sc
 import muon as mu
 mdata = mu.read_h5mu('$mudata_input')
+
 #if $method.method == 'embedding'
 embeddings_plot = mu.pl.embedding(
-mdata,
-basis=$method.embedding_basis,
-color=$method.embedding_color,
-use_raw=$method.embedding_use_raw,
-layer=$method.embedding_layer,
-return_fig=True
+    mdata,
+    basis=$method.embedding_basis,
+    color=$method.embedding_color,
+    use_raw=$method.embedding_use_raw,
+    layer=$method.embedding_layer,
+    return_fig=True
 )
+
 #else if $method.method == 'mofa'
 #set $mofa_components = ([x.strip() for x in str($mofa_components).split('.')])
 mofa_plot = mu.pl.mofa(
-mdata,
-color=$method.mofa_color,
-components=$method.mofa_components,
-return_fig=True
+    mdata,
+    color=$method.mofa_color,
+    components=$method.mofa_components,
+    return_fig=True
 )
 mofa_plot.savefig("plot.png")
+
 #else if $method.method == 'scatter'
 scatter_plot = mu.pl.scatter(
-mdata,
-x=$method.scatter_x,
-y=$method.scatter_y,
-color=$method.scatter_color,
-use_raw=$method.scatter_use_raw,
-layers=$method.use_layers,
-return_fig=True
+    mdata,
+    x=$method.scatter_x,
+    y=$method.scatter_y,
+    color=$method.scatter_color,
+    use_raw=$method.scatter_use_raw,
+    layers=$method.use_layers,
+    return_fig=True
 )
 scatter_plot.savefig("plot.png")
+
 #else if $method.method == 'umap'
 umap_plot = mu.pl.umap(
-mdata,
-return_fig=True
+    mdata,
+    return_fig=True
 )
 umap_plot.savefig("plot.png")
+
 #else if $method.method == 'histogram'
 histogram_plot = mu.pl.histogram(
-mdata,
-keys=$method.histogram_keys,
-groupby=$method.histogram_groupby,
-return_fig=True
+    mdata,
+    keys=$method.histogram_keys,
+    groupby=$method.histogram_groupby,
+    return_fig=True
 )
 histogram_plot.savefig("plot.png")
+
 #else if $method.method == 'mofa_loadings'
 mofa_loadings_plot = mu.pl.mofa_loadings(
-mdata,
-factors=$method.mofa_loadings_factors,
-include_lowest=$method.mofa_loadings_include_lowest,
-n_points=$method.mofa_loadings_n_points,
-return_fig=True
+    mdata,
+    factors=$method.mofa_loadings_factors,
+    include_lowest=$method.mofa_loadings_include_lowest,
+    n_points=$method.mofa_loadings_n_points,
+    return_fig=True
 )
 mofa_loadings_plot.savefig("plot.png")
 #end if
@@ -76,32 +82,32 @@ mofa_loadings_plot.savefig("plot.png")
                     <option value="mofa_loadings">Ranking: Rank genes according to contributions to MOFA factors, using 'muon.pl.mofa_loadings'</option>
             </param>
             <when value="embedding">
-                <param argument="embedding_basis" type="text" label="Name of the obsm basis to use" help="(basis)"/>
-                <param argument="embedding_color" type="text" label="Keys for variables or annotations of observations (.obs columns). Can be from any modality." help="(color)"/>
-                <param argument="embedding_use_raw" type="boolean" label="Use .raw attribute of the modality where a feature (from color) is derived from" help="(use_raw)"/>
-                <param argument="embedding_layer" type="text" label="Name of the layer in the modality where a feature (from color) is derived from" help="(layer)"/>
+                <param name="embedding_basis" type="text" label="Name of the obsm basis to use" help="(basis)"/>
+                <param name="embedding_color" type="text" label="Keys for variables or annotations of observations (.obs columns). Can be from any modality." help="(color)"/>
+                <param name="embedding_use_raw" type="boolean" label="Use .raw attribute of the modality where a feature (from color) is derived from" help="(use_raw)"/>
+                <param name="embedding_layer" type="text" label="Name of the layer in the modality where a feature (from color) is derived from" help="(layer)"/>
             </when>
             <when value="mofa">
-                <param argument="mofa_color" type="text" label="Colors to use when plotting" help="(color)"/>
-                <param argument="mofa_components" type="text" label="Components to use when plotting" help="(components), should be dot-separated e.g. '1,2. 3,4'"/>
+                <param name="mofa_color" type="text" label="Colors to use when plotting" help="(color)"/>
+                <param name="mofa_components" type="text" label="Components to use when plotting" help="(components), should be dot-separated e.g. '1,2. 3,4'"/>
             </when>
             <when value="scatter">
-                <param argument="scatter_x" type="text" label="X-coordinate" help="(x)"/>
-                <param argument="scatter_y" type="text" label="Y-coordinate" help="(y)"/>
-                <param argument="scatter_color" type="text" label="Keys for variables or annotations of observations (.obs columns), or a hex colour specification" help="(color)"/>
-                <param argument="scatter_use_raw" type="boolean" label="Use raw (.raw attribute of the modality where a feature (from color) is derived from)" help="(use_raw)"/>
-                <param argument="scatter_layers" type="text" label="Names of the layers where x, y, and color come from" help="(layers)"/>
+                <param name="scatter_x" type="text" label="X-coordinate" help="(x)"/>
+                <param name="scatter_y" type="text" label="Y-coordinate" help="(y)"/>
+                <param name="scatter_color" type="text" label="Keys for variables or annotations of observations (.obs columns), or a hex colour specification" help="(color)"/>
+                <param name="scatter_use_raw" type="boolean" label="Use raw (.raw attribute of the modality where a feature (from color) is derived from)" help="(use_raw)"/>
+                <param name="scatter_layers" type="text" label="Names of the layers where x, y, and color come from" help="(layers)"/>
             </when>
             <when value="umap">
             </when>
             <when value="histogram">
-                <param argument="histogram_keys" type="text" label="Keys to plot" help="(keys)"/>
-                <param argument="histogram_group_by" type="text" label="Column name(s) of .obs slot of the AnnData object according to which the plot is split" help="(groupby)"/>
+                <param name="histogram_keys" type="text" label="Keys to plot" help="(keys)"/>
+                <param name="histogram_group_by" type="text" label="Column name(s) of .obs slot of the AnnData object according to which the plot is split" help="(groupby)"/>
             </when>
             <when value="mofa_loadings">
-                <param argument="mofa_loadings_factors" type="text" label="For example, '1,2,3' means [1, 2, 3], first, second, third factors" help="(factors)"/>
-                <param argument="mofa_loadings_include_lowest" type="boolean" truevalue="True" falsevalue="False" checked="true" label="Whether to show the variables with both highest and lowest loadings" help="(include_lowest)"/>
-                <param argument="mofa_loadings_n_points" type="integer" label="Number of variables to plot for each factor" help="(n_points)"/>
+                <param name="mofa_loadings_factors" type="text" label="For example, '1,2,3' means [1, 2, 3], first, second, third factors" help="(factors)"/>
+                <param name="mofa_loadings_include_lowest" type="boolean" truevalue="True" falsevalue="False" checked="true" label="Whether to show the variables with both highest and lowest loadings" help="(include_lowest)"/>
+                <param name="mofa_loadings_n_points" type="integer" label="Number of variables to plot for each factor" help="(n_points)"/>
             </when>
         </conditional>
     </inputs>
@@ -110,7 +116,19 @@ mofa_loadings_plot.savefig("plot.png")
     </outputs>
     <tests>
         <test>
+            <!--Test for muon.pl.embedding()-->
             <param name="mudata_input" value="mudata_input.h5ad"/>
+            <param name="method" value="embedding"/>
+            <param argument="embedding_basis"/>
+            <param argument="embedding_color"/>
+            <param argument="embedding_use_raw"/>
+            <param argument="embedding_layer"/>
+            <output name="plot" file="plot.png"/>
+        </test>
+        <test>
+            <!--Test for muon.pl.mofa()-->
+            <param name="mudata_input" value="mudata_input.h5ad"/>
+            <param name="method" value="mofa"/>
             <output name="plot" file="plot.png"/>
         </test>
     </tests>
