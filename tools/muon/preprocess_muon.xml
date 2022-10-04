@@ -114,7 +114,7 @@ mdata.write("mudata_with_preprocessing.h5mu")
         final MuData file.
 
     ]]></help>
-    <citations>/
+    <citations>
         <citation type="bibtex">
 }</citation>
     </citations>

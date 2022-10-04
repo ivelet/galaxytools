@@ -42,7 +42,7 @@ second_mod_out.write("second_mod.h5ad")
         NOTE: This tool currently supports only the extraction of exactly 2 modalities from a MuData object.
 
     ]]></help>
-    <citations>/
+    <citations>
         <citation type="bibtex">
 }</citation>
     </citations>
