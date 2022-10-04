@@ -110,8 +110,8 @@ mdata.write("mudata_with_processing.h5mu")
             </when>
             <when value="snf">
                 <param name="snf_n_neighbors" type="integer" value="20" label="Number of neighbours to be used in the K-nearest neighbours step" help="(n_neighbors)"/>
-                <param name="snf_neighbor_keys" type="text" value="None" label="Keys in .uns where per-modality neighborhood information is stored" help="(neighbor_keys)"/>
-                <param name="snf_key_added" type="text" value="None" label="Keys where multimodal neighbors data are stored" help="(key_added)"/>
+                <param name="snf_neighbor_keys" type="text" value="neighbors" label="Keys in .uns where per-modality neighborhood information is stored" help="(neighbor_keys)"/>
+                <param name="snf_key_added" type="text" value="neighbors" label="Keys where multimodal neighbors data are stored" help="(key_added)"/>
                 <param name="snf_n_iterations" type="integer" value="20" label="Number of iterations for the diffusion process" help="(n_iterations)"/>
                 <param name="snf_sigma" type="float" value="0.5" label="Variance for the local model when calculating affinity matrices" help="(sigma)"/>
             </when>
@@ -136,13 +136,106 @@ mdata.write("mudata_with_processing.h5mu")
     </outputs>
     <tests>
         <test>
+            <!--Test for leiden-->
             <param name="mudata_input" value="mudata_input.h5mu"/>
+            <param name="method" value="leiden"/>
+            <param name="leiden_resolution" value="1"/>
+            <param name="leiden_random_state" value="0"/>
+            <param name="leiden_key_added" value="leiden_joint"/>
+            <param name="leiden_mod_weights" value="1"/>
+            <param name="leiden_n_iterations" value="-1"/>
+            <output name="mudata_with_processing" file="mudata_with_processing.h5mu"/>
+        </test>
+        <test>
+            <!--Test for louvain-->
+            <param name="mudata_input" value="mudata_input.h5mu"/>
+            <param name="method" value="louvain"/>
+            <param name="louvain_resolution" value="1"/>
+            <param name="louvain_random_state" value="0"/>
+            <param name="louvain_key_added" value="louvain_joint"/>
+            <param name="louvain_mod_weights" value="1"/>
+            <output name="mudata_with_processing" file="mudata_with_processing.h5mu"/>
+        </test>
+        <test>
+            <!--Test for mofa-->
+            <param name="mudata_input" value="mudata_input.h5mu"/>
+            <param name="method" value="mofa"/>
+            <param name="mofa_n_factors" value="10"/>
+            <output name="mudata_with_processing" file="mudata_with_processing.h5mu"/>
+        </test>
+        <test>
+            <!--Test for snf-->
+            <param name="mudata_input" value="mudata_input.h5mu"/>
+            <param name="method" value="snf"/>
+            <param name="snf_n_neighbors" value="20"/>
+            <param name="snf_neighbor_keys" value="neighbors"/>
+            <param name="snf_key_added" value="neighbors"/>
+            <param name="snf_n_iterations" value="20"/>
+            <param name="snf_sigma" value="0.5"/>
+            <output name="mudata_with_processing" file="mudata_with_processing.h5mu"/>
+        </test>
+        <test>
+            <!--Test for umap-->
+            <param name="mudata_input" value="mudata_input.h5mu"/>
+            <param name="method" value="umap"/>
+            <param name="umap_min_dist" value="0.5"/>
+            <param name="umap_spread" value="1.0"/>
+            <param name="umap_n_components" value="2"/>
+            <param name="umap_maxiter" value="None"/>
+            <param name="umap_alpha" value="1.0"/>
+            <param name="umap_gamma" value="1.0"/>
+            <param name="umap_negative_sample_rate" value="5"/>
+            <param name="umap_init_pos" value="spectral"/>
+            <param name="umap_random_state" value="42"/>
+            <param name="umap_a" value="None"/>
+            <param name="umap_b" value="None"/>
+            <param name="umap_neighbors_key" value="None"/>
             <output name="mudata_with_processing" file="mudata_with_processing.h5mu"/>
         </test>
     </tests>
     <help><![CDATA[
-    **What it does**
-        This tool implements all the functions from the muon.tl processing tools suite.
+        Cluster: Cluster cells using the Leiden algorithm ('muon.tl.leiden')
+        ============================================================================
+
+        Cluster cells using the Leiden algorithm. This runs only the multiplex Leiden algorithm on the MuData object
+        using connectivities of individual modalities.
+
+        More details on the `muon documentation
+        <https://muon.readthedocs.io/en/latest/api/generated/muon.tl.leiden.html#muon.tl.leiden>`__
+
+        Cluster: Cluster cells using the Louvain algorithm ('muon.tl.louvain')
+        =================================================================
+
+        Cluster cells using the Louvain algorithm. This runs only the multiplex Louvain algorithm on the MuData object
+        using connectivities of individual modalities
+
+        More details on the `muon documentation
+        <https://muon.readthedocs.io/en/latest/api/generated/muon.tl.louvain.html#muon.tl.louvain>`__
+
+        Analyze: Run Multi Omics Factor Analysis ('muon.tl.mofa')
+        =============================================================================
+
+        Run Multi-Omics Factor Analysis
+
+        More details on the 'muon documentation
+        <https://muon.readthedocs.io/en/latest/api/generated/muon.tl.mofa.html#muon.tl.mofa>`__
+
+        Analyze: Similarity Network Fusion ('muon.tl.snf')
+        ===========================================
+
+        Similarity network fusion (SNF). See Wang et al., 2014 (DOI: 10.1038/nmeth.2810).
+
+        More details on the 'muon documentation
+        <https://muon.readthedocs.io/en/latest/api/generated/muon.tl.snf.html#muon.tl.snf>`__
+
+        Embed: Embed the multimodal neighborhood graph using UMAP ('muon.tl.umap')
+        ===========================================================================================
+
+        Embed the multimodal neighborhood graph using UMAP (McInnes et al, 2018). UMAP (Uniform Manifold Approximation
+        and Projection) is a manifold learning technique suitable for visualizing high-dimensional data.
+
+        More details on the 'muon documentation
+        <https://muon.readthedocs.io/en/latest/api/generated/muon.tl.umap.html#muon.tl.umap>`__
 
     ]]></help>
     <citations>
