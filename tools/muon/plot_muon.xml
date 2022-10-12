@@ -1,4 +1,4 @@
-<tool id="plot_muon" name="Plot multimodal data with muon" version="0.1.0">
+<tool id="plot_muon" name="Plot with muon" version="0.1.0">
     <requirements>
         <requirement type="package" version="1.7.0">scanpy</requirement>
     </requirements>
@@ -10,60 +10,60 @@
 import muon as mu
 mdata = mu.read_h5mu('$mudata_input')
 
-#if $method.method == 'embedding'
+#if $method.method == "embedding"
 embeddings_plot = mu.pl.embedding(
     mdata,
-    basis=$method.embedding_basis,
-    color=$method.embedding_color,
-    use_raw=$method.embedding_use_raw,
-    layer=$method.embedding_layer,
+    basis='$method.embedding_basis',
+    color='$method.embedding_color',
+    use_raw='$method.embedding_use_raw',
+    layer='$method.embedding_layer',
     return_fig=True
 )
 
-#else if $method.method == 'mofa'
+#else if $method.method == "mofa"
 #set $mofa_components = ([x.strip() for x in str($mofa_components).split('.')])
 mofa_plot = mu.pl.mofa(
     mdata,
-    color=$method.mofa_color,
-    components=$method.mofa_components,
+    color='$method.mofa_color',
+    components='$method.mofa_components',
     return_fig=True
 )
 mofa_plot.savefig("plot.png")
 
-#else if $method.method == 'scatter'
+#else if $method.method == "scatter"
 scatter_plot = mu.pl.scatter(
     mdata,
-    x=$method.scatter_x,
-    y=$method.scatter_y,
-    color=$method.scatter_color,
-    use_raw=$method.scatter_use_raw,
-    layers=$method.use_layers,
+    x='$method.scatter_x',
+    y='$method.scatter_y',
+    color='$method.scatter_color',
+    use_raw='$method.scatter_use_raw',
+    layers='$method.use_layers',
     return_fig=True
 )
 scatter_plot.savefig("plot.png")
 
-#else if $method.method == 'umap'
+#else if $method.method == "umap"
 umap_plot = mu.pl.umap(
     mdata,
     return_fig=True
 )
 umap_plot.savefig("plot.png")
 
-#else if $method.method == 'histogram'
+#else if $method.method == "histogram"
 histogram_plot = mu.pl.histogram(
     mdata,
-    keys=$method.histogram_keys,
-    groupby=$method.histogram_groupby,
+    keys='$method.histogram_keys',
+    groupby='$method.histogram_groupby',
     return_fig=True
 )
 histogram_plot.savefig("plot.png")
 
-#else if $method.method == 'mofa_loadings'
+#else if $method.method == "mofa_loadings"
 mofa_loadings_plot = mu.pl.mofa_loadings(
     mdata,
-    factors=$method.mofa_loadings_factors,
-    include_lowest=$method.mofa_loadings_include_lowest,
-    n_points=$method.mofa_loadings_n_points,
+    factors='$method.mofa_loadings_factors',
+    include_lowest='$method.mofa_loadings_include_lowest',
+    n_points='$method.mofa_loadings_n_points',
     return_fig=True
 )
 mofa_loadings_plot.savefig("plot.png")
@@ -119,10 +119,10 @@ mofa_loadings_plot.savefig("plot.png")
             <!--Test for muon.pl.embedding()-->
             <param name="mudata_input" value="mudata_input.h5ad"/>
             <param name="method" value="embedding"/>
-            <param argument="embedding_basis"/>
-            <param argument="embedding_color"/>
-            <param argument="embedding_use_raw"/>
-            <param argument="embedding_layer"/>
+            <param name="embedding_basis"/>
+            <param name="embedding_color"/>
+            <param name="embedding_use_raw"/>
+            <param name="embedding_layer"/>
             <output name="plot" file="plot.png"/>
         </test>
         <test>

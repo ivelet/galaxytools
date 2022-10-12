@@ -1,27 +1,26 @@
-<tool id="preprocess_muon" name="Filter, normalize and preprocess multimodal data with muon" version="0.1.0">
+<tool id="preprocess_muon" name="Filter and Normalize with Muon" version="0.1.0">
     <requirements>
-        <requirement type="package" version="1.7.0">scanpy</requirement>
     </requirements>
-    <command detect_errors="exit_code"><![CDATA[
-        python '$script_file'
+    <command detect_errors="exit_code"><![CDATA[python '$script_file'
 ]]></command>
     <configfiles>
-        <configfile name="script_file"><![CDATA[import scanpy as sc
-import muon as mu
+        <configfile name="script_file"><![CDATA[import muon as mu
 mdata = mu.read_h5mu('$mudata_input')
 
 #if $method.method == 'filter_obs'
+obs_var = '$method.filter_obs_var'
 mu.pp.filter_obs(
     mdata,
-    var='$method.filter_obs_var',
-    func=$method.filter_obs_func
+    var=obs_var,
+    func=None
 )
 
 #else if $method.method == 'filter_var'
+var_var = '$method.filter_var_var'
 mu.pp.filter_var(
     mdata,
-    var='$method.filter_var_var',
-    func=$method.filter_var_func
+    var=var_var,
+    func=None
 )
 
 #else if $method.method == 'intersect_obs'
@@ -30,29 +29,37 @@ mu.pp.intersect_obs(
 )
 
 #else if $method.method == 'l2norm'
-#set ($l2norm_mod) = ([x.strip() for x in str($method.l2norm_mod).split(',')])
-#set ($l2norm_rep) = ([x.strip() for x in str($method.l2norm_rep).split(',')])
+l2norm_mod = ([x.strip() for x in str($method.l2norm_mod).split(',')])
+l2norm_rep = ([x.strip() for x in str($method.l2norm_rep).split(',')])
+l2norm_n_pcs = $method.l2norm_n_pcs
 mu.pp.l2norm(
     mdata,
-    mod=$l2norm_mod,
-    rep=$l2norm_rep,
-    n_pcs=$method.l2norm_n_pcs
+    mod=l2norm_mod,
+    rep=l2norm_rep,
+    n_pcs=l2norm_n_pcs
 )
 
 #else if $method.method == 'neighbors'
+n_neighbors=$method.neighbors_n_neighbors,
+n_multineighbors=$method.neighbors_n_multineighbors,
+neighbor_keys='$method.neighbors_neighbor_keys',
+metric='$method.neighbors_metric',
+key_added='$method.neighbors_key_added',
+weight_key='$method.neighbors_weight_key',
+add_weights_to_modalities=$method.neighbors_add_weights_to_modalities,
+eps=$method.neighbors_eps
 mu.pp.neighbors(
     mdata,
-    n_neighbors=$method.neighbors_n_neighbors,
-    n_multineighbors=$method.neighbors_n_multineighbors,
-    neighbor_keys='$method.neighbors_neighbor_keys',
-    metric='$method.neighbors_metric',
-    key_added='$method.neighbors_key_added',
-    weight_key='$method.neighbors_weight_key',
-    add_weights_to_modalities=$method.neighbors_add_weights_to_modalities,
-    eps=$method.neighbors_eps
+    n_neighbors=n_neighbors,
+    n_multineighbors=n_multineighbors,
+    neighbor_keys=neighbor_keys,
+    metric=metric,
+    key_added=key_added,
+    weight_key=weight_key,
+    add_weights_to_modalities=add_weights_to_modalities,
+    eps=eps
 )
 #end if
-
 mdata.write("mudata_with_preprocessing.h5mu")
 ]]></configfile>
     </configfiles>
@@ -106,7 +113,6 @@ mdata.write("mudata_with_preprocessing.h5mu")
             <param name="mudata_input" value="mudata_input.h5mu"/>
             <param name="method" value="filter_obs"/>
             <param name="filter_obs_var" value="total_counts"/>
-            <param name="filter_obs_func" value="lambda x: x < 15000"/>
             <output name="mudata_with_preprocessing" file="mudata_with_preprocessing.h5mu"/>
         </test>
         <test>
@@ -114,7 +120,6 @@ mdata.write("mudata_with_preprocessing.h5mu")
             <param name="mudata_input" value="mudata_input.h5mu"/>
             <param name="method" value="filter_var"/>
             <param name="filter_var_var" value="n_cells_by_count"/>
-            <param name="filter_var_func" value="lambda x: x < 15000"/>
             <output name="mudata_with_preprocessing" file="mudata_with_preprocessing.h5mu"/>
         </test>
         <test>
@@ -148,8 +153,8 @@ mdata.write("mudata_with_preprocessing.h5mu")
         </test>
     </tests>
     <help><![CDATA[
-        Filter: Filter observations (samples or cells) in-place using any column in .obs or in .X ('muon.pp.filter_obs')
-        ============================================================================
+Filter: Filter observations (samples or cells) in-place using any column in .obs or in .X ('muon.pp.filter_obs')
+================================================================================================================
 
         Filter observations (samples or cells) in-place using any column in .obs or in .X.
 
@@ -165,7 +170,7 @@ mdata.write("mudata_with_preprocessing.h5mu")
         <https://muon.readthedocs.io/en/latest/api/generated/muon.pp.filter_var.html#muon.pp.filter_var>`__
 
         Subset: Subset observations (samples or cells) in-place taking observations present only in all modalities ('muon.pp.intersect_obs')
-        =============================================================================
+        =======================================================================================================================================================
 
         Subset observations (samples or cells) in-place taking observations present only in all modalities.
 
@@ -173,7 +178,7 @@ mdata.write("mudata_with_preprocessing.h5mu")
         <https://muon.readthedocs.io/en/latest/api/generated/muon.pp.intersect_obs.html#muon.pp.intersect_obs>`__
 
         Normalize: Normalize observations to unit L2 norm ('muon.pp.l2norm')
-        ===========================================
+        ============================================================================================
 
         Normalize observations to unit L2 norm.
 
