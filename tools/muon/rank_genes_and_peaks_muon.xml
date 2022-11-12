@@ -1,6 +1,7 @@
 <tool id="rank_genes_and_peaks_muon" name="Rank and List Genes and Peaks in Multimodal Data with Scanpy" version="0.1.0">
     <requirements>
         <requirement type="package" version="1.7.0">scanpy</requirement>
+        <requirement type="package" version="0.1.2">muon</requirement>
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
         python '$script_file'

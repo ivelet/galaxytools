@@ -1,5 +1,6 @@
 <tool id="preprocess_muon" name="Filter and Normalize with Muon" version="0.1.0">
     <requirements>
+        <requirement type="package" version="0.1.2">muon</requirement>
     </requirements>
     <command detect_errors="exit_code"><![CDATA[python '$script_file'
 ]]></command>

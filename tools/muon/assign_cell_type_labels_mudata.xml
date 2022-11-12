@@ -1,6 +1,7 @@
 <tool id="assign_cell_type_labels_mudata" name="Assign Cell Type Labels for MuData" version="0.1.0">
     <requirements>
         <requirement type="package" version="1.7.0">scanpy</requirement>
+        <requirement type="package" version="0.1.2">muon</requirement>
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
         python '$script_file'

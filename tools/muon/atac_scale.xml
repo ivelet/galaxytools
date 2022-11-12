@@ -1,0 +1,35 @@
+<tool id="atac_scale" name="Scale ATAC data" version="0.1.0">
+    <requirements>
+        <requirement type="package" version="1.7.0">scanpy</requirement>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+        python '$script_file'
+]]></command>
+    <configfiles>
+        <configfile name="script_file"><![CDATA[import scanpy as sc
+atac = sc.read_h5ad("$atac_input")
+atac.raw = atac
+atac.write("atac_scaled.h5ad")
+]]></configfile>
+    </configfiles>
+    <inputs>
+        <param name="atac_input" type="data" format="h5ad" label="ATAC Input" help="(.h5ad)"/>
+    </inputs>
+    <outputs>
+        <data name="atac_scaled" format="h5ad" label="Scaled ATAC data" from_work_dir="atac_scaled.h5ad"/>
+    </outputs>
+    <tests>
+        <test>
+            <param name="atac_input" value="atac_input.h5ad"/>
+            <output name="atac_scaled" file="atac_scaled.h5ad"/>
+        </test>
+    </tests>
+    <help><![CDATA[
+
+
+    ]]></help>
+    <citations>
+        <citation type="bibtex">
+}</citation>
+    </citations>
+</tool>

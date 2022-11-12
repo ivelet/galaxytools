@@ -1,6 +1,7 @@
 <tool id="mudata_import" name="Create MuData from AnnData" version="0.1.0">
     <requirements>
         <requirement type="package" version="1.7.0">scanpy</requirement>
+        <requirement type="package" version="0.1.2">muon</requirement>
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
         python '$script_file'
@@ -29,6 +30,14 @@ mdata.write("rna_atac.h5mu")
             <when value="rna">
                 <param argument="rna_name" type="text" label="RNA Modality Name" value="rna"
                        help="Name to give for the rna modality in the MuData file"/>
+            </when>
+            <when value="atac">
+                <param argument="atac_name" type="text" label="ATAC Modality Name" value="atac"
+                       help="Name to give for the atac modality in the MuData file"/>
+            </when>
+            <when value="protein">
+                <param argument="protein_name" type="text" label="Protein Modality Name" value="prot"
+                       help="Name to give for the protein modality in the MuData file"/>
             </when>
         </conditional>
         <param name="rna_input" type="data" format="h5ad" label="RNA h5ad Matrix"/>
@@ -65,7 +74,7 @@ mdata.write("rna_atac.h5mu")
             <param name="second_modality" value="atac"/>
             <param name="atac_name" value="atac"/>
             <param name="atac_input" value="atac_data.h5ad"/>
-            <output name="rna_atac_input" file="rna_atac.h5mu"/>
+            <output name="rna_atac" file="rna_atac.h5mu"/>
         </test>
     </tests>
     <help><![CDATA[
