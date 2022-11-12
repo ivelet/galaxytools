@@ -84,10 +84,7 @@ mdata.write("rna_atac.h5mu")
         h5ad files into a MuData object as a h5mu file using muon.
         Furthermore, it runs pp.intersect_obs to keep only entries present in both modalities (AnnData objects) in the
         final MuData file.
-
     ]]></help>
     <citations>
-        <citation type="bibtex">
-}</citation>
     </citations>
 </tool>

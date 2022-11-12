@@ -45,11 +45,12 @@ atac.write("atac_with_new_labels.h5ad")
     </outputs>
     <tests>
         <test>
-            <param name="rna_atac_input" value="ranked_rna_atac.h5mu"/><param name="new_cluster_names_keys" type="text" label="New Cluster Names Keys" help="Add the keys of the new clsuter names as numbers separated by commas" value="1, 2, 3, 5, 8, 12, 9, 6, 0, 4, 7, 11, 13"/>
+            <param name="atac_input" value="atac_data.h5ad"/>
+            <param name="new_cluster_names_keys" value="1, 2, 3, 5, 8, 12, 9, 6, 0, 4, 7, 11, 13"/>
             <param name="new_cluster_names_values" value="CD4+ memory T, CD8+ naïve T, CD4+ naïve T, CD8+ activated T, NK, MAIT, naïve B, memory B, intermediate mono, CD14 mono, CD16 mono, mDC, pDC"/>
             <param name="reorder_cat_list" value="CD4+ naïve T, CD4+ memory T, MAIT, CD8+ naïve T, CD8+ activated T, NK, naïve B, memory B, CD14 mono, intermediate mono, CD16 mono, mDC, pDC"/>
             <param name="get_cmap_name" value="rainbow"/>
-            <output name="atac_with_new_labels" file="atac_with_new_labels.h5ad"/>
+            <output name="atac_with_new_labels" value="atac_with_new_labels.h5ad"/>
         </test>
     </tests>
     <help><![CDATA[

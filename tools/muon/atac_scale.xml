@@ -25,8 +25,8 @@ atac.write("atac_scaled.h5ad")
         </test>
     </tests>
     <help><![CDATA[
-
-
+        **What it does**
+        This tool scales atac data.
     ]]></help>
     <citations>
         <citation type="bibtex">

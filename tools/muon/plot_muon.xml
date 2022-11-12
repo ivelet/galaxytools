@@ -130,8 +130,8 @@ mofa_loadings_plot.savefig("plot.png")
             <!--Test for muon.pl.mofa()-->
             <param name="mudata_input" value="mudata_input.h5ad"/>
             <param name="method" value="mofa"/>
-            <param name="color" value="rna:celltype"/>
-            <param name="components" value="1,2 . 3,4"/>
+            <param name="mofa_color" value="rna:celltype"/>
+            <param name="mofa_components" value="1,2 . 3,4"/>
             <output name="plot" file="plot.png"/>
             <!--Test for muon.pl.scatter()-->
             <param name="mudata_input" value="mudata_input.h5ad"/>
@@ -162,48 +162,48 @@ mofa_loadings_plot.savefig("plot.png")
         </test>
     </tests>
     <help><![CDATA[
-        Scatter: Scatter plot along observations (.obs column) ('muon.pl.embedding')
-        ============================================================================
+Scatter: Scatter plot along observations (.obs column) ('muon.pl.embedding')
+============================================================================
 
         Produce a scatter plot in the define basis (.obs), which can also be a basis inside any modality.
 
         More details on the `muon documentation
         <https://muon.readthedocs.io/en/latest/api/generated/muon.pl.embedding.html#muon.pl.embedding>`__
 
-        Scatter: Scatter plot in MOFA factor coordinates ('muon.pl.mofa')
-        =================================================================
+Scatter: Scatter plot in MOFA factor coordinates ('muon.pl.mofa')
+=================================================================
 
         Scatter plot in MOFA factors coordinates.
 
         More details on the `muon documentation
         <https://muon.readthedocs.io/en/latest/api/generated/muon.pl.mofa.html#muon.pl.mofa>`__
 
-        Scatter: Scatter plot along observations or variable axes ('muon.pl.scatter')
-        =============================================================================
+Scatter: Scatter plot along observations or variable axes ('muon.pl.scatter')
+=============================================================================
 
         Scatter plot along observations or variables axes. Variables in each modality can be referenced.
 
         More details on the 'muon documentation
         <https://muon.readthedocs.io/en/latest/api/generated/muon.pl.scatter.html#muon.pl.scatter>`__
 
-        Scatter: UMAP scatter plot ('muon.pl.umap')
-        ===========================================
+Scatter: UMAP scatter plot ('muon.pl.umap')
+===========================================
 
         UMAP Scatter plot.
 
         More details on the 'muon documentation
         <https://muon.readthedocs.io/en/latest/api/generated/muon.pl.umap.html#muon.pl.umap>`__
 
-        Histogram: Plot Histogram of Fragment lengths within specified region ('muon.pl.histogram')
-        ===========================================================================================
+Histogram: Plot Histogram of Fragment lengths within specified region ('muon.pl.histogram')
+===========================================================================================
 
         Plot Histogram of Fragment lengths within specified region.
 
         More details on the 'muon documentation
         <https://muon.readthedocs.io/en/latest/api/generated/muon.pl.histogram.html#muon.pl.histogram>`__
 
-        Ranking: Rank genes according to contributions to MOFA factors ('muon.pl.mofa_loadings')
-        ========================================================================================
+Ranking: Rank genes according to contributions to MOFA factors ('muon.pl.mofa_loadings')
+========================================================================================
 
         Rank genes according to contributions to MOFA factors.
 
@@ -211,5 +211,7 @@ mofa_loadings_plot.savefig("plot.png")
         <https://muon.readthedocs.io/en/latest/api/generated/muon.pl.mofa_loadings.html#muon.pl.mofa_loadings>`__
     ]]></help>
     <citations>
+        <citation type="bibtex">
+}</citation>
     </citations>
 </tool>

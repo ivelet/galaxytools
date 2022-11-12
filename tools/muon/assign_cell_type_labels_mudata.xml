@@ -57,7 +57,8 @@ mdata.write("rna_atac_assigned_celltype_labels.h5mu")
     </outputs>
     <tests>
         <test>
-            <param name="rna_atac_input" value="ranked_rna_atac.h5mu"/><param name="new_cluster_names_keys" type="text" label="New Cluster Names Keys" help="Add the keys of the new clsuter names as numbers separated by commas" value="0,8,22,1,6,17,2,5,20,10,11,19,12,16,15,3,7,9,14,4,13,18,21"/>
+            <param name="rna_atac_input" value="ranked_rna_atac.h5mu"/>
+            <param name="new_cluster_names_keys" value="0,8,22,1,6,17,2,5,20,10,11,19,12,16,15,3,7,9,14,4,13,18,21"/>
             <param name="new_cluster_names_values" value="CD4+ naïve T, CD4+ naïve T, CD4+ naïve T, CD4+ memory T,
             CD4+ memory T, CD4+ memory T, CD8+ naïve T, CD8+ naïve T, CD8+ naïve T, CD8+ cytotoxic effector T,
             CD8+ transitional effector T, MAIT, NK, naïve B, memory B, classical mono, classical mono, classical mono,
@@ -67,9 +68,9 @@ mdata.write("rna_atac_assigned_celltype_labels.h5mu")
             <param name="get_cmap_name" value="rainbow"/>
             <param name="umap_color" value="celltype"/>
             <param name="umap_legend_loc" value="on data"/>
-            <param name="umap_frame_on" checked="true" value="True"/>
-            <output name="rna_atac_assigned_celltype_labels" file="rna_atac_assigned_celltype_labels.h5mu"/>
-            <output name="celltype_umap_plot" file="celltype_umap_plot.png"/>
+            <param name="umap_frame_on" value="True"/>
+            <output name="rna_atac_assigned_celltype_labels" value="rna_atac_assigned_celltype_labels.h5mu"/>
+            <output name="celltype_umap_plot" value="celltype_umap_plot.png"/>
         </test>
     </tests>
     <help><![CDATA[

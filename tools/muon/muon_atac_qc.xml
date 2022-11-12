@@ -36,6 +36,8 @@ atac.write("atac_with_quality_control.h5ad")
                     <option value="nucleosomal_signal">Compute the ratio of nucleosomal cut fragments to nucleosome-free fragments per cell, using 'atac.tl.nucleosomal_signal'</option>
                     <option value="tss_enrichment">Calculate TSS enrichment according to ENCODE guidelines, using 'atac.tl.tss_enrichment'</option>
                 </param>
+            <when value="nucleosomal_signal"></when>
+            <when value="tss_enrichment"></when>
         </conditional>
     </inputs>
     <outputs>
@@ -48,8 +50,10 @@ atac.write("atac_with_quality_control.h5ad")
         </test>
     </tests>
     <help><![CDATA[
-
-
+    **What it does**
+    This tool performs ATAC-specific quality control on ATAC data. There are two options to do this:
+    1) Nuclesomal Signal using `muon.atac.tl.nucleosomal_signal`: Compute the ratio of nucleosomal cut fragments to nucleosomal-free fragments per cell
+    2) TSS Enrichment using `muon.atac.tl.tss_enrichment`: Calculate TSS enrichment to ENCODE guidelines.
     ]]></help>
     <citations>
         <citation type="bibtex">

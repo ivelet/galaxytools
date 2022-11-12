@@ -22,7 +22,7 @@ mdata.write("10k_pbmc_mudata.h5mu")
         <param name="atac_peak_annotations" type="data" format="tsv" label="ATAC peak annotations" help="(.tsv)"/>
     </inputs>
     <outputs>
-        <data name="10k_pbmc_mudata" format="h5mu" label="10k PBMC Mudata" from_work_dir="10k_pbmc_mudata.h5mu"/>
+        <data name="pbmc_mudata" format="h5mu" label="10k PBMC Mudata" from_work_dir="10k_pbmc_mudata.h5mu"/>
     </outputs>
     <tests>
         <test>
@@ -30,15 +30,16 @@ mdata.write("10k_pbmc_mudata.h5mu")
             <param name="atac_per_fragment" value="atac_per_fragment.tsv.gz"/>
             <param name="atac_per_fragment_info_index" value="atac_per_fragment_info_index.tsv.gz.tbi"/>
             <param name="atac_peak_annotations" value="atac_peak_annotations.tsv)"/>
-            <output name="10k_pbmc_mudata" file="10k_pbmc_mudata.h5mu"/>
+            <output name="pbmc_mudata" file="10k_pbmc_mudata.h5mu"/>
         </test>
     </tests>
     <help><![CDATA[
 
         This tool imports and reads 10k PBMC data with multiple modalities using muon as a MuData object (.h5mu).
 
-
     ]]></help>
     <citations>
+        <citation type="bibtex">
+}</citation>
     </citations>
 </tool>

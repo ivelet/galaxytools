@@ -43,7 +43,10 @@ mdata.write("rna_atac_integration.h5mu")
         <param name="first_mod_name" type="text" label="Name of the first modality" value="rna"/>
         <param name="second_mod_name" type="text" label="Name of the second modality" value="atac"/>
         <conditional name="load_mofax_model">
-            <param argument="load_mofax_model" type="boolean" label="Load a trained mofax model?"  truevalue="True" falsevalue="False" checked="false" help="Set yes if you would like to load a trained mofax model as a hdf5 file, no to train one from scratch"/>
+            <param argument="load_mofax_model" type="select" label="Load a trained mofax model?" value="False" help="Set yes if you would like to load a trained mofax model as a hdf5 file, no to train one from scratch">
+                    <option value="True">Yes</option>
+                    <option value="False">No</option>
+            </param>
             <when value="True">
                 <param name="mofax_model" type="data" format="hdf5" label="Trained mofax model to use for MOFA"/>
             </when>
