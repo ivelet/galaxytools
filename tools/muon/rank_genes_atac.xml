@@ -13,7 +13,7 @@ from muon import atac as ac
 import pandas as pd
 atac_data = sc.read_h5ad("$atac_input")
 
-result = atac.uns['rank_genes_groups']
+result = atac_data.uns['rank_genes_groups']
 groups = result['names'].dtype.names
 pd.set_option("max_columns", 50)
 genes_list = pd.DataFrame(
@@ -33,7 +33,7 @@ genes_list.to_csv('marker_genes_and_celltypes.csv')
     </outputs>
     <tests>
         <test>
-            <param name="atac_input" value="atac_input.h5ad"/>
+            <param name="atac_input" value="atac_data.h5ad"/>
             <output name="atac_with_marker_genes_and_celltypes" file="atac_with_marker_genes_and_celltypes.h5ad"/>
             <output name="marker_genes_and_celltypes" file="marker_genes_and_celltypes.csv"/>
         </test>

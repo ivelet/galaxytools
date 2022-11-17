@@ -20,7 +20,7 @@ atac.write("atac_scaled.h5ad")
     </outputs>
     <tests>
         <test>
-            <param name="atac_input" value="atac_input.h5ad"/>
+            <param name="atac_input" value="atac_data.h5ad"/>
             <output name="atac_scaled" file="atac_scaled.h5ad"/>
         </test>
     </tests>

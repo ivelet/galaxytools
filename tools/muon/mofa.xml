@@ -69,11 +69,10 @@ mdata.write("rna_atac_integration.h5mu")
     <tests>
         <test>
             <!--Test to train a MOFA model from scratch-->
-            <param name="rna_atac_input" value="rna_atac.h5mu"/>
+            <param name="rna_atac_input" value="rna_atac_input.h5mu"/>
             <param name="first_mod_name" value="rna"/>
             <param name="second_mod_name" value="atac"/>
             <param name="load_mofax_model" value="False"/>
-            <param name="mofax_model" value="mofa_model.hdf5"/>
             <param name="mofa_n_factors" value="10"/>
             <param name="celltype_colors" value="celltype_colors"/>
             <param name="first_mod_annotation_name" value="celltype"/>
@@ -86,10 +85,11 @@ mdata.write("rna_atac_integration.h5mu")
         </test>
         <test>
             <!--Test to use an existing MOFA model-->
-            <param name="rna_atac_input" value="rna_atac.h5mu"/>
+            <param name="rna_atac_input" value="rna_atac_input.h5mu"/>
             <param name="first_mod_name" value="rna"/>
             <param name="second_mod_name" value="atac"/>
             <param name="load_mofax_model" value="True"/>
+            <param name="mofax_model" value="mofa_model.hdf5"/>
             <param name="mofa_n_factors" value="10"/>
             <param name="celltype_colors" value="celltype_colors"/>
             <param name="first_mod_annotation_name" value="celltype"/>

@@ -45,7 +45,7 @@ atac.write("atac_with_quality_control.h5ad")
     </outputs>
     <tests>
         <test>
-            <param name="atac_input" value="atac_input.h5ad"/>
+            <param name="atac_input" value="atac_data.h5ad"/>
             <output name="atac_with_quality_control" file="atac_with_quality_control.h5ad"/>
         </test>
     </tests>

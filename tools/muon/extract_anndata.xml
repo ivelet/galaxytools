@@ -28,7 +28,7 @@ second_mod_out.write("second_mod.h5ad")
     </outputs>
     <tests>
         <test>
-            <param name="mudata_input" value="rna_atac.h5mu"/>
+            <param name="mudata_input" value="rna_atac_input.h5mu"/>
             <param name="first_modality" value="rna"/>
             <param name="second_modality" value="atac"/>
             <output name="first_mod_out" value="rna_data.h5ad"/>

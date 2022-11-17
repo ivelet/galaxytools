@@ -2,6 +2,9 @@
     <requirements>
         <requirement type="package" version="1.7.0">scanpy</requirement>
         <requirement type="package" version="0.1.2">muon</requirement>
+        <requirement type="package" version="3.5.3">matplotlib</requirement>
+        <requirement type="package" version="1.23">numpy</requirement>
+        <requirement type="package" version="0.5">umap</requirement>
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
         python '$script_file'

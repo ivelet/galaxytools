@@ -13,7 +13,7 @@ obs_var = '$method.filter_obs_var'
 mu.pp.filter_obs(
     mdata,
     var=obs_var,
-    func=None
+    func=lambda x: x == x
 )
 
 #else if $method.method == 'filter_var'
@@ -21,7 +21,7 @@ var_var = '$method.filter_var_var'
 mu.pp.filter_var(
     mdata,
     var=var_var,
-    func=None
+    func=lambda x: x == x
 )
 
 #else if $method.method == 'intersect_obs'
@@ -30,8 +30,8 @@ mu.pp.intersect_obs(
 )
 
 #else if $method.method == 'l2norm'
-l2norm_mod = ([x.strip() for x in str($method.l2norm_mod).split(',')])
-l2norm_rep = ([x.strip() for x in str($method.l2norm_rep).split(',')])
+l2norm_mod = '$method.l2norm_mod'
+l2norm_rep = '$method.l2norm_rep'
 l2norm_n_pcs = $method.l2norm_n_pcs
 mu.pp.l2norm(
     mdata,
@@ -43,7 +43,6 @@ mu.pp.l2norm(
 #else if $method.method == 'neighbors'
 n_neighbors=$method.neighbors_n_neighbors,
 n_multineighbors=$method.neighbors_n_multineighbors,
-neighbor_keys='$method.neighbors_neighbor_keys',
 metric='$method.neighbors_metric',
 key_added='$method.neighbors_key_added',
 weight_key='$method.neighbors_weight_key',
@@ -53,7 +52,6 @@ mu.pp.neighbors(
     mdata,
     n_neighbors=n_neighbors,
     n_multineighbors=n_multineighbors,
-    neighbor_keys=neighbor_keys,
     metric=metric,
     key_added=key_added,
     weight_key=weight_key,
@@ -82,7 +80,7 @@ mdata.write("mudata_with_preprocessing.h5mu")
             <when value="filter_var">
                 <param argument="filter_var_var" type="text" label="Column name in .var or row name in .X to be used for filtering" help="(var)" value="n_cells_by_count"/>
                 <param argument="filter_var_func" type="text" label="Function to apply to the variable used for filtering."
-                       help="(func), written as a lambda function"/>
+                       help="(func), written in the form of a lambda function e.g. 'lambda x: x == MIR1302-2HG'"/>
             </when>
             <when value="intersect_obs"/>
             <when value="l2norm">
@@ -96,7 +94,7 @@ mdata.write("mudata_with_preprocessing.h5mu")
                 candidates for multimodal nearest neighbors. Only points in the union of per-modality nearest neighbors are candidates for
                 multimodal nearest neighbors. This will use the same metric that was used for the nearest neighbor search in the respective modality"
                        value="200" help="(n_multineighbors)"/>
-                <param argument="neighbors_neighbor_keys" type="text" value="neighbors" label="Keys in .uns where per-modality neighborhood information is stored" help="(neighbor_keys)"/>
+<!--                <param argument="neighbors_neighbor_keys" type="text" value="neighbors" label="Keys in .uns where per-modality neighborhood information is stored" help="(neighbor_keys)"/>-->
                 <param argument="neighbors_metric" type="text" value="euclidean" label="Distance measure to use. This will only be used in the final step to search for nearest neighbors in the set of candidates" help="(metric)"/>
                 <param argument="neighbors_key_added" type="text" label=" If specified, the neighbors data is added to .uns[key_added], distances are stored in .obsp[key_added + '_distances'] and connectivities in .obsp[key_added + '_connectivities']" help="(key_added)"/>
                 <param argument="neighbors_weight_key" type="text" value="mod_weight" label="Weight key to add to each modality’s .obs or to mdata.obs" help="(weight_key)"/>
@@ -111,27 +109,28 @@ mdata.write("mudata_with_preprocessing.h5mu")
     <tests>
         <test>
             <!--Test for filter_obs-->
-            <param name="mudata_input" value="mudata_input.h5mu"/>
+            <param name="mudata_input" value="rna_atac_input_tiny.h5mu"/>
             <param name="method" value="filter_obs"/>
             <param name="filter_obs_var" value="total_counts"/>
             <output name="mudata_with_preprocessing" file="mudata_with_preprocessing.h5mu"/>
         </test>
         <test>
             <!--Test for filter_var-->
-            <param name="mudata_input" value="mudata_input.h5mu"/>
+            <param name="mudata_input" value="rna_atac_input.h5mu"/>
             <param name="method" value="filter_var"/>
-            <param name="filter_var_var" value="n_cells_by_count"/>
+            <param name="filter_var_var" value="genome"/>
+            <param name="filter_var_func" value="lambda x: x == 'MIR1302-2HG'"/>
             <output name="mudata_with_preprocessing" file="mudata_with_preprocessing.h5mu"/>
         </test>
         <test>
             <!--Test for intersect_obs-->
-            <param name="mudata_input" value="mudata_input.h5mu"/>
+            <param name="mudata_input" value="rna_atac_input.h5mu"/>
             <param name="method" value="intersect_obs"/>
             <output name="mudata_with_preprocessing" file="mudata_with_preprocessing.h5mu"/>
         </test>
         <test>
             <!--Test for l2norm-->
-            <param name="mudata_input" value="mudata_input.h5mu"/>
+            <param name="mudata_input" value="rna_atac_input_tiny.h5mu"/>
             <param name="method" value="l2norm"/>
             <param name="l2norm_mod" value="rna"/>
             <param name="l2norm_rep" value="X_pca"/>
@@ -140,11 +139,10 @@ mdata.write("mudata_with_preprocessing.h5mu")
         </test>
         <test>
             <!--Test for neighbors-->
-            <param name="mudata_input" value="mudata_input.h5mu"/>
+            <param name="mudata_input" value="rna_atac_input_tiny.h5mu"/>
             <param name="method" value="neighbors"/>
-            <param name="neighbors_n_neighbors" value="20"/>
+            <param name="neighbors_n_neighbors" value="0"/>
             <param name="neighbors_n_multineighbors" value="200"/>
-            <param name="neighbors_neighbor_keys" value="neighbors"/>
             <param name="neighbors_metric" value="euclidean"/>
             <param name="neighbors_key_added" value="neighbors"/>
             <param name="neighbors_weight_key" value="mod_weight"/>

@@ -9,8 +9,8 @@
     <configfiles>
         <configfile name="script_file"><![CDATA[import scanpy as sc
 import muon as mu
+from muon import atac as ac
 atac_data = sc.read_h5ad("$atac_input")
-
 #set $marker_genes = ([x.strip() for x in str($marker_genes).split(',')])
 marker_genes = $marker_genes
 ac.pl.dotplot(atac_data, marker_genes, '$groupby', save="atac_marker_genes.png")
@@ -26,7 +26,7 @@ ac.pl.dotplot(atac_data, marker_genes, '$groupby', save="atac_marker_genes.png")
     </outputs>
     <tests>
         <test>
-            <param name="atac_input" value="atac_data.h5mu"/>
+            <param name="atac_input" value="atac_data.h5ad"/>
             <param name="groupby" value="celltype"/>
             <param name="marker_genes" value="IL7R, TRAC, GATA3, SLC4A10, CD8A, CD8B, CD248, CCL5, GNLY, NKG7, CD79A, MS4A1, IGHD, IGHM, TNFRSF13C, IL4R, KLF4, LYZ, S100A8, ITGAM, CD14, FCGR3A, MS4A7, CST3, CLEC10A, IRF8, TCF4"/>
             <output name="atac_marker_genes" value="figures/atac_marker_genes.png"/>
