@@ -1,0 +1,94 @@
+<tool id="preprocess_scirpy" name="Preprocess with Scirpy" version="0.1.0">
+    <requirements>
+        <requirement type="package" version="1.7.0">scanpy</requirement>
+        <requirement type="package" version="0.11.2">scirpy</requirement>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+        python '$script_file'
+]]></command>
+    <configfiles>
+        <configfile name="script_file"><![CDATA[import scanpy as sc
+import scirpy as ir
+#if $method.method == 'pp_merge_with_ir'
+adata_ir = sc.read_h5ad('$method.adata_ir')
+adata_tr = sc.read_h5ad('$method.adata_tr')
+ir.pp.merge_with_ir(adata_tr, adata_ir)
+adata_tr.write('pp_out.h5ad')
+
+#else if $method.method == 'pp_merge_airr_chains'
+merge_airr_chains_adata = sc.read_h5ad('$method.adata_1')
+merge_airr_chains_adata2 = sc.read_h5ad('$method.adata_2')
+ir.pp.merge_airr_chains(merge_airr_chains_adata, merge_airr_chains_adata2)
+merge_airr_chains_adata.write('pp_out.h5ad')
+#end if
+]]></configfile>
+    </configfiles>
+    <inputs>
+        <conditional name="method">
+            <param argument="method" type="select" label="Method to use for preprocessing">
+                <option value="pp_merge_with_ir">Merge adaptive immune receptor (IR) data with transcriptomics data into a single AnnData object</option>
+                <option value="pp_merge_airr_chains">Merge two AnnData objects with IR information</option>
+                <option value="pp_ir_dist">Computes a sequence-distance metric between all unique VJ CDR3 sequences and between all unique VDJ CDR3 sequences.</option>
+            </param>
+            <when value="pp_merge_with_ir">
+                <param name="adata_tr" type="data" format="h5ad" label="AnnData with the transcriptomics data (will be modified inplace)"/>
+                <param name="adata_ir" type="data" format="h5ad" label="AnnData with the adaptive immune receptor (IR) data"/>
+            </when>
+            <when value="pp_merge_airr_chains">
+                <param name="adata_1" type="data" format="h5ad" label="First AnnData object containing IR information"/>
+                <param name="adata_2" type="data" format="h5ad" label="Second AnnData object containing IR information"/>
+            </when>
+            <when value="pp_ir_dist">
+            </when>
+        </conditional>
+    </inputs>
+    <outputs>
+        <data name="pp_out" format="h5ad" label="${tool.name} (${method.method}) on ${on_string}" from_work_dir="pp_out.h5ad"/>
+    </outputs>
+    <tests>
+        <test>
+            <!--Test for pp_merge_with_ir_out-->
+            <conditional name="method">
+                <param name="method" value="pp_merge_with_ir"/>
+                <param name="adata_tr" value="adata_tr_small.h5ad"/>
+                <param name="adata_ir" value="adata_ir_small.h5ad"/>
+            </conditional>
+            <output name="pp_out" file="pp_merge_with_ir_out.h5ad"/>
+        </test>
+        <test>
+            <!--Test for pp_merge_airr_chains-->
+            <conditional name="method">
+                <param name="method" value="pp_merge_airr_chains"/>
+                <param name="adata_1" value="adata_tr_small.h5ad"/>
+                <param name="adata_2" value="merge_airr_chains_adata2.h5ad"/>
+            </conditional>
+            <output name="pp_out" file="merge_airr_chains.h5ad"/>
+        </test>
+    </tests>
+    <help><![CDATA[
+Merge adaptive immune receptor (IR) data with transcriptomics data into a single AnnData object. (`pp.merge_with_ir`)
+=====================================================================================================================
+Reading in IR data results in an AnnData object with IR information stored in obs.
+Use this function to merge it with another AnnData containing transcriptomics data.
+More details on the `scirpy documentation
+<https://scverse.org/scirpy/latest/generated/scirpy.pp.merge_with_ir.html>`__
+
+Merge two AnnData objects with IR information. (`pp.merge_airr_chains`)
+=======================================================================
+Decomposes the IR information back into scirpy.io.AirrCell objects and
+merges them on a chain-level.
+More details on the `scirpy documentation
+<https://scverse.org/scirpy/latest/generated/scirpy.pp.merge_airr_chains.html>`__
+
+Compute sequence-distance metric between all unique VJ CDR3 sequences (`pp.ir_dist`)
+====================================================================================
+This is a required proprocessing step for clonotype definition and clonotype networks
+and for querying reference databases. Calculates the full pairwise distance matrix.
+More details on the `scirpy documentation
+<https://scverse.org/scirpy/latest/generated/scirpy.pp.ir_dist.html>`__
+    ]]></help>
+    <citations>
+        <citation type="bibtex">
+}</citation>
+    </citations>
+</tool>
