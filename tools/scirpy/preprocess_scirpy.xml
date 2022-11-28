@@ -20,6 +20,25 @@ merge_airr_chains_adata = sc.read_h5ad('$method.adata_1')
 merge_airr_chains_adata2 = sc.read_h5ad('$method.adata_2')
 ir.pp.merge_airr_chains(merge_airr_chains_adata, merge_airr_chains_adata2)
 merge_airr_chains_adata.write('pp_out.h5ad')
+
+#else if $method.method == 'pp_ir_dist'
+ir_dist_adata = sc.read_h5ad('$method.ir_dist_adata')
+#if $method.reference.reference == "True"
+ir_dist_reference = sc.read_h5ad('$method.reference.ir_dist_reference')
+#end if
+ir.pp.ir_dist(
+    ir_dist_adata,
+    #if $method.reference.reference == "True"
+    reference=ir_dist_reference,
+    #else
+    reference=None,
+    #end if
+    metric='$method.metric',
+    cutoff=$method.cutoff,
+    sequence='$method.sequence',
+    key_added='$method.key_added'
+)
+ir_dist_adata.write('pp_out.h5ad')
 #end if
 ]]></configfile>
     </configfiles>
@@ -39,6 +58,35 @@ merge_airr_chains_adata.write('pp_out.h5ad')
                 <param name="adata_2" type="data" format="h5ad" label="Second AnnData object containing IR information"/>
             </when>
             <when value="pp_ir_dist">
+                <param name="ir_dist_adata" type="data" format="h5ad" label="Annotated data matrix"/>
+                <conditional name="reference">
+                    <param argument="reference" type="select" label="Use a reference Anndata object?" help="If
+                    specified, will compute distances between the sequences in first Anndata file and this one" value="False">
+                        <option value="True">Yes</option>
+                        <option value="False">No</option>
+                    </param>
+                    <when value="True">
+                        <param name="ir_dist_reference" type="data" format="h5ad" label="Reference Anndata object"
+                               help="(reference in scirpy.pp.ir_dist())"/>
+                    </when>
+                    <when value="False"/>
+                </conditional>
+                <param name="metric" type="select" label="Distance metric" help="(metric in scirpy.pp.ir_dist())"
+                       value="identity">
+                    <option value="alignment">alignment</option>
+                    <option value="identity">identity</option>
+                    <option value="levenshtein">levenshtein</option>
+                    <option value="hamming">hamming</option>
+                </param>
+                <param name="cutoff" type="integer" label="Distances cutoff" help="All distances above the cutoff value
+                will be replaced by 0 and eliminated from the matrix, (cutoff in scirpy.pp.ir_dist())" value="0"/>
+                <param name="sequence" type="select" label="Sequence type to compute distance for"
+                       help="(sequence in scirpy.pp.ir_dist())" value="nt">
+                    <option value="nt">Nucleotide</option>
+                    <option value="aa">Amino Acid</option>
+                </param>
+                <param name="key_added" type="text" label="Key under which results will be stored (in adata.uns)"
+                       help="(key_added in scirpy.pp.ir_dist())" value="custom"/>
             </when>
         </conditional>
     </inputs>
@@ -63,6 +111,22 @@ merge_airr_chains_adata.write('pp_out.h5ad')
                 <param name="adata_2" value="merge_airr_chains_adata2.h5ad"/>
             </conditional>
             <output name="pp_out" file="merge_airr_chains.h5ad"/>
+        </test>
+        <test>
+            <!--Test for pp_ir_dist-->
+            <conditional name="method">
+                <param name="method" value="pp_ir_dist"/>
+                <param name="ir_dist_adata" value="ir_dist_adata.h5ad"/>
+                <conditional name="reference">
+                    <param name="reference" value="True"/>
+                    <param name="ir_dist_reference" value="merge_airr_chains_adata2.h5ad"/>
+                </conditional>
+                <param name="metric" value="identity"/>
+                <param name="cutoff" value="0"/>
+                <param name="sequence" value="nt"/>
+                <param name="key_added" value="ir_dist_identity"/>
+            </conditional>
+            <output name="pp_out" file="ir_dist_out.h5ad"/>
         </test>
     </tests>
     <help><![CDATA[
