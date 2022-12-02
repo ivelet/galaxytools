@@ -1,0 +1,121 @@
+<tool id="tools_scirpy" name="Define, Analyze, Process and Query Clonotypes and Clonal Diversity with Scirpy" version="0.1.0">
+    <requirements>
+        <requirement type="package" version="1.7.0">scanpy</requirement>
+        <requirement type="package" version="0.11.2">scirpy</requirement>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+        python '$script_file'
+]]></command>
+    <configfiles>
+        <configfile name="script_file"><![CDATA[import scanpy as sc
+import scirpy as ir
+#if $method.method == 'tl_group_abundance'
+adata = sc.read_h5ad('$method.tl_group_abundance_adata')
+
+summary = ir.tl.group_abundance(
+    adata,
+    groupby='$method.tl_group_abundance_groupby',
+    target_col='$method.tl_group_abundance_target_col',
+    fraction=None,
+    sort='$method.tl_group_abundance_sort'
+)
+adata.write('tl_adata_out.h5ad')
+
+#end if
+]]></configfile>
+    </configfiles>
+    <inputs>
+        <conditional name="method">
+            <param argument="method" type="select" label="Method to use from 'scirpy.tl'">
+                <option value="tl_group_abundance">Generic: Summarize the number/fraction of cells of a certain category by a certain group, using 'tl.group_abundance'</option>
+                <option value="tl_chain_qc">Quality control: Perform quality control based on the receptor-chain pairing configuration, using 'tl.chain_qc'</option>
+                <option value="tl_define_clonotypes">Define and visualize clonotypes: Define clonotypes based on CDR3 nucleic acid sequence identity, using 'tl.define_clonotypes'</option>
+                <option value="tl_define_clonotype_clusters">Define and visualize clonotypes: Define clonotype clusters, using 'tl.clonotype_clusters'</option>
+                <option value="tl_clonotype_convergence">Define and visualize clonotypes: Find evidence for Convergent evolution of clonotypes, using 'tl.clonotype_network'</option>
+                <option value="tl_clonotype_network">Define and visualize clonotypes: Compute the layout of the clonotype network, using 'tl.clonotype_network'</option>
+                <option value="tl_clonotype_network_igraph">Define and visualize clonotypes: Get an igraph object representing the clonotype network, using 'tl.clonotype_network'</option>
+                <option value="tl_clonal_expansion">Analyze clonal diversity: Record which clonotypes are expanded, using 'tl.clonal_expansion'</option>
+                <option value="tl_summarize_clonal_expansion">Analyze clonal diversity: Summarize clonal expansion by a grouping variable, using 'tl.summarize_clonal_expansion'</option>
+                <option value="tl_alpha_diversity">Analyze clonal diversity: Compute the alpha diversity of clonotypes within a group, using 'tl.alpha_diversity'</option>
+                <option value="tl_repertoire_overlap">Analyze clonal diversity: Compute distance between cell groups based on clonotype overlap, using 'tl.repertoire_overlap'</option>
+                <option value="tl_clonotype_modularity">Analyze clonal diversity: Identify clonotypes or clonotype clusters consisting of cells that are more transcriptionally related than expected by chance by computing the Clonotype modularity, using 'tl.clonotype_modularity'</option>
+                <option value="tl_ir_query">Query reference database: Query a referece database for matching immune cell receptors, using 'tl.ir_query'</option>
+                <option value="tl_ir_query_annotate">Query reference database: Annotate cells based on the result of ir_query(), using 'ir_query_annotate'</option>
+                <option value="tl_ir_query_annotate_df">Query reference database: Returns the inner join of adata.obs with matching entries from reference.obs based on the result of ir_query(), using 'tl.ir_query_annotate_df'</option>
+                <option value="tl_spectratype">V(D)J gene usage: Summarize the distribution of CDR3 region lengths, using 'tl.spectratype'</option>
+            </param>
+            <when value="tl_group_abundance">
+                <param name="tl_group_abundance_adata" type="data" format="h5ad" label="Annotated data matrix file"/>
+                <param name="tl_group_abundance_groupby" type="text" value="sample" label="Group by this column from obs" help="(groupby)"/>
+                <param name="tl_group_abundance_target_col" type="text" value="has_ir" help="(target_col)" label="Categorical variable from .obs according to which the abundance/fractions will be computed."/>
+<!--                <param name="tl_group_abundance_fraction" type="select" help="(fraction)" label="Compute fractions of abundances relative to the groupby column, rather than report abosolute numbers?">-->
+<!--                    <option value="True">Yes</option>-->
+<!--                    <option value="False">No</option>-->
+<!--                    <option value="None" selected="true">None (NA for dataset)</option>-->
+<!--                </param>-->
+                <param name="tl_group_abundance_sort" type="select" help="(sort)" label="Arrange columns by:">
+                    <option value="count" selected="true">Category count</option>
+                    <option value="alphabetical">Alphabnetical (list of column names)</option>
+                </param>
+            </when>
+            <when value="tl_chain_qc"></when>
+            <when value="tl_define_clonotypes"></when>
+            <when value="tl_define_clonotype_clusters"></when>
+            <when value="tl_clonotype_convergence"></when>
+            <when value="tl_clonotype_network"></when>
+            <when value="tl_clonotype_network_igraph"></when>
+            <when value="tl_clonal_expansion"></when>
+            <when value="tl_summarize_clonal_expansion"></when>
+            <when value="tl_alpha_diversity"></when>
+            <when value="tl_repertoire_overlap"></when>
+            <when value="tl_clonotype_modularity"></when>
+            <when value="tl_ir_query"></when>
+            <when value="tl_ir_query_annotate"></when>
+            <when value="tl_ir_query_annotate_df"></when>
+            <when value="tl_spectratype"></when>
+        </conditional>
+    </inputs>
+    <outputs>
+        <data name="tl_adata_out" format="h5ad" label="${tool.name} (${method.method}) on ${on_string}" from_work_dir="tl_adata_out.h5ad"/>
+    </outputs>
+    <tests>
+        <test>
+            <!--tl.group_abundance test-->
+            <conditional name="method">
+                <param name="method" value="tl_group_abundance"/>
+                <param name="tl_group_abundance_adata" value="tl_group_abundance_adata.h5ad"/>
+                <param name="tl_group_abundance_groupby" value="sample"/>
+                <param name="tl_group_abundance_target_col" value="has_ir"/>
+<!--                <param name="tl_group_abundance_fraction" value="None"/>-->
+                <param name="tl_group_abundance_sort" value="count"/>
+            </conditional>
+            <output name="tl_adata_out" file="tl_group_abundance_out.h5ad"/>
+        </test>
+    </tests>
+    <help><![CDATA[
+Merge adaptive immune receptor (IR) data with transcriptomics data into a single AnnData object. (`pp.merge_with_ir`)
+=====================================================================================================================
+Reading in IR data results in an AnnData object with IR information stored in obs.
+Use this function to merge it with another AnnData containing transcriptomics data.
+More details on the `scirpy documentation
+<https://scverse.org/scirpy/latest/generated/scirpy.pp.merge_with_ir.html>`__
+
+Merge two AnnData objects with IR information. (`pp.merge_airr_chains`)
+=======================================================================
+Decomposes the IR information back into scirpy.io.AirrCell objects and
+merges them on a chain-level.
+More details on the `scirpy documentation
+<https://scverse.org/scirpy/latest/generated/scirpy.pp.merge_airr_chains.html>`__
+
+Compute sequence-distance metric between all unique VJ CDR3 sequences (`pp.ir_dist`)
+====================================================================================
+This is a required proprocessing step for clonotype definition and clonotype networks
+and for querying reference databases. Calculates the full pairwise distance matrix.
+More details on the `scirpy documentation
+<https://scverse.org/scirpy/latest/generated/scirpy.pp.ir_dist.html>`__
+    ]]></help>
+    <citations>
+        <citation type="bibtex">
+}</citation>
+    </citations>
+</tool>
