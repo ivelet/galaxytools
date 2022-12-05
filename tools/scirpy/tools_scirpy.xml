@@ -21,6 +21,76 @@ summary = ir.tl.group_abundance(
 )
 adata.write('tl_adata_out.h5ad')
 
+#else if $method.method == 'tl_chain_qc'
+adata = sc.read_h5ad('$method.tl_chain_qc_adata')
+receptor_type = '$method.tl_chain_qc_receptor_type'
+receptor_subtype = '$method.tl_chain_qc_receptor_subtype'
+chain_pairing = '$method.tl_chain_qc_chain_pairing'
+key_added = (receptor_type, receptor_subtype, chain_pairing)
+
+ir.tl.chain_qc(
+    adata,
+    key_added=key_added
+)
+adata.write('tl_adata_out.h5ad')
+
+#else if $method.method == 'tl_define_clonotypes'
+adata = sc.read_h5ad('$method.tl_define_clonotypes_adata')
+ir.tl.define_clonotypes(
+    adata,
+    receptor_arms='$method.tl_define_clonotypes_receptor_arms',
+    dual_ir='$method.tl_define_clonotypes_dual_ir',
+    within_group='$method.tl_define_clonotypes_within_group',
+    key_added='$method.tl_define_clonotypes_key_added'
+)
+adata.write('tl_adata_out.h5ad')
+
+#else if $method.method == 'tl_define_clonotype_clusters'
+adata = sc.read_h5ad('$method.tl_define_clonotype_clusters_adata')
+
+ir.tl.define_clonotype_clusters(
+    adata,
+    sequence='$method.tl_define_clonotype_clusters_sequence',
+    metric='$method.tl_define_clonotype_clusters_metric',
+    receptor_arms='$method.tl_define_clonotype_clusters_receptor_arms',
+    dual_ir='$method.tl_define_clonotype_clusters_dual_ir',
+    same_v_gene=$method.tl_define_clonotype_clusters_same_v_gene,
+    within_group='$method.tl_define_clonotype_clusters_within_group',
+    key_added='$method.tl_define_clonotype_clusters_key_added',
+    partitions='$method.tl_define_clonotype_clusters_partitions',
+    resolution=$method.tl_define_clonotype_clusters_resolution,
+    n_iterations=$method.tl_define_clonotype_clusters_n_iterations,
+    distance_key='$method.tl_define_clonotype_clusters_distance_key'
+)
+adata.write('tl_adata_out.h5ad')
+
+#else if $method.method == 'tl_clonotype_convergence'
+adata = sc.read_h5ad('$method.tl_clonotype_convergence_adata')
+
+ir.tl.clonotype_convergence(
+    adata,
+    key_coarse='$method.tl_clonotype_convergence_key_coarse',
+    key_fine='$method.tl_clonotype_convergence_key_fine',
+    key_added='$method.tl_clonotype_convergence_key_added'
+)
+adata.write('tl_adata_out.h5ad')
+
+#else if $method.method == 'tl_clonotype_network'
+adata = sc.read_h5ad('$method.tl_clonotype_network_adata')
+
+ir.tl.clonotype_network(
+    adata,
+    sequence='$method.tl_clonotype_network_sequence',
+    metric='$method.tl_clonotype_network_metric',
+    min_cells=$method.tl_clonotype_network_min_cells,
+    min_nodes=$method.tl_clonotype_network_min_nodes,
+    layout='$method.tl_clonotype_network_layout',
+    size_aware='$method.tl_clonotype_network_size_aware',
+    size_power=$method.tl_clonotype_network_size_power,
+    key_added='$method.tl_clonotype_network_key_added'
+)
+adata.write('tl_adata_out.h5ad')
+
 #end if
 ]]></configfile>
     </configfiles>
@@ -55,14 +125,121 @@ adata.write('tl_adata_out.h5ad')
 <!--                </param>-->
                 <param name="tl_group_abundance_sort" type="select" help="(sort)" label="Arrange columns by:">
                     <option value="count" selected="true">Category count</option>
-                    <option value="alphabetical">Alphabnetical (list of column names)</option>
+                    <option value="alphabetical">Alphabetical (list of column names)</option>
                 </param>
             </when>
-            <when value="tl_chain_qc"></when>
-            <when value="tl_define_clonotypes"></when>
-            <when value="tl_define_clonotype_clusters"></when>
-            <when value="tl_clonotype_convergence"></when>
-            <when value="tl_clonotype_network"></when>
+            <when value="tl_chain_qc">
+                <param name="tl_chain_qc_adata" type="data" format="h5ad" label="Annotated data matrix file"/>
+                <param name="tl_chain_qc_receptor_type" type="select" help="(receptor_type)" label="Receptor type to categorize cells into">
+                    <option value="TCR" selected="true">TCR: all cells that contain any combination of TRA/TRB/TRG/TRD chains, but no IGH/IGK/IGL chains</option>
+                    <option value="BCR">BCR: all cells that contain any combination of IGH/IGK/IGL chains, but no TCR chain</option>
+                    <option value="ambiguous">Ambiguous: all cells that contain both BCR and TCR chains</option>
+                    <option value="multichain">Multichain: all cells with more than two VJ or more than two VDJ chains</option>
+                    <option value="no IR">No IR: all cells without any detected immune receptor</option>
+                </param>
+                <param name="tl_chain_qc_receptor_subtype" type="select" help="(receptor_subtype)" label="Receptor subtype to categorize cells into">
+                    <option value="TRA+TRB" selected="true">TRA + TRB: all cells that have only TRA and/or TRB chains</option>
+                    <option value="TRG+TRD">TRG + TRD: all cells that have only TRG and/or TRD chains</option>
+                    <option value="IGH">IGH: all cells that have only IGH chains, but no IGL or IGK</option>
+                    <option value="IGH+IGL">IGH + IGL: all cells that have only IGH and IGL chains</option>
+                    <option value="IGH+IGK">IGH + IGK: all cells that have only IGH and IGK chains</option>
+                    <option value="multichain">Multichain: all cells with more than two VJ or more than two VDJ chains</option>
+                    <option value="ambiguous">Ambiguous: all cells that are none of the above, e.g. TRA+TRD, TRA+IGH or, IGH+IGK as the primary and IGH+IGL as the secondary receptor</option>
+                    <option value="no IR">No IR: all cells without any detected immune receptor</option>
+                </param>
+                <param name="tl_chain_qc_chain_pairing" type="select" help="(chain_pairing)" label="Chain pairing">
+                    <option value="single pair" selected="true">Single pair: all cells that have exactely one matched VJ and VDJ chain</option>
+                    <option value="orphan VJ">Orphan VJ: all cells that have only one VJ chain</option>
+                    <option value="orphan VDJ">Orphan VDJ: all cells that have only one VDJ chain</option>
+                    <option value="extra VJ">Extra VJ: all cells that have a matched pair of VJ and VDJ chains plus an additional VJ-chain</option>
+                    <option value="extra VDJ">Extra VDJ: all cells that have a matched pair of VJ and VDJ chains plus an additional VDJ-chain</option>
+                    <option value="two full chains">Two full chains: all cells that have two matched pairs of VJ and VDJ chains</option>
+                    <option value="ambiguous">Ambiguous: all cells that have unmatched chains, i.e. that have been classified as an ambiguous receptor_subtype</option>
+                    <option value="multichain">Multichain: all cells with more than two VJ or more than two VDJ chains</option>
+                    <option value="no IR">No IR: all chains with not immune receptor chains)</option>
+                </param>
+            </when>
+            <when value="tl_define_clonotypes">
+                <param name="tl_define_clonotypes_adata" type="data" format="h5ad" label="Annotated data matrix file" help="(Requires running tl.chain_qc() on it first)"/>
+                <param name="tl_define_clonotypes_receptor_arms" type="select" label="Receptor arms" help="(receptor_arms)">
+                    <option value="VJ" selected="true">VJ: only consider VJ sequences</option>
+                    <option value="VDJ">VDJ: only consider VDJ sequences</option>
+                    <option value="all">All: both VJ and VDJ need to match</option>
+                    <option value="any">Any: either VJ or VDJ need to match</option>
+                </param>
+                <param name="tl_define_clonotypes_dual_ir" type="select" label="Dual IR" help="(dual_ir)">
+                    <option value="primary_only" selected="true">Primary only: only consider most abundant pair of VJ/VDJ chains</option>
+                    <option value="any">Any: consider both pairs of VJ/VDJ sequences. Distance must be below cutoff for any of the chains.</option>
+                    <option value="all">All: consider both pairs of VJ/VDJ sequences. Distance must be below cutoff for all of the chains.</option>
+                </param>
+                <param name="tl_define_clonotypes_within_group" type="text" value="receptor_type" help="(within_group)" label="Variable to enforce clonotypes to have the same group defined by"/>
+                <param name="tl_define_clonotypes_key_added" type="text" value="clone_id" help="(key_added)" label="Column name under which clonotype clusters and cluster sizes will be stored in adata.obs"/>
+            </when>
+            <when value="tl_define_clonotype_clusters">
+                <param name="tl_define_clonotype_clusters_adata" type="data" format="h5ad" label="Annotated data matrix file" help="(Requires running tl.chain_qc() and ir_dist() with same 'sequence' and 'metric' on it first)"/>
+                <param name="tl_define_clonotype_clusters_sequence" type="select" label="Sequence Type (as used when running pp.ir_dust())" help="(sequence)">
+                    <option value="aa" selected="true">Amino acid</option>
+                    <option value="nt" selected="true">Nucleotide</option>
+                </param>
+                <param name="tl_define_clonotype_clusters_metric" type="select" label="Metric (as used when running pp.ir_dist())" help="(metric)">
+                    <option value="identity">Identity</option>
+                    <option value="alignment">Alignment</option>
+                    <option value="levenshtein">Levenshtein</option>
+                    <option value="hamming">Hamming</option>
+                </param>
+                <param name="tl_define_clonotype_clusters_receptor_arms" type="select" label="Receptor arms" help="(receptor_arms)">
+                    <option value="VJ" selected="true">VJ: only consider VJ sequences</option>
+                    <option value="VDJ">VDJ: only consider VDJ sequences</option>
+                    <option value="all">All: both VJ and VDJ need to match</option>
+                    <option value="any">Any: either VJ or VDJ need to match</option>
+                </param>
+                <param name="tl_define_clonotype_clusters_dual_ir" type="select" label="Dual IR" help="(dual_ir)">
+                    <option value="primary_only" selected="true">Primary only: only consider most abundant pair of VJ/VDJ chains</option>
+                    <option value="any">Any: consider both pairs of VJ/VDJ sequences. Distance must be below cutoff for any of the chains.</option>
+                    <option value="all">All: consider both pairs of VJ/VDJ sequences. Distance must be below cutoff for all of the chains.</option>
+                </param>
+                <param name="tl_define_clonotype_clusters_same_v_gene" type="select" label="Enforce clonotypes to have the same V-genes?" help="(same_v_gene)">
+                    <option value="True">Yes</option>
+                    <option value="False" selected="true">No</option>
+                </param>
+                <param name="tl_define_clonotype_clusters_within_group" type="text" value="receptor_type" help="(within_group)" label="Variable to enforce clonotypes to have the same group under"/>
+                <param name="tl_define_clonotype_clusters_key_added" type="text" value="cc_aa_alignment" help="(key_added)" label="Key under which to add clonotype clusters and sizes in adata.obs"/>
+                <param name="tl_define_clonotype_clusters_partitions" type="select" help="(partitions)" label="Partitions">
+                    <option value="leiden">Leiden</option>
+                    <option value="connected">Connected (find fully-connected sub-graphs)</option>
+                </param>
+                <param name="tl_define_clonotype_clusters_resolution" type="integer" value="1" help="(resolution)" label="Resolution parameter for the leiden algorithm"/>
+                <param name="tl_define_clonotype_clusters_n_iterations" type="integer" value="5" help="(n_iterations)" label="Number of iterations parameter for the leiden algorithm"/>
+                <param name="tl_define_clonotype_clusters_distance_key" type="text" value="ir_dist_alignment" help="(distance_key)" label="Key in adata.uns where the sequence distances are stored"/>
+            </when>
+            <when value="tl_clonotype_convergence">
+                <param name="tl_clonotype_convergence_adata" type="data" format="h5ad" label="Annotated data matrix file"/>
+                <param name="tl_clonotype_convergence_key_coarse" type="text" value="cc_aa_alignment" help="(key_coarse)" label="Key in adata.obs with course clonotype cluster definition"/>
+                <param name="tl_clonotype_convergence_key_fine" type="text" value="clone_id" help="(key_fine)" label="Key in adata.obs with fine clonotype/clonotype cluster definition"/>
+                <param name="tl_clonotype_convergence_key_added" type="text" value="is_convergent" help="(key_added)" label="Key under which results are stored in adata.obs"/>
+            </when>
+            <when value="tl_clonotype_network">
+                <param name="tl_clonotype_network_adata" type="data" format="h5ad" label="Annotated data matrix file" help="Requires runnning tl.define_clonotypes() or tl.define_clonotype_clusters() first"/>
+                <param name="tl_clonotype_network_sequence" type="select" label="Sequence Type (as used when running tl.define_clonotypes())" help="(sequence)">
+                    <option value="aa" selected="true">Amino acid</option>
+                    <option value="nt" selected="true">Nucleotide</option>
+                </param>
+                <param name="tl_clonotype_network_metric" type="select" label="Metric (as used when running tl.define_clonotypes())" help="(metric)">
+                    <option value="identity">Identity</option>
+                    <option value="alignment">Alignment</option>
+                    <option value="levenshtein">Levenshtein</option>
+                    <option value="hamming">Hamming</option>
+                </param>
+                <param name="tl_clonotype_network_min_cells" type="integer" value="1" help="(min_cells)" label="Minimum number of cells to show clonotypes"/>
+                <param name="tl_clonotype_network_min_nodes" type="integer" value="1" help="(min_nodes)" label="Minimum number of nodes to show clonotypes"/>
+                <param name="tl_clonotype_network_layout" type="text" value="components" help="(layout)" label="Layout algorithm to use"/>
+                <param name="tl_clonotype_network_size_aware" type="select" help="(layout)" label="Use node size-aware layouting algorithm? (Only use if layout = 'components)">
+                    <option value="True">Yes</option>
+                    <option value="False" selected="true">No</option>
+                </param>
+                <param name="tl_clonotype_network_size_power" type="float" value="1" help="(size_power)" label="Sizes raised to power of this value e.g. 0.5 to dampen point size"/>
+                <param name="tl_clonotype_network_key_added" type="text" value="clonotype_network" help="(key_added)" label="Key under which the layout coordinates will be stored in adata.obsm and parameters stored in adata.uns"/>
+            </when>
             <when value="tl_clonotype_network_igraph"></when>
             <when value="tl_clonal_expansion"></when>
             <when value="tl_summarize_clonal_expansion"></when>
@@ -80,7 +257,7 @@ adata.write('tl_adata_out.h5ad')
     </outputs>
     <tests>
         <test>
-            <!--tl.group_abundance test-->
+            <!--Test 1: tl.group_abundance test-->
             <conditional name="method">
                 <param name="method" value="tl_group_abundance"/>
                 <param name="tl_group_abundance_adata" value="tl_group_abundance_adata.h5ad"/>
@@ -90,6 +267,75 @@ adata.write('tl_adata_out.h5ad')
                 <param name="tl_group_abundance_sort" value="count"/>
             </conditional>
             <output name="tl_adata_out" file="tl_group_abundance_out.h5ad"/>
+        </test>
+        <test>
+            <!--Test 2: tl.chain_qc test-->
+            <conditional name="method">
+                <param name="method" value="tl_chain_qc"/>
+                <param name="tl_chain_qc_adata" value="tl_chain_qc_adata.h5ad"/>
+                <param name="tl_chain_qc_receptor_type" value="TCR"/>
+                <param name="tl_chain_qc_receptor_subtype" value="TRA+TRB"/>
+                <param name="tl_chain_qc_chain_pairing" value="ambiguous"/>
+            </conditional>
+            <output name="tl_adata_out" file="tl_chain_qc_out.h5ad"/>
+        </test>
+        <test>
+            <!--Test 3: tl.define_clonotypes test-->
+            <conditional name="method">
+                <param name="method" value="tl_define_clonotypes"/>
+                <param name="tl_define_clonotypes_adata" value="tl_define_clonotypes_adata.h5ad"/>
+                <param name="tl_define_clonotypes_receptor_arms" value="any"/>
+                <param name="tl_define_clonotypes_dual_ir" value="any"/>
+                <param name="tl_define_clonotypes_within_group" value="receptor_type"/>
+                <param name="tl_define_clonotypes_key_added" value="clone_id"/>
+            </conditional>
+            <output name="tl_adata_out" file="tl_define_clonotypes_out.h5ad"/>
+        </test>
+         <test>
+            <!--Test 4: tl.define_clonotype_clusters test-->
+            <conditional name="method">
+                <param name="method" value="tl_define_clonotype_clusters"/>
+                <param name="tl_define_clonotype_clusters_adata" value="tl_define_clonotype_clusters_adata.h5ad"/>
+                <param name="tl_define_clonotype_clusters_sequence" value="aa"/>
+                <param name="tl_define_clonotype_clusters_metric" value="alignment"/>
+                <param name="tl_define_clonotype_clusters_receptor_arms" value="all"/>
+                <param name="tl_define_clonotype_clusters_dual_ir" value="any"/>
+                <param name="tl_define_clonotype_clusters_same_v_gene" value="False"/>
+                <param name="tl_define_clonotype_clusters_within_group" value="receptor_type"/>
+                <param name="tl_define_clonotype_clusters_key_added" value="cc_aa_alignment"/>
+                <param name="tl_define_clonotype_clusters_partitions" value="connected"/>
+                <param name="tl_define_clonotype_clusters_resolution" value="1"/>
+                <param name="tl_define_clonotype_clusters_n_iterations" value="5"/>
+                <param name="tl_define_clonotype_clusters_distance_key" value="ir_dist_aa_alignment"/>
+            </conditional>
+            <output name="tl_adata_out" file="tl_define_clonotype_clusters_out.h5ad"/>
+        </test>
+        <test>
+            <!--Test 5: tl.clonotype_convergence test-->
+            <conditional name="method">
+                <param name="method" value="tl_clonotype_convergence"/>
+                <param name="tl_clonotype_convergence_adata" value="tl_clonotype_convergence_adata.h5ad"/>
+                <param name="tl_clonotype_convergence_key_coarse" value="cc_aa_alignment"/>
+                <param name="tl_clonotype_convergence_key_fine" value="clone_id"/>
+                <param name="tl_clonotype_convergence_key_added" value="is_convergent"/>
+            </conditional>
+            <output name="tl_adata_out" file="tl_clonotype_convergence_out.h5ad"/>
+        </test>
+        <test>
+            <!--Test 6: tl.clonotype_network test-->
+            <conditional name="method">
+                <param name="method" value="tl_clonotype_network"/>
+                <param name="tl_clonotype_network_adata" value="tl_clonotype_network_adata.h5ad"/>
+                <param name="tl_clonotype_network_sequence" value="aa"/>
+                <param name="tl_clonotype_network_metric" value="alignment"/>
+                <param name="tl_clonotype_network_min_cells" value="1"/>
+                <param name="tl_clonotype_network_min_nodes" value="1"/>
+                <param name="tl_clonotype_network_layout" value="components"/>
+                <param name="tl_clonotype_network_size_aware" value="True"/>
+                <param name="tl_clonotype_network_size_power" value="1"/>
+                <param name="tl_clonotype_network_key_added" value="clonotype_network"/>
+            </conditional>
+            <output name="tl_adata_out" file="tl_clonotype_network_out.h5ad"/>
         </test>
     </tests>
     <help><![CDATA[
