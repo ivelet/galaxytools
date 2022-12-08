@@ -91,6 +91,110 @@ ir.tl.clonotype_network(
 )
 adata.write('tl_adata_out.h5ad')
 
+#else if $method.method == 'tl_clonotype_network_igraph'
+adata = sc.read_h5ad('$method.tl_clonotype_network_igraph_adata')
+igraph, layout_obj = ir.tl.clonotype_network_igraph(
+    adata,
+    basis='$method.tl_clonotype_network_igraph_basis'
+)
+adata.write('tl_adata_out.h5ad')
+
+#else if $method.method == 'tl_clonal_expansion'
+adata = sc.read_h5ad('$method.tl_clonal_expansion_adata')
+
+ir.tl.clonal_expansion(
+    adata,
+    target_col='$method.tl_clonal_expansion_target_col',
+    clip_at=$method.tl_clonal_expansion_clip_at,
+    key_added='$method.tl_clonal_expansion_key_added'
+)
+adata.write('tl_adata_out.h5ad')
+
+#else if $method.method == 'tl_summarize_clonal_expansion'
+adata = sc.read_h5ad('$method.tl_summarize_clonal_expansion_adata')
+
+ir.tl.summarize_clonal_expansion(
+    adata,
+    groupby='$method.tl_summarize_clonal_expansion_group_by',
+    target_col='$method.tl_summarize_clonal_expansion_target_col',
+    summarize_by='$method.tl_summarize_clonal_expansion_summarize_by',
+    normalize=$method.tl_summarize_clonal_expansion_normalize
+)
+adata.write('tl_adata_out.h5ad')
+
+#else if $method.method == 'tl_alpha_diversity'
+adata = sc.read_h5ad('$method.tl_alpha_diversity_adata')
+
+ir.tl.alpha_diversity(
+    adata,
+    groupby='$method.tl_alpha_diversity_group_by',
+    target_col='$method.tl_alpha_diversity_target_col',
+    metric='$method.tl_alpha_diversity_metric',
+    key_added='$method.tl_alpha_diversity_key_added'
+)
+adata.write('tl_adata_out.h5ad')
+
+#else if $method.method == 'tl_repertoire_overlap'
+adata = sc.read_h5ad('$method.tl_repertoire_overlap_adata')
+
+ir.tl.repertoire_overlap(
+    adata,
+    groupby='$method.tl_repertoire_overlap_group_by',
+    target_col='$method.tl_repertoire_overlap_target_col',
+    overlap_measure='$method.tl_repertoire_overlap_overlap_measure',
+    fraction=$method.tl_repertoire_overlap_fraction,
+    added_key='$method.tl_repertoire_overlap_added_key'
+)
+adata.write('tl_adata_out.h5ad')
+
+#else if $method.method == 'tl_clonotype_modularity'
+adata = sc.read_h5ad('$method.tl_clonotype_modularity_adata')
+
+ir.tl.clonotype_modularity(
+    adata,
+    target_col='$method.tl_clonotype_modularity_target_col',
+    connectivity_key='$method.tl_clonotype_modularity_connectivity_key',
+    permutation_test='$method.tl_clonotype_modularity_permutation_test',
+    n_permutations=$method.tl_clonotype_modularity_n_permutations,
+    key_added='$method.tl_clonotype_modularity_key_added',
+    fdr_correction=$method.tl_clonotype_modularity_fdr_correction,
+    random_state=$method.tl_clonotype_modularity_random_state
+)
+adata.write('tl_adata_out.h5ad')
+
+#else if $method.method == 'tl_ir_query'
+adata = sc.read_h5ad('$method.tl_ir_query_adata')
+query_reference = sc.read_h5ad('$method.tl_ir_query_reference')
+
+ir.tl.ir_query(
+    adata,
+    query_reference,
+    sequence='$method.tl_ir_query_sequence',
+    metric='$method.tl_ir_query_metric',
+    receptor_arms='$method.tl_ir_query_receptor_arms',
+    dual_ir='$method.tl_ir_query_dual_ir',
+    same_v_gene=$method.tl_ir_query_same_v_gene,
+    key_added='$method.tl_ir_query_key_added',
+    distance_key='$method.tl_ir_query_distance_key'
+)
+adata.write('tl_adata_out.h5ad')
+
+#else if $method.method == 'tl_ir_query_annotate'
+adata = sc.read_h5ad('$method.tl_ir_query_annotate_adata')
+query_reference = sc.read_h5ad('$method.tl_ir_query_annotate_reference')
+
+ir.tl.ir_query_annotate(
+    query_adata,
+    query_reference,
+    sequence='$method.tl_ir_query_annotate_sequence',
+    metric='$method.tl_ir_query_annotate_metric',
+    strategy='$method.tl_ir_query_annotate_strategy',
+    include_ref_cols=None,
+    query_key=None,
+    suffix='$method.tl_ir_query_annotate_suffix'
+)
+adata.write('tl_adata_out.h5ad')
+
 #end if
 ]]></configfile>
     </configfiles>
@@ -240,16 +344,124 @@ adata.write('tl_adata_out.h5ad')
                 <param name="tl_clonotype_network_size_power" type="float" value="1" help="(size_power)" label="Sizes raised to power of this value e.g. 0.5 to dampen point size"/>
                 <param name="tl_clonotype_network_key_added" type="text" value="clonotype_network" help="(key_added)" label="Key under which the layout coordinates will be stored in adata.obsm and parameters stored in adata.uns"/>
             </when>
-            <when value="tl_clonotype_network_igraph"></when>
-            <when value="tl_clonal_expansion"></when>
-            <when value="tl_summarize_clonal_expansion"></when>
-            <when value="tl_alpha_diversity"></when>
-            <when value="tl_repertoire_overlap"></when>
-            <when value="tl_clonotype_modularity"></when>
-            <when value="tl_ir_query"></when>
-            <when value="tl_ir_query_annotate"></when>
-            <when value="tl_ir_query_annotate_df"></when>
-            <when value="tl_spectratype"></when>
+            <when value="tl_clonotype_network_igraph">
+                <param name="tl_clonotype_network_igraph_adata" type="data" format="h5ad" label="Annotated data matrix file (result of running tl.clonotype_network())" help="Requires runnning tl.clonotype_network() first"/>
+                <param name="tl_clonotype_network_igraph_basis" type="text" value="clonotype_network" help="(basis)" label="Key in adata.obs where network layout is stored"/>
+            </when>
+            <when value="tl_clonal_expansion">
+                <param name="tl_clonal_expansion_adata" type="data" format="h5ad" label="Annotated data matrix file"/>
+                <param name="tl_clonal_expansion_target_col" type="text" value="clone_id" help="(target_col)" label="Column containing the clonotype annotation"/>
+                <param name="tl_clonal_expansion_clip_at" type="integer" value="3" help="(clip_at)" label="All clonotypes with more than this value will be summarized into a single category"/>
+                <param name="tl_clonal_expansion_key_added" type="text" value="clonal_expansion" help="(key_added)" label="Key under which results will be added to obs"/>
+            </when>
+            <when value="tl_summarize_clonal_expansion">
+                <param name="tl_summarize_clonal_expansion_adata" type="data" format="h5ad" label="Annotated data matrix file"/>
+                <param name="tl_summarize_clonal_expansion_group_by" type="text" value="sample" help="(group_by)" label="Column in adata.obs to summarize by"/>
+                <param name="tl_summarize_clonal_expansion_target_col" type="text" value="clone_id" help="(target_col)" label="Column in obs which holds the clonotype information"/>
+                <param name="tl_summarize_clonal_expansion_summarize_by" type="select" help="(summarize_by)" label="What to summarize by">
+                    <option value="cell" selected="true">Cell: Count cells belonging to a clonotype</option>
+                    <option value="clone_id">Clone ID: Count clonotypes</option>
+                </param>
+                <param name="tl_summarize_clonal_expansion_normalize" type="select" help="(normalize)" label="Normalize cell count groups?">
+                    <option value="True">True: Scale each group to 1</option>
+                    <option value="False">False: Plot absolute cell counts</option>
+                </param>
+            </when>
+            <when value="tl_alpha_diversity">
+                <param name="tl_alpha_diversity_adata" type="data" format="h5ad" label="Annotated data matrix file"/>
+                <param name="tl_alpha_diversity_group_by" type="text" value="sample" help="(group_by)" label="Column in adata.obs by which the grouping will be performed"/>
+                <param name="tl_alpha_diversity_target_col" type="text" value="clone_id" help="(target_col)" label="Column on which to compute the alpha diversity"/>
+                <param name="tl_alpha_diversity_metric" type="select" help="(metric)" label="Metric to use for diversity estimation">
+                    <option value="normalized_shannon_entropy" selected="true">Normalized Shannon entropy</option>
+                    <option value="D50">D50</option>
+                    <option value="DXX">DXX</option>
+                </param>
+                <param name="tl_alpha_diversity_key_added" type="text" value="alpha_diversity_clone_id" help="(key_added)" label="Key under which alpha diversity will be stored"/>
+            </when>
+            <when value="tl_repertoire_overlap">
+                <param name="tl_repertoire_overlap_adata" type="data" format="h5ad" label="Annotated data matrix file"/>
+                <param name="tl_repertoire_overlap_group_by" type="text" value="sample" help="(groupby)" label="Column with group labels"/>
+                <param name="tl_repertoire_overlap_target_col" type="text" value="clone_id" help="(target_col)" label="Category that overlaps among groups"/>
+                <param name="tl_repertoire_overlap_overlap_measure" type="text" value="jaccard" help="(overlap_measure)" label="Any distance measure accepted by 'scipy.spatial.distance'"/>
+                <param name="tl_repertoire_overlap_fraction" type="select" help="(fraction)" label="Compute fractions of abundances relative to groupby?">
+                    <option value="True">Compute fractions of abundances relative to 'groupby'</option>
+                    <option value="False" selected="true">Report absolute numbers (equal weights to all cells)</option>
+                </param>
+                <param name="tl_repertoire_overlap_added_key" type="text" value="repertoire_overlap" help="(added_key)" label="Key under which to add results to in uns"/>
+            </when>
+            <when value="tl_clonotype_modularity">
+                <param name="tl_clonotype_modularity_adata" type="data" format="h5ad" label="Annotated data matrix file"/>
+                <param name="tl_clonotype_modularity_target_col" type="text" value="cc_aa_alignment" help="(target_col)" label="Column in adata.obs containing the clontype annotation"/>
+                <param name="tl_clonotype_modularity_connectivity_key" type="text" value="connectivities" help="(connectivity_key)" label="Key in adata.obsp containing the transcriptomics neighborhood grpah connectivity matrix"/>
+                <param name="tl_clonotype_modularity_permuation_test" type="select" help="(permutation_test)" label="Perform approximate or exact permutation test">
+                    <option value="approx" selected="true">Approximate</option>
+                    <option value="exact">Exact</option>
+                </param>
+                <param name="tl_clonotype_modularity_n_permutations" type="integer" value="1000" help="(n_permutations)" label="Number of permutations used for the permutations test"/>
+                <param name="tl_clonotype_modularity_key_added" type="text" value="clonotype_modularity" help="(key_added)" label="Key under which the result will be stored in adata.obs"/>
+                <param name="tl_clonotype_modularity_fdr_correction" type="select" help="(fdr_correction)" label="Adjust the p-values for multiple testing using false-discovery-rate (FDR) correction?">
+                    <option value="True" selected="true">True</option>
+                    <option value="False">False</option>
+                </param>
+                <param name="tl_clonotype_modularity_random_state" type="integer" value="0" help="(random_state)" label="Random seed for permutation test"/>
+            </when>
+            <when value="tl_ir_query">
+                <param name="tl_ir_query_adata" type="data" format="h5ad" label="Annotated data matrix file"/>
+                <param name="tl_ir_query_reference" type="data" format="h5ad" help="(reference)" label="Another AnnData file, either a second dataset with IR information or a epitope database (must be the same object used for running ir.pp.ir_dist())"/>
+                <param name="tl_ir_query_sequence" type="select" help="(sequence)" label="Sequence (same as that used when running pp.ir_dist())">
+                    <option value="nt">Nucleotide</option>
+                    <option value="aa" selected="true">Amino Acid</option>
+                </param>
+                <param name="tl_ir_query_metric" type="select" help="(metric)" label="Metric (same as used when running pp.ir_dist())">
+                    <option value="alignment">Alignment</option>
+                    <option value="identity" selected="true">Identity</option>
+                    <option value="levenshtein">Levenshtein</option>
+                    <option value="hamming">Hamming</option>
+                </param>
+                <param name="tl_ir_query_receptor_arms" type="select" help="(receptor_arms)" label="Receptor Arms">
+                    <option value="VJ">Only consider VJ sequences</option>
+                    <option value="VDJ">Only consider VDJ sequences</option>
+                    <option value="all">Both VJ and VDJ need to match</option>
+                    <option value="any" selected="true">Either VJ or VDJ need to match</option>
+                </param>
+                <param name="tl_ir_query_dual_ir" type="select" help="(dual_ir)" label="Dual IR">
+                    <option value="primary_only">Only consider most abundant pair of VJ/VDJ chains</option>
+                    <option value="all">Consider both pairs of VJ/VDJ sequences. Distance must be below cutoff for all of the chains</option>
+                    <option value="any" selected="true">Consider both pairs of VJ/VDJ sequences. Distance must be below cutoff for any of the chains</option>
+                </param>
+                <param name="tl_ir_query_same_v_gene" type="select" help="(same_v_gene)" label="Enforce Clonotypes to have the same V-genes (useful as the CDR1 and CDR2 regions are fully encoded in this gene)">
+                    <option value="True">True</option>
+                    <option value="False" selected="true">False</option>
+                </param>
+                <param name="tl_ir_query_key_added" value="ir_query_custom_nt_identity" type="text" help="(key_added)" label="Key under which the resulting distance matrix will be stored in adata.uns"/>
+                <param name="tl_ir_query_distance_key" value="ir_dist_identity" type="text" help="(distance_key)" label="Key in adata.uns where the results of ir_dist() are stored"/>
+            </when>
+            <when value="tl_ir_query_annotate">
+                <param name="tl_ir_query_annotate_adata" type="data" format="h5ad" label="Annotated data matrix file"/>
+                <param name="tl_ir_query_annotate_reference" type="data" format="h5ad" help="(reference)" label="Another AnnData file, either a second dataset with IR information or a epitope database (must be the same object used for running ir.pp.ir_dist())"/>
+                <param name="tl_ir_query_annotate_sequence" type="select" help="(sequence)" label="Sequence (same as that used when running pp.ir_dist())">
+                    <option value="nt">Nucleotide</option>
+                    <option value="aa" selected="true">Amino Acid</option>
+                </param>
+                <param name="tl_ir_query_annotate_metric" type="select" help="(metric)" label="Metric (same as used when running pp.ir_dist())">
+                    <option value="alignment">Alignment</option>
+                    <option value="identity" selected="true">Identity</option>
+                    <option value="levenshtein">Levenshtein</option>
+                    <option value="hamming">Hamming</option>
+                </param>
+                <param name="tl_ir_query_annotate_strategy" type="select" help="(strategy)" label="Strategy to deal with non-unique values">
+                    <option value="json">JSON</option>
+                    <option value="unique-only" selected="true">Unique-only</option>
+                    <option value="most-frequent">Most frequent</option>
+                </param>
+                <param name="tl_ir_query_annotate_suffix" value="" type="text" help="(suffix)" label="Suffix appended to columns from reference.obs in case their names are conlficting with those in adata.obs"/>
+            </when>
+            <when value="tl_ir_query_annotate_df">
+                <param name="tl_ir_query_annotate_df_adata" type="data" format="h5ad" label="Annotated data matrix file"/>
+            </when>
+            <when value="tl_spectratype">
+                <param name="tl_spectratype_adata" type="data" format="h5ad" label="Annotated data matrix file"/>
+            </when>
         </conditional>
     </inputs>
     <outputs>
@@ -336,6 +548,110 @@ adata.write('tl_adata_out.h5ad')
                 <param name="tl_clonotype_network_key_added" value="clonotype_network"/>
             </conditional>
             <output name="tl_adata_out" file="tl_clonotype_network_out.h5ad"/>
+        </test>
+         <test>
+            <!--Test 7: tl.clonotype_network_igraph test-->
+    <!--TODO: Output the tuple (igraph, layout) as a file-->
+            <conditional name="method">
+                <param name="method" value="tl_clonotype_network_igraph"/>
+                <param name="tl_clonotype_network_igraph_adata" value="tl_clonotype_network_igraph_adata.h5ad"/>
+                <param name="tl_clonotype_network_igraph_basis" value="clonotype_network"/>
+            </conditional>
+            <output name="tl_adata_out" file="tl_clonotype_network_igraph_out.h5ad"/>
+        </test>
+        <test>
+            <!--Test 8: tl.clonal_expansion test-->
+            <conditional name="method">
+                <param name="method" value="tl_clonal_expansion"/>
+                <param name="tl_clonal_expansion_adata" value="tl_clonal_expansion_adata.h5ad"/>
+                <param name="tl_clonal_expansion_target_col" value="clone_id"/>
+                <param name="tl_clonal_expansion_clip_at" value="3"/>
+                <param name="tl_clonal_expansion_key_added" value="clonal_expansion"/>
+            </conditional>
+            <output name="tl_adata_out" file="tl_clonal_expansion_out.h5ad"/>
+        </test>
+        <test>
+            <!--Test 9: tl.summarize_clonal_expansion test-->
+            <conditional name="method">
+                <param name="method" value="tl_summarize_clonal_expansion"/>
+                <param name="tl_summarize_clonal_expansion_adata" value="tl_summarize_clonal_expansion_adata.h5ad"/>
+                <param name="tl_summarize_clonal_expansion_group_by" value="sample"/>
+                <param name="tl_summarize_clonal_expansion_summarize_by" value="clone_id"/>
+                <param name="tl_summarize_clonal_expansion_normalize_by" value="False"/>
+            </conditional>
+            <output name="tl_adata_out" file="tl_summarize_clonal_expansion_out.h5ad"/>
+        </test>
+        <test>
+            <!--Test 10: tl.alpha_diversity test-->
+            <conditional name="method">
+                <param name="method" value="tl_alpha_diversity"/>
+                <param name="tl_alpha_diversity_adata" value="tl_alpha_diversity_adata.h5ad"/>
+                <param name="tl_alpha_diversity_group_by" value="sample"/>
+                <param name="tl_alpha_diversity_target_col" value="clone_id"/>
+                <param name="tl_alpha_diversity_metric" value="normalized_shannon_entropy"/>
+                <param name="tl_alpha_diversity_key_added" value="alpha_diversity_clone_id"/>
+            </conditional>
+            <output name="tl_adata_out" file="tl_alpha_diversity_out.h5ad"/>
+        </test>
+        <test>
+            <!--Test 11: tl.repertoire_overlap test-->
+            <conditional name="method">
+                <param name="method" value="tl_repertoire_overlap"/>
+                <param name="tl_repertoire_overlap_adata" value="tl_repertoire_overlap_adata.h5ad"/>
+                <param name="tl_repertoire_overlap_group_by" value="sample"/>
+                <param name="tl_repertoire_overlap_target_col" value="clone_id"/>
+                <param name="tl_repertoire_overlap_overlap_measure" value="jaccard"/>
+                <param name="tl_repertoire_overlap_fraction" value="False"/>
+                <param name="tl_repertoire_overlap_added_key" value="repertoire_overlap"/>
+            </conditional>
+            <output name="tl_adata_out" file="tl_repertoire_overlap_out.h5ad"/>
+        </test>
+        <test>
+            <!--Test 12: tl.clonotype_modularity test-->
+            <!--TODO: Resolve issue with connectivity_key=connectivities-->
+            <conditional name="method">
+                <param name="method" value="tl_clonotype_modularity"/>
+                <param name="tl_clonotype_modularity_adata" value="tl_clonotype_modularity_adata.h5ad"/>
+                <param name="tl_clonotype_modularity_target_col" value="cc_aa_alignment"/>
+                <param name="tl_clonotype_modularity_connectivity_key" value="connectivities"/>
+                <param name="tl_clonotype_modularity_permutation_test" value="approx"/>
+                <param name="tl_clonotype_modularity_n_permutations" value="1000"/>
+                <param name="tl_clonotype_modularity_key_added" value="clonotype_modularity"/>
+                <param name="tl_clonotype_modularity_fdr_correction" value="True"/>
+                <param name="tl_clonotype_modularity_random_state" value="0"/>
+            </conditional>
+            <output name="tl_adata_out" file="tl_clonotype_modularity_out.h5ad"/>
+        </test>
+        <test>
+            <!--Test 13: tl.ir_query test-->
+            <!--TODO: Resolve issue with connectivity_key=connectivities-->
+            <conditional name="method">
+                <param name="method" value="tl_ir_query"/>
+                <param name="tl_ir_query_adata" value="tl_ir_query_adata.h5ad"/>
+                <param name="tl_ir_query_reference" value="tl_ir_query_ref_adata.h5ad"/>
+                <param name="tl_ir_query_sequence" value="nt"/>
+                <param name="tl_ir_query_metric" value="identity"/>
+                <param name="tl_ir_query_receptor_arms" value="any"/>
+                <param name="tl_ir_query_dual_ir" value="any"/>
+                <param name="tl_ir_query_same_v_gene" value="False"/>
+                <param name="tl_ir_query_key_added" value="ir_query_custom_nt_identity"/>
+                <param name="tl_ir_query_distance_key" value="ir_dist_identity"/>
+            </conditional>
+            <output name="tl_adata_out" file="tl_ir_query_out.h5ad"/>
+        </test>
+        <test>
+            <!--Test 14: tl.ir_query_annotate test-->
+            <!--TODO: Resolve issue with reference dataset, distance_key, and key_added-->
+            <conditional name="method">
+                <param name="method" value="tl_ir_query"/>
+                <param name="tl_ir_query_annotate_adata" value="tl_ir_query_annotate_adata.h5ad"/>
+                <param name="tl_ir_query_annotate_reference" value="tl_ir_query_annotate_ref_adata.h5ad"/>
+                <param name="tl_ir_query_annotate_sequence" value="nt"/>
+                <param name="tl_ir_query_annotate_metric" value="identity"/>
+                <param name="tl_ir_query_annotate_strategy" value="unique-only"/>
+                <param name="tl_ir_query_annotate_suffix" value=""/>
+            </conditional>
+            <output name="tl_adata_out" file="tl_ir_query_out.h5ad"/>
         </test>
     </tests>
     <help><![CDATA[
