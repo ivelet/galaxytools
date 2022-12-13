@@ -174,6 +174,7 @@ ir.tl.ir_query(
     receptor_arms='$method.tl_ir_query_receptor_arms',
     dual_ir='$method.tl_ir_query_dual_ir',
     same_v_gene=$method.tl_ir_query_same_v_gene,
+    match_columns=None,
     key_added='$method.tl_ir_query_key_added',
     distance_key='$method.tl_ir_query_distance_key'
 )
@@ -184,7 +185,7 @@ adata = sc.read_h5ad('$method.tl_ir_query_annotate_adata')
 query_reference = sc.read_h5ad('$method.tl_ir_query_annotate_reference')
 
 ir.tl.ir_query_annotate(
-    query_adata,
+    adata,
     query_reference,
     sequence='$method.tl_ir_query_annotate_sequence',
     metric='$method.tl_ir_query_annotate_metric',
@@ -192,6 +193,33 @@ ir.tl.ir_query_annotate(
     include_ref_cols=None,
     query_key=None,
     suffix='$method.tl_ir_query_annotate_suffix'
+)
+adata.write('tl_adata_out.h5ad')
+
+#else if $method.method == 'tl_ir_query_annotate_df'
+adata = sc.read_h5ad('$method.tl_ir_query_annotate_df_adata')
+query_reference = sc.read_h5ad('$method.tl_ir_query_annotate_df_reference')
+
+ir.tl.ir_query_annotate_df(
+    adata,
+    query_reference,
+    sequence='$method.tl_ir_query_annotate_df_sequence',
+    metric='$method.tl_ir_query_annotate_df_metric',
+    include_ref_cols=None,
+    include_query_cols=(),
+    query_key=None,
+    suffix='$method.tl_ir_query_annotate_df_suffix'
+)
+adata.write('tl_adata_out.h5ad')
+
+#else if $method.method == 'tl_spectratype'
+adata = sc.read_h5ad('$method.tl_spectratype_adata')
+
+ir.tl.spectratype(
+    adata,
+    groupby='$method.tl_spectratype_groupby',
+    target_col='$method.tl_spectratype_target_col',
+    fraction=$method.tl_spectratype_fraction
 )
 adata.write('tl_adata_out.h5ad')
 
@@ -429,7 +457,7 @@ adata.write('tl_adata_out.h5ad')
                     <option value="all">Consider both pairs of VJ/VDJ sequences. Distance must be below cutoff for all of the chains</option>
                     <option value="any" selected="true">Consider both pairs of VJ/VDJ sequences. Distance must be below cutoff for any of the chains</option>
                 </param>
-                <param name="tl_ir_query_same_v_gene" type="select" help="(same_v_gene)" label="Enforce Clonotypes to have the same V-genes (useful as the CDR1 and CDR2 regions are fully encoded in this gene)">
+                <param name="tl_ir_query_same_v_gene" type="select" help="(same_v_gene)" label="Enforce clonotypes to have the same V-genes (useful as the CDR1 and CDR2 regions are fully encoded in this gene)">
                     <option value="True">True</option>
                     <option value="False" selected="true">False</option>
                 </param>
@@ -454,13 +482,31 @@ adata.write('tl_adata_out.h5ad')
                     <option value="unique-only" selected="true">Unique-only</option>
                     <option value="most-frequent">Most frequent</option>
                 </param>
-                <param name="tl_ir_query_annotate_suffix" value="" type="text" help="(suffix)" label="Suffix appended to columns from reference.obs in case their names are conlficting with those in adata.obs"/>
+                <param name="tl_ir_query_annotate_suffix" value="" type="text" help="(suffix)" label="Suffix appended to columns from reference.obs in case their names are conflicting with those in adata.obs"/>
             </when>
             <when value="tl_ir_query_annotate_df">
-                <param name="tl_ir_query_annotate_df_adata" type="data" format="h5ad" label="Annotated data matrix file"/>
+                <param name="tl_ir_query_annotate_df_adata" type="data" format="h5ad" label="Query dataset"/>
+                <param name="tl_ir_query_annotate_df_reference" type="data" format="h5ad" help="(reference)" label="Reference dataset"/>
+                <param name="tl_ir_query_annotate_df_sequence" type="select" help="(sequence)" label="Sequence (same as that used when running pp.ir_dist())">
+                    <option value="nt">Nucleotide</option>
+                    <option value="aa" selected="true">Amino Acid</option>
+                </param>
+                <param name="tl_ir_query_annotate_df_metric" type="select" help="(metric)" label="Metric (same as used when running pp.ir_dist())">
+                    <option value="alignment">Alignment</option>
+                    <option value="identity" selected="true">Identity</option>
+                    <option value="levenshtein">Levenshtein</option>
+                    <option value="hamming">Hamming</option>
+                </param>
+                <param name="tl_ir_query_annotate_df_suffix" value="" type="text" help="(suffix)" label="Suffix appended to columns from reference.obs in case their names are conflicting with those in adata.obs"/>
             </when>
             <when value="tl_spectratype">
                 <param name="tl_spectratype_adata" type="data" format="h5ad" label="Annotated data matrix file"/>
+                <param name="tl_spectratype_groupby" type="text" value="IR_VJ_1_junction_aa" help="(groupby)" label="Column containing CDR3 sequences"/>
+                <param name="tl_spectratype_target_col" type="text" value="sample_name" help="(target_col)" label="Color by this column from obs"/>
+                <param name="tl_spectratype_fraction" type="select" help="(fraction)" label="Compute fractions of abundances relative to the groupby column?">
+                    <option value="True" selected="true">True: Compute fractions of abundances relative to groupby column</option>
+                    <option value="False">False: Report absolute numbers</option>
+                </param>
             </when>
         </conditional>
     </inputs>
@@ -606,29 +652,28 @@ adata.write('tl_adata_out.h5ad')
             </conditional>
             <output name="tl_adata_out" file="tl_repertoire_overlap_out.h5ad"/>
         </test>
-        <test>
-            <!--Test 12: tl.clonotype_modularity test-->
-            <!--TODO: Resolve issue with connectivity_key=connectivities-->
-            <conditional name="method">
-                <param name="method" value="tl_clonotype_modularity"/>
-                <param name="tl_clonotype_modularity_adata" value="tl_clonotype_modularity_adata.h5ad"/>
-                <param name="tl_clonotype_modularity_target_col" value="cc_aa_alignment"/>
-                <param name="tl_clonotype_modularity_connectivity_key" value="connectivities"/>
-                <param name="tl_clonotype_modularity_permutation_test" value="approx"/>
-                <param name="tl_clonotype_modularity_n_permutations" value="1000"/>
-                <param name="tl_clonotype_modularity_key_added" value="clonotype_modularity"/>
-                <param name="tl_clonotype_modularity_fdr_correction" value="True"/>
-                <param name="tl_clonotype_modularity_random_state" value="0"/>
-            </conditional>
-            <output name="tl_adata_out" file="tl_clonotype_modularity_out.h5ad"/>
-        </test>
+<!--        <test>-->
+<!--            &lt;!&ndash;Test 12: tl.clonotype_modularity test&ndash;&gt;-->
+<!--            &lt;!&ndash;TODO: Resolve issue with connectivity_key=connectivities&ndash;&gt;-->
+<!--            <conditional name="method">-->
+<!--                <param name="method" value="tl_clonotype_modularity"/>-->
+<!--                <param name="tl_clonotype_modularity_adata" value="tl_clonotype_modularity_adata.h5ad"/>-->
+<!--                <param name="tl_clonotype_modularity_target_col" value="cc_aa_alignment"/>-->
+<!--                <param name="tl_clonotype_modularity_connectivity_key" value="connectivities"/>-->
+<!--                <param name="tl_clonotype_modularity_permutation_test" value="approx"/>-->
+<!--                <param name="tl_clonotype_modularity_n_permutations" value="1000"/>-->
+<!--                <param name="tl_clonotype_modularity_key_added" value="clonotype_modularity"/>-->
+<!--                <param name="tl_clonotype_modularity_fdr_correction" value="True"/>-->
+<!--                <param name="tl_clonotype_modularity_random_state" value="0"/>-->
+<!--            </conditional>-->
+<!--            <output name="tl_adata_out" file="tl_clonotype_modularity_out.h5ad"/>-->
+<!--        </test>-->
         <test>
             <!--Test 13: tl.ir_query test-->
-            <!--TODO: Resolve issue with connectivity_key=connectivities-->
             <conditional name="method">
                 <param name="method" value="tl_ir_query"/>
                 <param name="tl_ir_query_adata" value="tl_ir_query_adata.h5ad"/>
-                <param name="tl_ir_query_reference" value="tl_ir_query_ref_adata.h5ad"/>
+                <param name="tl_ir_query_reference" value="tl_ir_query_reference_ref.h5ad"/>
                 <param name="tl_ir_query_sequence" value="nt"/>
                 <param name="tl_ir_query_metric" value="identity"/>
                 <param name="tl_ir_query_receptor_arms" value="any"/>
@@ -641,17 +686,39 @@ adata.write('tl_adata_out.h5ad')
         </test>
         <test>
             <!--Test 14: tl.ir_query_annotate test-->
-            <!--TODO: Resolve issue with reference dataset, distance_key, and key_added-->
             <conditional name="method">
-                <param name="method" value="tl_ir_query"/>
+                <param name="method" value="tl_ir_query_annotate"/>
                 <param name="tl_ir_query_annotate_adata" value="tl_ir_query_annotate_adata.h5ad"/>
-                <param name="tl_ir_query_annotate_reference" value="tl_ir_query_annotate_ref_adata.h5ad"/>
+                <param name="tl_ir_query_annotate_reference" value="tl_ir_query_annotate_ref.h5ad"/>
                 <param name="tl_ir_query_annotate_sequence" value="nt"/>
                 <param name="tl_ir_query_annotate_metric" value="identity"/>
                 <param name="tl_ir_query_annotate_strategy" value="unique-only"/>
-                <param name="tl_ir_query_annotate_suffix" value=""/>
+                <param name="tl_ir_query_annotate_suffix" value="vdjdb"/>
             </conditional>
-            <output name="tl_adata_out" file="tl_ir_query_out.h5ad"/>
+            <output name="tl_adata_out" file="tl_ir_query_annotate_out.h5ad"/>
+        </test>
+        <test>
+            <!--Test 15: tl.ir_query_annotate_df test-->
+            <conditional name="method">
+                <param name="method" value="tl_ir_query_annotate_df"/>
+                <param name="tl_ir_query_annotate_df_adata" value="tl_ir_query_annotate_df_adata.h5ad"/>
+                <param name="tl_ir_query_annotate_df_reference" value="tl_ir_query_annotate_df_ref.h5ad"/>
+                <param name="tl_ir_query_annotate_df_sequence" value="nt"/>
+                <param name="tl_ir_query_annotate_df_metric" value="identity"/>
+                <param name="tl_ir_query_annotate_df_suffix" value="vdjdb"/>
+            </conditional>
+            <output name="tl_adata_out" file="tl_ir_query_annotate_df_out.h5ad"/>
+        </test>
+        <test>
+            <!--Test 16: tl.spectratype test-->
+            <conditional name="method">
+                <param name="method" value="tl_spectratype"/>
+                <param name="tl_spectratype_adata" value="tl_ir_spectratype_adata.h5ad"/>
+                <param name="tl_spectratype_groupby" value="IR_VJ_1_junction_aa"/>
+                <param name="tl_spectratype_target_col" value="sample_name"/>
+                <param name="tl_spectratype_fraction" value="True"/>
+            </conditional>
+            <output name="tl_adata_out" file="tl_spectratype_out.h5ad"/>
         </test>
     </tests>
     <help><![CDATA[
