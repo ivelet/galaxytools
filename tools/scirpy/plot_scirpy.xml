@@ -225,22 +225,21 @@ adata.write('pl_adata_out.h5ad')
                 <param name="clonal_expansion_groupby" value="patient" type="text" help="(groupby)" label="Column of obs by which the grouping will be performed"/>
                 <param name="clonal_expansion_target_col" value="clone_id" type="text" help="(target_col)" label="Column on which to compute the alpha diversity"/>
                 <param name="clonal_expansion_clip_at" value="3" type="integer" help="(clip_at)" label="All entries in target_col with more copies than this value will be summarized into a single group."/>
-<!--                <param name="clonal_expansion_expanded_in" value="None" type="text" help="(expanded_in)" label="Column containing patient annotation (if want to compute expansion within patients)"/>-->
                 <param name="clonal_expansion_summarize_by" type="select" help="(summarize_by)" label="Summarize by">
-                    <option value="cell" selected="true">Cell: count cells belonging to a clonotype</option>
-                    <option value="clone_id">Clone ID: count clonotypes</option>
+                    <option value="cell" selected="true">Count cells belonging to a clonotype (cell)</option>
+                    <option value="clone_id">Count clonotypes (clone_id)</option>
                 </param>
                 <param name="clonal_expansion_normalize" type="select" help="(normalize)" label="Compute fractions?">
-                    <option value="True" selected="true">True: Compute fractions</option>
-                    <option value="False">False: report absolute numbers</option>
+                    <option value="True" selected="true">Compute fractions (True)</option>
+                    <option value="False">Report absolute numbers (False)</option>
                 </param>
                 <param name="clonal_expansion_show_nonexpanded" type="select" help="(show_nonexpanded)" label="Show the fraction of non-expanded cells/clonotypes?">
                     <option value="True" selected="true">True</option>
                     <option value="False">False</option>
                 </param>
                 <param name="clonal_expansion_viztype" type="select" help="(viztype)" label="Type of visualization">
-                    <option value="bar" selected="true">Bars</option>
-                    <option value="barh">Horizontal bars</option>
+                    <option value="bar" selected="true">Bars (bar)</option>
+                    <option value="barh">Horizontal bars (barh)</option>
                 </param>
             </when>
             <when value="pl_group_abundance">
@@ -248,13 +247,13 @@ adata.write('pl_adata_out.h5ad')
                 <param name="group_abundance_groupby" type="text" help="(groupby)" label="Column of obs by which the grouping will be performed"/>
                 <param name="group_abundance_target_col" value="has_ir" type="text" help="(target_col)" label="Column on which to compute the alpha diversity"/>
                 <param name="group_abundance_normalize" type="select" help="(normalize)" label="Compute fractions?">
-                    <option value="True" selected="true">True: Compute fractions of abundances relative to 'groupby' column</option>
-                    <option value="False">False: report absolute numbers</option>
+                    <option value="True" selected="true">Compute fractions of abundances relative to 'groupby' column (True)</option>
+                    <option value="False">Report absolute numbers (False)</option>
                 </param>
                 <param name="group_abundance_max_cols" value="0" type="integer" help="(max_cols)" label="First number of columns to plot"/>
                 <param name="group_abundance_sort" type="select" help="(sort)" label="How to arrange the dataframe columns">
-                    <option value="count" selected="true">Count</option>
-                    <option value="alphabetical">Alphabetical</option>
+                    <option value="count" selected="true">Count (count)</option>
+                    <option value="alphabetical">Alphabetical (alphabetical)</option>
                 </param>
             </when>
             <when value="pl_spectratype">
@@ -262,13 +261,13 @@ adata.write('pl_adata_out.h5ad')
                 <param name="spectratype_cdr3_col" value="IR_VJ_1_junction_aa" type="text" help="(cdr3_col)" label="Columns containing CDR3 lengths (comma-separated list of column names)"/>
                 <param name="spectratype_color" value="sample" type="text" help="(color)" label="Color by this column from obs"/>
                 <param name="spectratype_normalize" type="select" help="(normalize)" label="Compute fractions relative to cdr3_col column?">
-                    <option value="True" selected="true">True: compute fractions of abundances relative to cdr3_col column</option>
-                    <option value="False">False: report absolute numbers</option>
+                    <option value="True" selected="true">Compute fractions of abundances relative to cdr3_col column (True)</option>
+                    <option value="False">Report absolute numbers (False)</option>
                 </param>
                 <param name="spectratype_viztype" type="select" help="(viztype)" label="Type of visualization">
-                    <option value="bar" selected="true">Bars</option>
-                    <option value="line">Lines</option>
-                    <option value="curve">Curves</option>
+                    <option value="bar" selected="true">Bars (bar)</option>
+                    <option value="line">Lines (line)</option>
+                    <option value="curve">Curves (curve)</option>
                 </param>
             </when>
             <when value="pl_vdj_usage">
@@ -280,12 +279,12 @@ adata.write('pl_adata_out.h5ad')
                 <param name="vdj_usage_max_ribbons" value="10" type="integer" help="(max_ribbons)" label="Maximum number of ribbons (inidvidual VDJ combinations)"/>
                 <param name="vdj_usage_barwidth" value="0.4" type="float" help="(barwidth)" label="Width of bars"/>
                 <param name="vdj_usage_draw_bars" type="select" help="(draw_bars)" label="Draw bars?">
-                    <option value="True" selected="true">True: draw bars</option>
-                    <option value="False">False: only ribbons are drawn </option>
+                    <option value="True" selected="true">Draw bars (True)</option>
+                    <option value="False">Only draw ribbons (False)</option>
                 </param>
                 <param name="vdj_usage_full_combination" type="select" help="(full_combination)" label="What should each band represent?">
-                    <option value="True" selected="true">Each band represents an individual combination of all five loci</option>
-                    <option value="False">The bands represent the frequency of a binary gene segment combination of the two connected loci</option>
+                    <option value="True" selected="true">Each band represents an individual combination of all five loci (True)</option>
+                    <option value="False">The bands represent the frequency of a binary gene segment combination of the two connected loci (False)</option>
                 </param>
             </when>
             <when value="pl_repertoire_overlap">
@@ -298,8 +297,8 @@ adata.write('pl_adata_out.h5ad')
                 </param>
                 <param name="repertoire_overlap_overlap_measure" value="jaccard" type="text" help="(overlap_measure)" label="Distance measure (any accepted by scipy.spatial.distance)"/>
                 <param name="repertoire_overlap_fraction" type="select" help="(fraction)" label="Compute of abundances relative to the groupby column?">
-                    <option value="True" selected="true">True: Compute fractions of abundances relative to 'groupby' column</option>
-                    <option value="False">False: report absolute numbers</option>
+                    <option value="True" selected="true">Compute fractions of abundances relative to 'groupby' column (True)</option>
+                    <option value="False">Report absolute numbers (False)</option>
                 </param>
                 <param name="repertoire_overlap_added_key" value="repertoire_overlap" type="text" help="(added_key)" label="The key by which results are added to .uns"/>
             </when>
@@ -310,20 +309,20 @@ adata.write('pl_adata_out.h5ad')
                 <param name="clonotype_modularity_base_size" value="2" type="float" help="(base_size)" label="Size of a point representing 1 cell"/>
                 <param name="clonotype_modularity_size_power" value="1" type="float" help="(size_power)" label="Point sizes raise to the power of this value"/>
                 <param name="clonotype_modularity_show_labels" type="select" help="show_labels)" label="Show labels for the clonotypes with the highest modularity?">
-                    <option value="True" selected="true">True: show text labels for clonotypes with the highest clonotype modularity</option>
-                    <option value="False">False: don't show text labels</option>
+                    <option value="True" selected="true">Show text labels for clonotypes with the highest clonotype modularity (True)</option>
+                    <option value="False">Don't show text labels (False)</option>
                 </param>
                 <param name="clonotype_modularity_labels_quantile_cutoff" value="0.9, 0.9" type="text" help="specified as a tuple of comma-separated float values (labels_quantile_cutoff)" label="Quantile cutoff for labelling clonotypes"/>
                 <param name="clonotype_modularity_label_fontsize" value="10" type="integer" help="(label_fontsize)" label="Font size for the clonotype labels"/>
                 <param name="clonotype_modularity_label_fontweight" value="300" type="integer" help="(label_fontweight)" label="Font weight for the clonotype labels"/>
                 <param name="clonotype_modularity_label_fontoutline" value="0" type="integer" help="(label_fontoutline)" label="Font outline size added to the clonotype labels"/>
                 <param name="clonotype_modularity_label_adjusttext" type="select" help="(label_adjusttext)" label="Repel labels so that they don't overlap?">
-                    <option value="True" selected="true">True: repel labels such that they don't overlap using the adjustText library (significantly increases runtime)</option>
-                    <option value="False">False: don't repel labels</option>
+                    <option value="True" selected="true">Repel labels such that they don't overlap using the adjustText library (significantly increases runtime) (True)</option>
+                    <option value="False">Don't repel labels (False)</option>
                 </param>
                 <param name="clonotype_modularity_show_size_legend" type="select" help="(show_size_legend)" label="Show a legend for dot sizes on the right margin?">
-                    <option value="True" selected="true">True: show a legend for dot sizes on the right margin</option>
-                    <option value="False">False: don't show a legend</option>
+                    <option value="True" selected="true">Show a legend for dot sizes on the right margin (True)</option>
+                    <option value="False">Don't show a legend (False)</option>
                 </param>/>
                 <param name="clonotype_modularity_legend_width" value="2" type="float" help="(legend_width)" label="Width of the legend column in inches (only if chose to show legend)"/>
             </when>
@@ -333,29 +332,29 @@ adata.write('pl_adata_out.h5ad')
                 <param name="clonotype_network_basis" value="clonotype_network" type="text" help="(basis)" label="Key under which the graph layout coordinates are stored in adata.obsm"/>
                 <param name="clonotype_network_panel_size" value="10, 10" type="text" help="(panel_size)" label="Size of the main figure panel in inches"/>
                 <param name="clonotype_network_color_by_n_cells" type="select" help="(color_by_n_cells)" label="Color the nodes by the number of cells they represent?">
-                    <option value="True">Yes</option>
-                    <option value="False" selected="true">No</option>
+                    <option value="True">Yes (True)</option>
+                    <option value="False" selected="true">No (False)</option>
                 </param>
                 <param name="clonotype_network_scale_by_n_cells" type="select" help="(scale_by_n_cells)" label="Scale the nodes by the number of cells they represent?">
-                    <option value="True" selected="true">Yes</option>
-                    <option value="False">No</option>
+                    <option value="True" selected="true">Yes (True)</option>
+                    <option value="False">No (False)</option>
                 </param>
                 <param name="clonotype_network_show_labels" type="select" help="(show_labels)" label="Plot clonotype IDs on top of the subnetworks?">
-                    <option value="True" selected="true">Yes</option>
-                    <option value="False">No</option>
-                </param>/>
+                    <option value="True" selected="true">Yes (True)</option>
+                    <option value="False">No (False)</option>
+                </param>
                 <param name="clonotype_network_label_fontweight" value="bold" type="text" help="(label_fontweight)" label="Font weight for the clonotype labels"/>
                 <param name="clonotype_network_label_fontoutline" value="3" type="integer" help="(label_fontoutline)" label="Font outline size for the clonotype labels"/>
                 <param name="clonotype_network_label_alpha" value="0.6" type="float" help="(label_alpha)" label="Transparency of the clonotype labels"/>
                 <param name="clonotype_network_label_y_offset" value="2" type="float" help="(label_y_offset)" label="Offset for the clonotype label on the y-axis for better visibility of the subnetworks"/>
                 <param name="clonotype_network_show_legend" type="select" help="(show_legend)" label="Show a legend?">
-                    <option value="True" selected="true">Yes: show legend for dot sizes on the right margin</option>
-                    <option value="False">No: don't show a legend</option>
+                    <option value="True" selected="true">Show legend for dot sizes on the right margin (True)</option>
+                    <option value="False">Don't show a legend (False)</option>
                 </param>
                 <param name="clonotype_network_edges" type="select" help="(edges)" label="Show edges?">
-                    <option value="True" selected="true">Yes</option>
-                    <option value="False">No</option>
-                </param>/>/>
+                    <option value="True" selected="true">Yes (True)</option>
+                    <option value="False">No (False)</option>
+                </param>
                 <param name="clonotype_network_edges_width" value="0.4" type="float" help="(edges_width)" label="Width of the edges"/>
             </when>
             <when value="pl_clonotype_imbalance">
@@ -366,14 +365,14 @@ adata.write('pl_adata_out.h5ad')
                 <param name="clonotype_imbalance_target_col" value="clone_id" type="text" help="(target_col)" label="The clusters that are imbalanced"/>
                 <param name="clonotype_imbalance_top_n" value="10" type="integer" help="(top_n)" label="The number of top clonotypes to be visualized"/>
                 <param name="clonotype_imbalance_fraction" type="select" help="(fraction)" label="Compute fractions of abundances relative to groupby?">
-                    <option value="True" selected="true">True: compute fractions of abundances relative to the groupby column</option>
-                    <option value="False">False: report absolute numbers</option>
+                    <option value="True" selected="true">Compute fractions of abundances relative to the groupby column (True)</option>
+                    <option value="False">Report absolute numbers (False)</option>
                 </param>
                 <param name="clonotype_imbalance_plot_type" type="select" help="(plot_type)" label="Type of plot to be shown">
-                    <option value="volcano">Volcano (statistics)</option>
-                    <option value="box" selected="true">Box (frequencies)</option>
-                    <option value="bar">Bar (frequencies)</option>
-                    <option value="strip">Strip (frequencies)</option>
+                    <option value="volcano">volcano (statistics)</option>
+                    <option value="box" selected="true">box (frequencies)</option>
+                    <option value="bar">bar (frequencies)</option>
+                    <option value="strip">strip (frequencies)</option>
                 </param>
                 <param name="clonotype_imbalance_key_added" value="clonotype_imbalance" type="text" help="(key_added)" label="Key under which results are added to uns"/>
             </when>

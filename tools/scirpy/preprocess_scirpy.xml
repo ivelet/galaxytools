@@ -45,9 +45,9 @@ ir_dist_adata.write('pp_out.h5ad')
     <inputs>
         <conditional name="method">
             <param argument="method" type="select" label="Method to use for preprocessing">
-                <option value="pp_merge_with_ir">Merge adaptive immune receptor (IR) data with transcriptomics data into a single AnnData object</option>
-                <option value="pp_merge_airr_chains">Merge two AnnData objects with IR information</option>
-                <option value="pp_ir_dist">Computes a sequence-distance metric between all unique VJ CDR3 sequences and between all unique VDJ CDR3 sequences.</option>
+                <option value="pp_merge_with_ir">Merge adaptive immune receptor (IR) data with transcriptomics data into a single AnnData object, using 'pp.merge_with_ir'</option>
+                <option value="pp_merge_airr_chains">Merge two AnnData objects with IR information, using 'pp.merge_airr_chains'</option>
+                <option value="pp_ir_dist">Computes a sequence-distance metric between all unique VJ CDR3 sequences and between all unique VDJ CDR3 sequences, using 'pp.ir_dist'</option>
             </param>
             <when value="pp_merge_with_ir">
                 <param name="adata_tr" type="data" format="h5ad" label="AnnData with the transcriptomics data (will be modified inplace)"/>
