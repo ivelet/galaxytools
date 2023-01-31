@@ -695,7 +695,7 @@ adata.write('tl_adata_out.h5ad')
             <!--Test 13: tl.clonotype_imbalance test-->
             <conditional name="method">
                 <param name="method" value="tl_clonotype_imbalance"/>
-                <param name="tl_clonotype_imbalance_adata" value="tl_clonotype_imbalance_adata.h5ad"/>
+                <param name="tl_clonotype_imbalance_adata" value="tl_clonotype_imbalance_in.h5ad"/>
                 <param name="tl_clonotype_imbalance_replicate_col" value="sample" />
                 <param name="tl_clonotype_imbalance_groupby" value="cluster"/>
                 <param name="tl_clonotype_imbalance_case_label" value="CD8_Teff"/>
@@ -745,7 +745,7 @@ adata.write('tl_adata_out.h5ad')
             <output name="tl_adata_out" file="tl_ir_query_annotate_df_out.h5ad"/>
         </test>
         <test>
-            <!--Test 16: tl.spectratype test-->
+            <!--Test 17: tl.spectratype test-->
             <conditional name="method">
                 <param name="method" value="tl_spectratype"/>
                 <param name="tl_spectratype_adata" value="tl_ir_spectratype_adata.h5ad"/>
