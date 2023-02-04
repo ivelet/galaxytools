@@ -11,8 +11,7 @@
 import scirpy as ir
 #if $method.method == 'tl_group_abundance'
 adata = sc.read_h5ad('$method.tl_group_abundance_adata')
-ir.io.upgrade_schema(adata)
-adata.uns['scirpy_version'] = '0.7
+adata.uns['scirpy_version'] = '0.7'
 
 summary = ir.tl.group_abundance(
     adata,
@@ -32,7 +31,7 @@ key_added = (receptor_type, receptor_subtype, chain_pairing)
 
 ir.tl.chain_qc(
     adata,
-    key_added
+    key_added=key_added
 )
 adata.write('tl_adata_out.h5ad')
 
@@ -167,12 +166,13 @@ adata.write('tl_adata_out.h5ad')
 #else if $method.method == 'tl_clonotype_imbalance'
 adata = sc.read_h5ad('$method.tl_clonotype_imbalance_adata')
 
-ir.tl.clonotype_imbalance(
+freq, stat = ir.tl.clonotype_imbalance(
     adata,
     replicate_col="$method.tl_clonotype_imbalance_replicate_col",
     groupby="$method.tl_clonotype_imbalance_groupby",
     case_label="$method.tl_clonotype_imbalance_case_label",
-    control_label="$method.tl_clonotype_imbalance_control_label"
+    control_label="$method.tl_clonotype_imbalance_control_label",
+    inplace=False,
 )
 adata.write('tl_adata_out.h5ad')
 
@@ -284,9 +284,10 @@ adata.write('tl_adata_out.h5ad')
                     <option value="ambiguous">Ambiguous: all cells that contain both BCR and TCR chains</option>
                     <option value="multichain">Multichain: all cells with more than two VJ or more than two VDJ chains</option>
                     <option value="no IR">No IR: all cells without any detected immune receptor</option>
+                    <option value="receptor_type" selected="true">Default ('receptor_type')</option>
                 </param>
                 <param name="tl_chain_qc_receptor_subtype" type="select" help="(receptor_subtype)" label="Receptor subtype to categorize cells into">
-                    <option value="TRA+TRB" selected="true">TRA + TRB: all cells that have only TRA and/or TRB chains</option>
+                    <option value="TRA+TRB">TRA + TRB: all cells that have only TRA and/or TRB chains</option>
                     <option value="TRG+TRD">TRG + TRD: all cells that have only TRG and/or TRD chains</option>
                     <option value="IGH">IGH: all cells that have only IGH chains, but no IGL or IGK</option>
                     <option value="IGH+IGL">IGH + IGL: all cells that have only IGH and IGL chains</option>
@@ -294,9 +295,10 @@ adata.write('tl_adata_out.h5ad')
                     <option value="multichain">Multichain: all cells with more than two VJ or more than two VDJ chains</option>
                     <option value="ambiguous">Ambiguous: all cells that are none of the above, e.g. TRA+TRD, TRA+IGH or, IGH+IGK as the primary and IGH+IGL as the secondary receptor</option>
                     <option value="no IR">No IR: all cells without any detected immune receptor</option>
+                    <option value="receptor_subtype" selected="true">Default ('receptor_subtype')</option>
                 </param>
                 <param name="tl_chain_qc_chain_pairing" type="select" help="(chain_pairing)" label="Chain pairing">
-                    <option value="single pair" selected="true">Single pair: all cells that have exactely one matched VJ and VDJ chain</option>
+                    <option value="single pair">Single pair: all cells that have exactely one matched VJ and VDJ chain</option>
                     <option value="orphan VJ">Orphan VJ: all cells that have only one VJ chain</option>
                     <option value="orphan VDJ">Orphan VDJ: all cells that have only one VDJ chain</option>
                     <option value="extra VJ">Extra VJ: all cells that have a matched pair of VJ and VDJ chains plus an additional VJ-chain</option>
@@ -305,6 +307,7 @@ adata.write('tl_adata_out.h5ad')
                     <option value="ambiguous">Ambiguous: all cells that have unmatched chains, i.e. that have been classified as an ambiguous receptor_subtype</option>
                     <option value="multichain">Multichain: all cells with more than two VJ or more than two VDJ chains</option>
                     <option value="no IR">No IR: all chains with not immune receptor chains)</option>
+                    <option value="chain_pairing" selected="true">Default ('chain_pairing')</option>
                 </param>
             </when>
             <when value="tl_define_clonotypes">
@@ -695,7 +698,7 @@ adata.write('tl_adata_out.h5ad')
             <!--Test 13: tl.clonotype_imbalance test-->
             <conditional name="method">
                 <param name="method" value="tl_clonotype_imbalance"/>
-                <param name="tl_clonotype_imbalance_adata" value="tl_clonotype_imbalance_in.h5ad"/>
+                <param name="tl_clonotype_imbalance_adata" value="tl_clonotype_imbalance_adata.h5ad"/>
                 <param name="tl_clonotype_imbalance_replicate_col" value="sample" />
                 <param name="tl_clonotype_imbalance_groupby" value="cluster"/>
                 <param name="tl_clonotype_imbalance_case_label" value="CD8_Teff"/>
@@ -745,7 +748,7 @@ adata.write('tl_adata_out.h5ad')
             <output name="tl_adata_out" file="tl_ir_query_annotate_df_out.h5ad"/>
         </test>
         <test>
-            <!--Test 17: tl.spectratype test-->
+            <!--Test 16: tl.spectratype test-->
             <conditional name="method">
                 <param name="method" value="tl_spectratype"/>
                 <param name="tl_spectratype_adata" value="tl_ir_spectratype_adata.h5ad"/>

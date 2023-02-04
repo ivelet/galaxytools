@@ -13,8 +13,6 @@ adata = sc.read_h5ad('$mapping_adata')
 #set $mapping_keys = ([x.strip() for x in str($mapping_keys).split(',')])
 #set $mapping_values = ([x.strip() for x in str($mapping_values).split(',')])
 mapping = dict(zip($mapping_keys, $mapping_values))
-
-
 adata.obsm["X_umap"] = adata.obsm["X_umap_orig"]
 adata.obs["cluster"] = [mapping[x] for x in adata.obs["cluster_orig"]]
 adata.write("add_cluster_mappings_out.h5ad")
@@ -30,10 +28,10 @@ adata.write("add_cluster_mappings_out.h5ad")
     </outputs>
     <tests>
         <test>
-            <param name="mapping_adata" value="add_cluster_mappings_anndata_in.h5ad"/>
+            <param name="mapping_adata" value="adata_ir_small.h5ad"/>
             <param name="mapping_keys" value="nan,3.1-MT,4.1-Trm,4.2-RPL32,4.3-TCF7,4.4-FOS,4.5-IL6ST,4.6a-Treg,4.6b-Treg,8.1-Teff,8.2-Tem,8.3a-Trm,8.3b-Trm,8.3c-Trm,8.4-Chrom,8.5-Mitosis,8.6-KLRB1"/>
             <param name="mapping_values" value="other,other,CD4_Trm,CD4_RPL32,CD4_TCF7,CD4_FOSS,CD4_IL6ST,CD4_Treg,CD4_Treg,CD8_Teff,CD8_Tem,CD8_Trm,CD8_Trm,CD8_Trm,other,other,other"/>
-            <output name="adata_out" file="add_cluster_mappings_anndata_out.h5ad"/>
+            <output name="adata_out" file="add_cluster_mappings_out.h5ad"/>
         </test>
     </tests>
     <help><![CDATA[

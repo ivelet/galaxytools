@@ -1,4 +1,4 @@
-<tool id="include_v_gene_clonotype_definition" name="Filter Observations in AnnData" version="0.1.0">
+<tool id="include_v_gene_clonotype_definition" name="Include V-gene in clonotype definition" version="0.1.0">
     <requirements>
         <requirement type="package" version="1.7.0">scanpy</requirement>
         <requirement type="package" version="0.11.2">scirpy</requirement>
@@ -33,7 +33,7 @@ adata.write("adata_out.h5ad")
     </outputs>
     <tests>
         <test>
-            <param name="adata_in" value="include_v_gene_clonotype_definition_adata_in.h5ad"/>
+            <param name="adata_in" value="include_v_gene_clonotype_definition_adata.h5ad"/>
             <param name="groupby" value="cc_aa_alignment"/>
             <param name="key_added" value="cc_aa_alignment_same_v" />
             <param name="list" value="cc_aa_alignment, cc_aa_alignment_same_v, IR_VJ_1_v_call, IR_VDJ_1_v_call"/>

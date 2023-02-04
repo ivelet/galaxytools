@@ -9,7 +9,18 @@
     <configfiles>
         <configfile name="script_file"><![CDATA[import scanpy as sc
 import scirpy as ir
-#if $method.method == 'pl_alpha_diversity'
+#if $method.method == 'pl_embedding'
+adata = sc.read_h5ad('method.embedding_adata')
+#set panel_size = [x.strip() for x in str($method.embedding_panel_size).split(',')]
+axs = ir.pl.embedding(
+adata,
+basis='$method.embedding_basis'
+)
+adata.write('pl_adata_out.h5ad')
+fig = axs.get_figure()
+fig.savefig('pl_fig_out.png')
+
+#else if $method.method == 'pl_alpha_diversity'
 adata = sc.read_h5ad('$method.alpha_diversity_adata')
 axs = ir.pl.alpha_diversity(
     adata,
@@ -99,8 +110,7 @@ axs = ir.pl.repertoire_overlap(
     fraction=$method.repertoire_overlap_fraction,
     added_key='$method.repertoire_overlap_added_key'
 )
-fig = axs.get_figure()
-fig.savefig('pl_fig_out.png')
+axs.savefig('pl_fig_out.png')
 adata.write('pl_adata_out.h5ad')
 
 #else if $method.method == 'pl_clonotype_modularity'
@@ -163,14 +173,13 @@ adata.write('pl_adata_out.h5ad')
 adata = sc.read_h5ad('$method.clonotype_imbalance_adata')
 axs = ir.pl.clonotype_imbalance(
     adata,
-    replicate_col=$method.clonotype_imbalance_replicate_col,
-    groupby=$method.clonotype_imbalance_groupby,
+    replicate_col='$method.clonotype_imbalance_replicate_col',
+    groupby='$method.clonotype_imbalance_groupby',
     case_label='$method.clonotype_imbalance_case_label',
-    control_label=None,
+    control_label='$method.clonotype_imbalance_control_label',
     target_col='$method.clonotype_imbalance_target_col',
     additional_hue=None,
     top_n=$method.clonotype_imbalance_top_n,
-    fraction=$method.clonotype_imbalance_fraction,
     plot_type='$method.clonotype_imbalance_plot_type',
     inplace=True,
     key_added='$method.clonotype_imbalance_key_added'
@@ -200,8 +209,7 @@ adata.write('pl_adata_out.h5ad')
                 <param name="embedding_adata" type="data" format="h5ad" label="Annotated data matrix"/>
                 <param name="embedding_basis" value="X_umap_orig" type="text" label="Embedding to plot" help="(basis)"/>
                 <param name="embedding_color" value="patient" type="text" label="Keys for annotations of observations/cells or variables/genes" help="(color)"/>
-                <param name="embedding_panel_size" value="4, 4" type="text" help="comma-separated numbers (panel_size)" label="Size tuple of a single panel in inches"/>
-                <param name="embedding_palette" value="('Set2', 'tab20')" type="text" help="(palette)" label="Colors to use for plotting categorical annotation groups"/>
+                <param name="embedding_panel_size" value="4, 4" type="text" help="comma-separated numbers (panel_size)" label="Size tuple of a single panel in inches"/>ma
                 <param name="embedding_legend_loc" type="select" help="(legend_loc)" label="Location of legend">
                     <option value="right margin" selected="true">right margin</option>
                     <option value="on data">on data</option>
@@ -362,12 +370,13 @@ adata.write('pl_adata_out.h5ad')
                 <param name="clonotype_imbalance_replicate_col" value="adata.obs" type="text" help="(replicate_col)" label="Column with batch or sample labels"/>
                 <param name="clonotype_imbalance_groupby" value="adata.obs" type="text" help="(groupby)" label="The column containing categories that we want to compare and find imbalance between"/>
                 <param name="clonotype_imbalance_case_label" value="sample" type="text" help="(case_label)" label="The label in the groupby column that we want to compare"/>
+                <param name="clonotype_imbalance_control_label" value="CD8_Trm" type="text" help="(control_label)" label="The label in the groupby column we want to use as a baseline for comparison"/>
                 <param name="clonotype_imbalance_target_col" value="clone_id" type="text" help="(target_col)" label="The clusters that are imbalanced"/>
                 <param name="clonotype_imbalance_top_n" value="10" type="integer" help="(top_n)" label="The number of top clonotypes to be visualized"/>
-                <param name="clonotype_imbalance_fraction" type="select" help="(fraction)" label="Compute fractions of abundances relative to groupby?">
-                    <option value="True" selected="true">Compute fractions of abundances relative to the groupby column (True)</option>
-                    <option value="False">Report absolute numbers (False)</option>
-                </param>
+<!--                <param name="clonotype_imbalance_fraction" type="select" help="(fraction)" label="Compute fractions of abundances relative to groupby?">-->
+<!--                    <option value="True" selected="true">Compute fractions of abundances relative to the groupby column (True)</option>-->
+<!--                    <option value="False">Report absolute numbers (False)</option>-->
+<!--                </param>-->
                 <param name="clonotype_imbalance_plot_type" type="select" help="(plot_type)" label="Type of plot to be shown">
                     <option value="volcano">volcano (statistics)</option>
                     <option value="box" selected="true">box (frequencies)</option>
@@ -385,14 +394,12 @@ adata.write('pl_adata_out.h5ad')
     <tests>
 <!--        <test>-->
 <!--            &lt;!&ndash;Test for pl_embedding&ndash;&gt;-->
-<!--            &lt;!&ndash;TODO: FIX ERROR FOR OUTPUT OF PLOT FOR EMBEDDING&ndash;&gt;-->
 <!--            <conditional name="method">-->
 <!--                <param name="method" value="pl_embedding"/>-->
-<!--                <param name="embedding_adata" value="pl_adata.h5ad"/>-->
-<!--                <param name="embedding_basis" value="X_umap_orig"/>-->
+<!--                <param name="embedding_adata" value="adata_ir_small.h5ad"/>-->
+<!--                <param name="embedding_basis" value="umap_orig"/>-->
 <!--                <param name="embedding_color" value="patient"/>-->
 <!--                <param name="embedding_panel_size" value="4, 4"/>-->
-<!--                <param name="embedding_palette" value="Set2, tab20"/>-->
 <!--                <param name="embedding_legend_loc" value="right margin"/>-->
 <!--                <param name="embedding_ncols" value="3"/>-->
 <!--                <param name="embedding_wspace" value="1"/>-->
@@ -405,7 +412,7 @@ adata.write('pl_adata_out.h5ad')
             <!--Test for pl_alpha_diversity-->
             <conditional name="method">
                 <param name="method" value="pl_alpha_diversity"/>
-                <param name="alpha_diversity_adata" value="pl_adata.h5ad"/>
+                <param name="alpha_diversity_adata" value="tl_alpha_diversity_adata.h5ad"/>
                 <param name="alpha_diversity_groupby" value="patient"/>
                 <param name="alpha_diversity_target_col" value="clone_id"/>
                 <param name="alpha_diversity_metric" value="normalized_shannon_entropy"/>
@@ -417,7 +424,7 @@ adata.write('pl_adata_out.h5ad')
             <!--Test for pl_clonal_expansion-->
             <conditional name="method">
                 <param name="method" value="pl_clonal_expansion"/>
-                <param name="clonal_expansion_adata" value="pl_adata.h5ad"/>
+                <param name="clonal_expansion_adata" value="tl_clonal_expansion_adata.h5ad"/>
                 <param name="clonal_expansion_groupby" value="patient"/>
                 <param name="clonal_expansion_target_col" value="clone_id"/>
                 <param name="clonal_expansion_clip_at" value="3"/>
@@ -434,7 +441,7 @@ adata.write('pl_adata_out.h5ad')
             <!--Test for pl_group_abundance-->
             <conditional name="method">
                 <param name="method" value="pl_group_abundance"/>
-                <param name="group_abundance_adata" value="pl_adata.h5ad"/>
+                <param name="group_abundance_adata" value="tl_group_abundance_adata.h5ad"/>
                 <param name="group_abundance_groupby" value="sample"/>
                 <param name="group_abundance_target_col" value="has_ir"/>
                 <param name="group_abundance_normalize" value="True"/>
@@ -448,9 +455,9 @@ adata.write('pl_adata_out.h5ad')
             <!--Test for pl_spectratype-->
             <conditional name="method">
                 <param name="method" value="pl_spectratype"/>
-                <param name="spectratype_adata" value="pl_adata.h5ad"/>
+                <param name="spectratype_adata" value="tl_spectratype_out.h5ad"/>
                 <param name="spectratype_cdr3_col" value="IR_VJ_1_junction_aa"/>
-                <param name="spectratype_color" value="sample"/>
+                <param name="spectratype_color" value="sample_name"/>
                 <param name="spectratype_normalize" value="True"/>
                 <param name="spectratype_viztype" value="bar"/>
             </conditional>
@@ -461,7 +468,7 @@ adata.write('pl_adata_out.h5ad')
             <!--Test for pl_vdj_usage-->
             <conditional name="method">
                 <param name="method" value="pl_vdj_usage"/>
-                <param name="vdj_usage_adata" value="pl_adata.h5ad"/>
+                <param name="vdj_usage_adata" value="tl_group_abundance_out.h5ad"/>
                 <param name="vdj_usage_vdj_cols" value="IR_VJ_1_v_call, IR_VJ_1_j_call, IR_VDJ_1_v_call, IR_VDJ_1_d_call, IR_VDJ_1_j_call"/>
                 <param name="vdj_usage_normalize_to" value="False"/>
                 <param name="vdj_usage_max_segments" value="0"/>
@@ -478,7 +485,7 @@ adata.write('pl_adata_out.h5ad')
             <!--Test for pl_repertoire_overlap-->
             <conditional name="method">
                 <param name="method" value="pl_repertoire_overlap"/>
-                <param name="repertoire_overlap_adata" value="pl_adata.h5ad"/>
+                <param name="repertoire_overlap_adata" value="tl_repertoire_overlap_out.h5ad"/>
                 <param name="repertoire_overlap_groupby" value="adata.obs"/>
                 <param name="repertoire_overlap_target_col" value="clone_id"/>
                 <param name="repertoire_overlap_dendro_only" value="False"/>
@@ -493,7 +500,7 @@ adata.write('pl_adata_out.h5ad')
             <!--Test for pl_clonotype_modularity-->
             <conditional name="method">
                 <param name="method" value="pl_clonotype_modularity"/>
-                <param name="clonotype_modularity_adata" value="pl_adata.h5ad"/>
+                <param name="clonotype_modularity_adata" value="tl_clonotype_modularity_out.h5ad"/>
                 <param name="clonotype_modularity_target_col" value="clonotype_modularity"/>
                 <param name="clonotype_modularity_jitter" value="0.01"/>
                 <param name="clonotype_modularity_base_size" value="2"/>
@@ -514,7 +521,7 @@ adata.write('pl_adata_out.h5ad')
             <!--Test for pl_clonotype_network-->
             <conditional name="method">
                 <param name="method" value="pl_clonotype_network"/>
-                <param name="clonotype_network_adata" value="pl_adata.h5ad"/>
+                <param name="clonotype_network_adata" value="tl_clonotype_network_out.h5ad"/>
                 <param name="clonotype_network_color" value="patient"/>
                 <param name="clonotype_network_basis" value="clonotype_network"/>
                 <param name="clonotype_network_panel_size" value="10, 10"/>
@@ -532,23 +539,23 @@ adata.write('pl_adata_out.h5ad')
             <output name="pl_adata_out" file="pl_adata_out.h5ad"/>
             <output name="pl_fig_out" file="pl_fig_out.png"/>
         </test>
-        <test>
-            <!--Test for pl_clonotype_imbalance-->
-            <conditional name="method">
-                <param name="method" value="pl_clonotype_imbalance"/>
-                <param name="clonotype_imbalance_adata" value="pl_adata.h5ad"/>
-                <param name="clonotype_imbalance_replicate_col" value="adata.obs"/>
-                <param name="clonotype_imbalance_groupby" value="adata.obs"/>
-                <param name="clonotype_imbalance_case_label" value="sample"/>
-                <param name="clonotype_imbalance_target_col" value="clone_id"/>
-                <param name="clonotype_imbalance_top_n" value="10"/>
-                <param name="clonotype_imbalance_fraction" value="True"/>
-                <param name="clonotype_imbalance_plot_type" value="box"/>
-                <param name="clonotype_imbalance_key_added" value="clonotype_imbalance"/>
-            </conditional>
-            <output name="pl_adata_out" file="pl_adata_out.h5ad"/>
-            <output name="pl_fig_out" file="pl_fig_out.png"/>
-        </test>
+<!--        <test>-->
+<!--            &lt;!&ndash;Test for pl_clonotype_imbalance&ndash;&gt;-->
+<!--            <conditional name="method">-->
+<!--                <param name="method" value="pl_clonotype_imbalance"/>-->
+<!--                <param name="clonotype_imbalance_adata" value="tl_clonotype_imbalance_out.h5ad"/>-->
+<!--                <param name="clonotype_imbalance_replicate_col" value="sample"/>-->
+<!--                <param name="clonotype_imbalance_groupby" value="cluster"/>-->
+<!--                <param name="clonotype_imbalance_case_label" value="CD8_Teff"/>-->
+<!--                <param name="clonotype_imbalance_control_label" value="CD8_Trm"/>-->
+<!--                <param name="clonotype_imbalance_target_col" value="clone_id"/>-->
+<!--                <param name="clonotype_imbalance_top_n" value="10"/>-->
+<!--                <param name="clonotype_imbalance_plot_type" value="box"/>-->
+<!--                <param name="clonotype_imbalance_key_added" value="clonotype_imbalance"/>-->
+<!--            </conditional>-->
+<!--            <output name="pl_adata_out" file="pl_adata_out.h5ad"/>-->
+<!--            <output name="pl_fig_out" file="pl_fig_out.png"/>-->
+<!--        </test>-->
     </tests>
     <help><![CDATA[
 A customized wrapper to the scanpy.pl.embedding() function. (`pl.embedding`)

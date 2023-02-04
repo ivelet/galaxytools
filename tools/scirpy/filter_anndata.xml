@@ -9,10 +9,11 @@
         <configfile name="script_file"><![CDATA[import scanpy as sc
 adata = sc.read_h5ad('$adata_in')
 #if '$filter_type' == 'not_equal_to'
-adata = adata[adata.obs["$filter_key"] != "$filter_value", :].copy()
+adata = adata[adata.obs["$filter_key"] != "$filter_value", :]
 #else if '$filter_type' == 'is_in'
 #set $filter_value = ([x.strip() for x in str($filter_value).split(',')])
-adata = adata[~adata.obs["$filter_key"].isin($filter_value), :].copy()
+adata = adata[~adata.obs["$filter_key"].isin($filter_value), :]
+#end if
 adata.write("adata_out.h5ad")
 ]]></configfile>
     </configfiles>
