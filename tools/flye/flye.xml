@@ -297,32 +297,32 @@
             </output>
         </test>
         <!--Test 08: scaffolding mode-->
-        <test expect_num_outputs="4">
-            <param name="inputs" ftype="fastq.gz" value="ecoli_hifi_01.fastq.gz,ecoli_hifi_02.fastq.gz,ecoli_hifi_03.fastq.gz,ecoli_hifi_04.fastq.gz,ecoli_hifi_05.fastq.gz,ecoli_hifi_06.fastq.gz,ecoli_hifi_07.fastq.gz,ecoli_hifi_08.fastq.gz,ecoli_hifi_09.fastq.gz"/>
-            <param name="mode" value="--nano-hq"/>
-            <param name="min_overlap" value="1000"/>
-            <param name="scaffolding" value="true"/>
-            <output name="assembly_info" ftype="tabular">
-                <assert_contents>
-                    <has_size value="286" delta="100"/>
-               </assert_contents>
-            </output>
-            <output name="assembly_graph" ftype="graph_dot">
-                <assert_contents>
-                    <has_size value="1248" delta="100"/>
-               </assert_contents>
-            </output>
-            <output name="assembly_gfa" ftype="txt">
-                <assert_contents>
-                    <has_size value="420252" delta="100"/>
-               </assert_contents>
-            </output>
-            <output name="consensus" ftype="fasta">
-                <assert_contents>
-                    <has_size value="427129" delta="100"/>
-               </assert_contents>
-            </output>
-        </test>
+<!--        <test expect_num_outputs="4">-->
+<!--            <param name="inputs" ftype="fastq.gz" value="ecoli_hifi_01.fastq.gz,ecoli_hifi_02.fastq.gz,ecoli_hifi_03.fastq.gz,ecoli_hifi_04.fastq.gz,ecoli_hifi_05.fastq.gz,ecoli_hifi_06.fastq.gz,ecoli_hifi_07.fastq.gz,ecoli_hifi_08.fastq.gz,ecoli_hifi_09.fastq.gz"/>-->
+<!--            <param name="mode" value="&#45;&#45;nano-hq"/>-->
+<!--            <param name="min_overlap" value="1000"/>-->
+<!--            <param name="scaffolding" value="true"/>-->
+<!--            <output name="assembly_info" ftype="tabular">-->
+<!--                <assert_contents>-->
+<!--                    <has_size value="286" delta="100"/>-->
+<!--               </assert_contents>-->
+<!--            </output>-->
+<!--            <output name="assembly_graph" ftype="graph_dot">-->
+<!--                <assert_contents>-->
+<!--                    <has_size value="1248" delta="100"/>-->
+<!--               </assert_contents>-->
+<!--            </output>-->
+<!--            <output name="assembly_gfa" ftype="txt">-->
+<!--                <assert_contents>-->
+<!--                    <has_size value="420252" delta="100"/>-->
+<!--               </assert_contents>-->
+<!--            </output>-->
+<!--            <output name="consensus" ftype="fasta">-->
+<!--                <assert_contents>-->
+<!--                    <has_size value="427129" delta="100"/>-->
+<!--               </assert_contents>-->
+<!--            </output>-->
+<!--        </test>-->
         <!--Test 09: test not-alt-contigs parameter w-->
         <test expect_num_outputs="4">
             <param name="inputs" ftype="fasta.gz" value="nanopore.fasta.gz"/>

@@ -209,7 +209,7 @@ adata.write('pl_adata_out.h5ad')
                 <param name="embedding_adata" type="data" format="h5ad" label="Annotated data matrix"/>
                 <param name="embedding_basis" value="X_umap_orig" type="text" label="Embedding to plot" help="(basis)"/>
                 <param name="embedding_color" value="patient" type="text" label="Keys for annotations of observations/cells or variables/genes" help="(color)"/>
-                <param name="embedding_panel_size" value="4, 4" type="text" help="comma-separated numbers (panel_size)" label="Size tuple of a single panel in inches"/>ma
+                <param name="embedding_panel_size" value="4, 4" type="text" help="comma-separated numbers (panel_size)" label="Size tuple of a single panel in inches"/>
                 <param name="embedding_legend_loc" type="select" help="(legend_loc)" label="Location of legend">
                     <option value="right margin" selected="true">right margin</option>
                     <option value="on data">on data</option>
