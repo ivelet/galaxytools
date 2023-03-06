@@ -15,6 +15,8 @@ import muon as mu
 import matplotlib
 from scanpy import tl
 mdata = mu.read_h5mu('$rna_atac_mofa_input')
+sc.pp.neighbors(mdata, use_rep="X_mofa")
+sc.tl.umap(mdata)
 
 #if $clustering_method.clustering_method == 'leiden'
 sc.tl.leiden(mdata,
