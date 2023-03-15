@@ -1,0 +1,94 @@
+<tool id="filter_episcanpy" name="Filter with Episcanpy" version="0.1.0">
+    <requirements>
+        <requirement type="package" version="1.7.0">scanpy</requirement>
+        <requirement type="package" version="0.3.2">episcanpy</requirement>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+        python '$script_file'
+]]></command>
+    <configfiles>
+        <configfile name="script_file"><![CDATA[import scanpy as sc
+import episcanpy as epi
+filter_adata = sc.read_h5ad('$filter_adata_in')
+
+#if $method.method == 'pp_filter_features'
+epi.pp.filter_features(
+    filter_adata,
+    min_cells=$pp_filter_features_min_cells
+)
+
+#else if $method.method == 'pp_cal_var'
+epi.pp.cal_var(
+    filter_adata
+)
+
+#else if $method.method == 'pp_select_var_feature'
+epi.pp.select_var_feature(
+    filter_adata,
+    nb_features=$nb_feature_selected,
+    show=False,
+    copy=False
+)
+
+filter_adata.write('filter_out.h5ad')
+#end if
+]]></configfile>
+    </configfiles>
+    <inputs>
+        <param name="filter_adata_in" type="data" format="h5ad" label="AnnData with the transcriptomics data (will be modified inplace)"/>
+        <conditional name="method">
+            <param argument="method" type="select" label="Method to use for filtering">
+                <option value="pp_filter_features">Filter features based on number of cells or counts, using 'pp.filter_features'</option>
+                <option value="pp_cal_var">Show distribution plots of cells sharing features and variability score, using 'pp.cal_var'</option>
+                <option value="pp_select_var_features">This function computes a variability score to rank the most variable features across all cells, using 'pp.select_var_features'</option>
+            </param>
+            <when value="pp_filter_features">
+                <param name="pp_filter_features_min_cells" type="integer" value="1" label="Minimum number of cells" help="(min_cells)"/>
+            </when>
+            <when value="pp_cal_var">
+            </when>
+            <when value="pp_select_var_features">
+                <param name="pp_select_var_features_nb_feature_selected" type="integer" value="120000" label="Features Selected" help="(nb_feature_selected)"/>
+            </when>
+        </conditional>
+    </inputs>
+    <outputs>
+        <data name="filter_out" format="h5ad" label="${tool.name} (${method.method}) on ${on_string}" from_work_dir="filter_out.h5ad"/>
+    </outputs>
+    <tests>
+        <test>
+            <!--Test 1- pp_filter_features-->
+            <conditional name="method">
+                <param name="method" value="pp_filter_features"/>
+                <param name="pp_filter_features_min_cells" value="1"/>
+            </conditional>
+            <output name="filter_out" file="filter_out.h5ad"/>
+        </test>
+        <test>
+            <!--Test 2- pp_cal_var-->
+            <conditional name="method">
+                <param name="method" value="pp_cal_var"/>
+            </conditional>
+            <output name="filter_out" file="filter_out.h5ad"/>
+        </test>
+        <test>
+            <!--Test 3- pp_select_var_features-->
+            <conditional name="method">
+                <param name="method" value="pp_select_var_features"/>
+                <param name="pp_select_var_features_nb_feature_selected" value="120000"/>
+            </conditional>
+            <output name="filter_out" file="filter_out.h5ad"/>
+        </test>
+    </tests>
+    <help><![CDATA[
+Filter features based on number of cells or counts. (`pp.filter_features`)
+==========================================================================
+
+More details on the `scirpy documentation
+<https://scverse.org/scirpy/latest/generated/scirpy.pp.ir_dist.html>`__
+    ]]></help>
+    <citations>
+        <citation type="bibtex">
+}</citation>
+    </citations>
+</tool>
