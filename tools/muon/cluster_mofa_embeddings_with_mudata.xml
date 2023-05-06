@@ -4,6 +4,7 @@
         <requirement type="package" version="0.1.2">muon</requirement>
         <requirement type="package" version="3.5.3">matplotlib</requirement>
         <requirement type="package" version="0.9.1">leidenalg</requirement>
+        <requirement type="package" version="0.8.0">louvain</requirement>
         <requirement type="package" version="0.10.2">python-igraph</requirement>
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
@@ -26,7 +27,7 @@ sc.tl.leiden(mdata,
     use_weights=$clustering_method.use_weights,
     n_iterations=$clustering_method.n_iterations
 )
-#else
+#else if $clustering_method.clustering_method == 'louvain'
 sc.tl.louvain(mdata,
     key_added='$clustering_method.key_added',
     resolution=$clustering_method.resolution,
@@ -83,7 +84,7 @@ mdata.write("rna_atac_mofa_clustering.h5mu")
     <tests>
         <test>
             <!--Test for leiden clustering-->
-            <param name="rna_atac_mofa_input" value="rna_atac_integration.h5mu"/>
+            <param name="rna_atac_mofa_input" value="cluster_mofa_embeddings_with_mudata_in.h5mu"/>
             <param name="clustering_method" value="leiden"/>
             <param name="resolution" value="1"/>
             <param name="random_state" value="0"/>
@@ -94,11 +95,11 @@ mdata.write("rna_atac_mofa_clustering.h5mu")
         </test>
         <test>
             <!--Test for louvain clustering-->
-            <param name="rna_atac_mofa_input" value="rna_atac_integration.h5mu"/>
+            <param name="rna_atac_mofa_input" value="cluster_mofa_embeddings_with_mudata_in.h5mu"/>
             <param name="clustering_method" value="louvain"/>
             <param name="resolution" value="1"/>
             <param name="random_state" value="0"/>
-            <param name="key_added"  value="leiden_joint"/>
+            <param name="key_added"  value="louvain_joint"/>
             <param name="use_weights" value="True"/>
             <output name="rna_atac_mofa_clustering" file="rna_atac_mofa_clustering.h5mu"/>
         </test>
