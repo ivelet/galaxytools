@@ -24,15 +24,15 @@ method = 'logreg'
 method = 't-test_overestim_var'
 #end if
 
-mdata['$first_mod_name'].obs['$rank_genes_peaks_groupby'] = mdata.obs.leiden_joint
-mdata['$second_mod_name'].obs['$rank_genes_peaks_groupby'] = mdata.obs.leiden_joint
+mdata['$first_mod_name'].obs['$rank_genes_peaks_groupby'] = mdata.obs['$key_added']
+mdata['$second_mod_name'].obs['$rank_genes_peaks_groupby'] = mdata.obs['$key_added']
 
 sc.tl.rank_genes_groups(mdata['$first_mod_name'], '$rank_genes_peaks_groupby', method=method)
 ac.tl.rank_peaks_groups(mdata['$second_mod_name'], '$rank_genes_peaks_groupby', method=method)
 result = {}
-result['$first_mod_name'] = mdata['$first_mod_name'].uns['rank_genes_groups']
+result['$first_mod_name'] = mdata['$first_mod_name'].uns['$rank_genes_groups']
 result['$first_mod_name']['genes'] = result['$first_mod_name']['names']
-result['$second_mod_name'] = mdata['$second_mod_name'].uns['rank_genes_groups']
+result['$second_mod_name'] = mdata['$second_mod_name'].uns['$rank_genes_groups']
 groups = result['$first_mod_name']['names'].dtype.names
 pd.set_option("display.max_columns", $pd_display_max_columns)
 differential_list = pd.DataFrame(
@@ -56,6 +56,8 @@ differential_list.to_csv('differentially_expressed_genes_accessible_peaks.csv')
         <param name="first_mod_name" type="text" label="The name of the RNA modality in MuData object" value="rna" help="(for listing differentially expressed genes)"/>
         <param name="second_mod_name" type="text" label="The name of the ATAC modality in MuData object" value="atac" help="(for listing differentially accessible peaks)"/>
         <param name="pd_display_max_columns" type="integer" label="Maximum number of columns in list" value="200" help="(display.max_columns in pandas.set_option())"/>
+        <param name="rank_genes_groups" type="text" label="Column in .uns to rank genes groups" value="rank_genes_groups" help="(will be stored in results)"/>
+        <param name="key_added" type="text" label="Key under which leiden cluster embeddings were added" value="leiden_joint" help="(key_added in sc.tl.leiden as stored in .obs)"/>
     </inputs>
     <outputs>
         <data name="ranked_rna_atac" format="h5mu" label="RNA ATAC with Ranked Genes and Peaks" from_work_dir="ranked_rna_atac.h5mu"/>
@@ -65,12 +67,14 @@ differential_list.to_csv('differentially_expressed_genes_accessible_peaks.csv')
     </outputs>
     <tests>
         <test>
-            <param name="rna_atac_input" value="rna_atac_mofa_clustering.h5mu"/>
+            <param name="rna_atac_input" value="rank_genes_and_peaks_muon_in.h5mu"/>
             <param name="rank_genes_peaks_groupby" value="leiden_joint"/>
             <param name="rank_genes_peaks_method" value="t-test_overestim_var"/>
             <param name="first_mod_name" value="rna"/>
             <param name="second_mod_name" value="atac"/>
             <param name="pd_display_max_columns" value="200"/>
+            <param name="rank_genes_groups" value="rank_genes_groups"/>
+            <param name="key_added" value="leiden_joint"/>
             <output name="ranked_rna_atac" file="ranked_rna_atac.h5mu"/>
             <output name="differentially_expressed_genes_accessible_peaks" file="differentially_expressed_genes_accessible_peaks.csv"/>
         </test>
