@@ -12,8 +12,7 @@ mdata = mu.read_h5mu('$mudata_input')
 obs_var = '$method.filter_obs_var'
 mu.pp.filter_obs(
     mdata,
-    var=obs_var,
-    func=lambda x: x == x
+    var=mdata.var[obs_var]
 )
 
 #else if $method.method == 'filter_var'
@@ -109,14 +108,14 @@ mdata.write("mudata_with_preprocessing.h5mu")
     <tests>
         <test>
             <!--Test for filter_obs-->
-            <param name="mudata_input" value="rna_atac_input_tiny.h5mu"/>
+            <param name="mudata_input" value="preprocess_muon_in.h5mu"/>
             <param name="method" value="filter_obs"/>
-            <param name="filter_obs_var" value="total_counts"/>
+            <param name="filter_obs_var" value="gene_ids"/>
             <output name="mudata_with_preprocessing" file="mudata_with_preprocessing.h5mu"/>
         </test>
         <test>
             <!--Test for filter_var-->
-            <param name="mudata_input" value="rna_atac_input.h5mu"/>
+            <param name="mudata_input" value="preprocess_muon_in.h5mu"/>
             <param name="method" value="filter_var"/>
             <param name="filter_var_var" value="genome"/>
             <param name="filter_var_func" value="lambda x: x == 'MIR1302-2HG'"/>
@@ -124,13 +123,13 @@ mdata.write("mudata_with_preprocessing.h5mu")
         </test>
         <test>
             <!--Test for intersect_obs-->
-            <param name="mudata_input" value="rna_atac_input.h5mu"/>
+            <param name="mudata_input" value="preprocess_muon_in.h5mu"/>
             <param name="method" value="intersect_obs"/>
             <output name="mudata_with_preprocessing" file="mudata_with_preprocessing.h5mu"/>
         </test>
         <test>
             <!--Test for l2norm-->
-            <param name="mudata_input" value="rna_atac_input_tiny.h5mu"/>
+            <param name="mudata_input" value="preprocess_muon_in.h5mu"/>
             <param name="method" value="l2norm"/>
             <param name="l2norm_mod" value="rna"/>
             <param name="l2norm_rep" value="X_pca"/>
@@ -139,7 +138,7 @@ mdata.write("mudata_with_preprocessing.h5mu")
         </test>
         <test>
             <!--Test for neighbors-->
-            <param name="mudata_input" value="rna_atac_input_tiny.h5mu"/>
+            <param name="mudata_input" value="preprocess_muon_in.h5mu"/>
             <param name="method" value="neighbors"/>
             <param name="neighbors_n_neighbors" value="0"/>
             <param name="neighbors_n_multineighbors" value="200"/>
