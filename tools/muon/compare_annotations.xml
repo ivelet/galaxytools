@@ -37,7 +37,7 @@ fig.savefig("rna_atac_comparison_heatmap.png")
     </outputs>
     <tests>
         <test>
-            <param name="rna_atac_input" value="rna_atac_input.h5mu"/>
+            <param name="rna_atac_input" value="mudata_import_out.h5mu"/>
             <param name="first_mod_name" value="rna"/>
             <param name="second_mod_name" value="atac"/>
             <param name="first_mod_annotation_name" value="rna:celltype"/>
