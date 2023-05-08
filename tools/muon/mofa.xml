@@ -14,15 +14,14 @@ import muon as mu
 import mofax as mfx
 import numpy as np
 mdata = mu.read_h5mu('$mofa_input')
+
 #if $load_mofax_model.load_mofax_model == False
-n_factors = $mofa_n_factors
-mu.tl.mofa(mdata, outfile="models/mofa_model_out.hdf5", n_factors=n_factors)
+mu.tl.mofa(mdata, outfile="mofa_model_out.hdf5", n_factors=$mofa_n_factors)
+
 #else if $load_mofax_model.load_mofax_model == True
 model = mfx.mofa_model('$load_mofax_model.mofax_model')
 mdata.obsm["X_mofa"] = model.get_factors()
 w = model.get_weights()
-mdata.varm["LFs"] = np.zeros(shape=(mdata.n_vars, w.shape[1]))
-mdata.varm["LFs"][mdata.var["highly_variable"]] = w
 model.close()
 #end if
 
@@ -31,8 +30,6 @@ mdata.write("mofa_out.h5mu")
     </configfiles>
     <inputs>
         <param name="mofa_input" type="data" format="h5mu" label="RNA ATAC Multimodal Data Matrix"/>
-        <param name="first_mod_name" type="text" label="Name of the first modality" value="rna"/>
-        <param name="second_mod_name" type="text" label="Name of the second modality" value="atac"/>
         <conditional name="load_mofax_model">
             <param argument="load_mofax_model" type="select" label="Load a trained mofax model?" value="False" help="Set yes if you would like to load a trained mofax model as a hdf5 file, no to train one from scratch">
                     <option value="True">Yes</option>
@@ -45,55 +42,28 @@ mdata.write("mofa_out.h5mu")
                 <param name="mofa_n_factors" type="integer" label="Number of factors to train the MOFA model with" value="10" help="(n_factors in muon.tl.mofa()), ignored if loading trained model"/>
             </when>
         </conditional>
-        <param name="celltype_colors" type="text" label="Name of the color for each modality (Plotting)" value="celltype_colors" help="should be stored in mdata.uns[] for your MuData file"/>
-        <param name="first_mod_annotation_name" type="text" label="Cell type annotation color of first modality (Plotting)" value="celltype" help="(color in muon.pl.mofa())"/>
-        <param name="second_mod_annotation_name" type="text" label="Cell type annotation name of second modality (Plotting)" value="celltype" help="(color in muon.pl.mofa())"/>
-        <param name="mofa_plot_components" type="text" label="Components to plot (Plotting)" value="1,2 . 3,4" help="(components in muon.pl.mofa()), should be dot-separated"/>
     </inputs>
     <outputs>
         <data name="mofa_out" format="h5mu" label="MOFA MuData" from_work_dir="mofa_out.h5mu"/>
-<!--        <data name="umap_plot" format="png" label="MOFA UMAP Plot" from_work_dir="mofa_umap_plot.png"/>-->
-<!--        <data name="rna_mofa_annotations" format="png" label="RNA MOFA Annotations" from_work_dir="rna_mofa_annotation.png"/>-->
-<!--        <data name="atac_mofa_annotations" format="png" label="ATAC MOFA Annotations" from_work_dir="atac_mofa_annotation.png"/>-->
-        <condtional name="mofa_model_out">
-            <param name="load_mofax_model" type="select" label="Load a trained mofax model?" value="False"/>
-        <when value="false">
-            <data name="mofa_model_out" format="hdf5" label="MOFA Model" from_work_dir="models/mofa_model_out.hdf5"/>
-        </when>
-        </condtional>
+        <data name="mofa_model_out" format="hdf5" label="MOFA Model" from_work_dir="mofa_model_out.hdf5"/>
     </outputs>
     <tests>
         <test>
             <!--Test to train a MOFA model from scratch-->
-            <param name="rna_atac_input" value="rna_atac_import.h5mu"/>
-            <param name="mofa_n_factors" value="10"/>
-            <param name="first_mod_name" value="rna"/>
-            <param name="second_mod_name" value="atac"/>
+            <param name="mofa_input" value="rna_atac_input.h5mu"/>
             <param name="load_mofax_model" value="False"/>
-            <param name="celltype_colors" value="celltype_colors"/>
-            <param name="first_mod_annotation_name" value="celltype"/>
-            <param name="second_mod_annotation_name" value="celltype"/>
-            <param name="mofa_plot_components" value="1,2 . 3,4"/>
-            <output name="rna_atac_integration" file="rna_atac_integration.h5mu"/>
-            <output name="rna_atac_mofa_model" file="models/mofa_model.hdf5"/>
+            <param name="mofa_n_factors" value="10"/>
+            <output name="mofa_out" file="mofa_out.h5mu"/>
+            <output name="mofa_model_out" file="mofa_model_out.hdf5"/>
         </test>
-<!--        <test>-->
-            <!--Test to use an existing MOFA model-->
-<!--            <param name="rna_atac_input" value="rna_atac_import.h5mu"/>-->
-<!--            <param name="first_mod_name" value="rna"/>-->
-<!--            <param name="second_mod_name" value="atac"/>-->
-<!--            <param name="load_mofax_model" value="True"/>-->
-<!--            <param name="mofax_model" value="mofa_model.hdf5"/>-->
-<!--            <param name="mofa_n_factors" value="10"/>-->
-<!--            <param name="celltype_colors" value="celltype_colors"/>-->
-<!--            <param name="first_mod_annotation_name" value="celltype"/>-->
-<!--            <param name="second_mod_annotation_name" value="celltype"/>-->
-<!--            <param name="mofa_plot_components" value="1,2 . 3,4"/>-->
-<!--            <output name="rna_atac_integration" file="rna_atac_integration.h5mu"/>-->
-<!--            <output name="umap_plot" file="mofa_umap_plot.png"/>-->
-<!--            <output name="rna_mofa_annotations" file="rna_mofa_annotation.png"/>-->
-<!--            <output name="atac_mofa_annotations" file="atac_mofa_annotation.png"/>-->
-<!--        </test>-->
+        <test>
+<!--            Test to use an existing MOFA model-->
+            <param name="mofa_input" value="rna_atac_input.h5mu"/>
+            <param name="load_mofax_model" value="True"/>
+            <param name="mofax_model" value="mofa_model_out.hdf5"/>
+            <output name="mofa_out" file="mofa_out.h5mu"/>
+            <output name="mofa_model_out" file="mofa_model_out.hdf5"/>
+        </test>
     </tests>
     <help><![CDATA[
     **What it does**
