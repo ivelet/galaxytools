@@ -27,6 +27,9 @@ method = 't-test_overestim_var'
 mdata['$first_mod_name'].obs['$rank_genes_peaks_groupby'] = mdata.obs['$key_added']
 mdata['$second_mod_name'].obs['$rank_genes_peaks_groupby'] = mdata.obs['$key_added']
 
+mu.atac.tl.add_peak_annotation((mdata['$second_mod_name']), annotation='$atac_annotations')
+mdata['$second_mod_name'].uns['$second_mod_name'] = dict(mdata['$second_mod_name'].uns['$second_mod_name'])
+
 sc.tl.rank_genes_groups(mdata['$first_mod_name'], '$rank_genes_peaks_groupby', method=method)
 ac.tl.rank_peaks_groups(mdata['$second_mod_name'], '$rank_genes_peaks_groupby', method=method)
 result = {}
@@ -45,6 +48,7 @@ differential_list.to_csv('differentially_expressed_genes_accessible_peaks.csv')
     </configfiles>
     <inputs>
         <param name="rna_atac_input" type="data" format="h5mu" label="RNA ATAC Clustered Multimodal Data"/>
+        <param name="atac_annotations" type="data" format="tsv" label="ATAC peak annotations file" help="(.tsv)"/>
         <param argument="rank_genes_peaks_groupby" type="text" label="The key of the observations grouping to consider" value="leiden_joint"
                        help="(groupby in 'tl.rank_genes_groups')"/>
         <param argument="rank_genes_peaks_method" type="select" label="Method" help="(method in 'tl.rank_genes_groups')" value="t-test_overestim_var">
@@ -68,6 +72,7 @@ differential_list.to_csv('differentially_expressed_genes_accessible_peaks.csv')
     <tests>
         <test>
             <param name="rna_atac_input" value="rank_genes_and_peaks_muon_in.h5mu"/>
+            <param name="atac_annotations" value="atac_peak_annotation.tsv"/>
             <param name="rank_genes_peaks_groupby" value="leiden_joint"/>
             <param name="rank_genes_peaks_method" value="t-test_overestim_var"/>
             <param name="first_mod_name" value="rna"/>
