@@ -42,7 +42,7 @@ figure_clustering = sc.pl.umap(mdata,
     )
 figure_clustering.savefig("figure_clustering.png")
 
-mu_umap_color = '$mu_umap_color'.strip().split(",")
+mu_umap_color = str('$mu_umap_color').strip().split(",")
 figure_individual_features = mu.pl.umap(mdata,
     color=mu_umap_color,
     return_fig=True
@@ -92,11 +92,11 @@ mdata.write("rna_atac_mofa_clustering.h5mu")
             <param name="use_weights" value="True"/>
             <param name="n_iterations" value="-1" />
             <param name="sc_umap_legend_loc" value="on data"/>
-            <param name="mu_umap_color" value="[KLF4, chr9:107480158-107492721"/>
+            <param name="mu_umap_color" value="MIR1302-2HG"/>
             <output name="rna_atac_mofa_clustering" file="rna_atac_mofa_clustering.h5mu"/>
         </test>
         <test>
-            <!--Test for louvain clustering-->
+            <!--Test for louvain clustering-->a
             <param name="rna_atac_mofa_input" value="cluster_mofa_embeddings_with_mudata_in.h5mu"/>
             <param name="clustering_method" value="louvain"/>
             <param name="resolution" value="1"/>
@@ -104,7 +104,7 @@ mdata.write("rna_atac_mofa_clustering.h5mu")
             <param name="key_added"  value="louvain_joint"/>
             <param name="use_weights" value="True"/>
             <param name="sc_umap_legend_loc" value="on data"/>
-            <param name="mu_umap_color" value="MIR1302-2HG, chr1:180730-181630"/>
+            <param name="mu_umap_color" value="MIR1302-2HG"/>
             <output name="rna_atac_mofa_clustering" file="rna_atac_mofa_clustering.h5mu"/>
         </test>
     </tests>
