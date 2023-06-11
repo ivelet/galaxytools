@@ -138,7 +138,7 @@ mdata.write("mudata_with_preprocessing.h5mu")
         </test>
         <test>
             <!--Test for neighbors-->
-            <param name="mudata_input" value="preprocess_muon_in.h5mu"/>
+            <param name="mudata_input" value="preprocess_muon_neighbors_in.h5mu"/>
             <param name="method" value="neighbors"/>
             <param name="neighbors_n_neighbors" value="0"/>
             <param name="neighbors_n_multineighbors" value="200"/>
