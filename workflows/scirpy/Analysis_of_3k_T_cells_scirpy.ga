@@ -1,0 +1,2899 @@
+{
+    "a_galaxy_workflow": "true",
+    "annotation": "",
+    "format-version": "0.1",
+    "name": "Analysis of 3k T cells from Cancer Version 2.0 [complete with all tools untested]",
+    "steps": {
+        "0": {
+            "annotation": "",
+            "content_id": null,
+            "errors": null,
+            "id": 0,
+            "input_connections": {},
+            "inputs": [
+                {
+                    "description": "",
+                    "name": "wu2020_3k.h5ad"
+                }
+            ],
+            "label": "wu2020_3k.h5ad",
+            "name": "Input dataset",
+            "outputs": [],
+            "position": {
+                "left": 403.07812251851635,
+                "top": 3.5156156004408103
+            },
+            "tool_id": null,
+            "tool_state": "{\"optional\": false, \"tag\": \"\"}",
+            "tool_version": null,
+            "type": "data_input",
+            "uuid": "ebe284be-706d-4b5d-ba70-d15258711ed1",
+            "workflow_outputs": []
+        },
+        "1": {
+            "annotation": "",
+            "content_id": null,
+            "errors": null,
+            "id": 1,
+            "input_connections": {},
+            "inputs": [
+                {
+                    "description": "",
+                    "name": "vdjdb.h5ad"
+                }
+            ],
+            "label": "vdjdb.h5ad",
+            "name": "Input dataset",
+            "outputs": [],
+            "position": {
+                "left": 0.0,
+                "top": 2837.859378985413
+            },
+            "tool_id": null,
+            "tool_state": "{\"optional\": false, \"tag\": \"\"}",
+            "tool_version": null,
+            "type": "data_input",
+            "uuid": "699bd775-ef43-49da-8b0f-eb0ac2a709e5",
+            "workflow_outputs": []
+        },
+        "2": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_filter/scanpy_filter/1.7.1+galaxy0",
+            "errors": null,
+            "id": 2,
+            "input_connections": {
+                "adata": {
+                    "id": 0,
+                    "output_name": "output"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Filter",
+            "outputs": [
+                {
+                    "name": "anndata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 637.1250403053098,
+                "top": 10.359366953977315
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_filter/scanpy_filter/1.7.1+galaxy0",
+            "tool_shed_repository": {
+                "changeset_revision": "b409c2486353",
+                "name": "scanpy_filter",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"adata\": {\"__class__\": \"ConnectedValue\"}, \"advanced_common\": {\"show_log\": \"false\"}, \"method\": {\"method\": \"pp.filter_genes\", \"__current_case__\": 1, \"filter\": {\"filter\": \"min_cells\", \"__current_case__\": 2, \"min_cells\": \"10\"}}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "1.7.1+galaxy0",
+            "type": "tool",
+            "uuid": "27c966c1-1b3e-41ef-8766-dad9ce94ebbb",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "anndata_out",
+                    "uuid": "1e511954-ab99-46fc-b845-5456c754da5c"
+                }
+            ]
+        },
+        "3": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_filter/scanpy_filter/1.7.1+galaxy0",
+            "errors": null,
+            "id": 3,
+            "input_connections": {
+                "adata": {
+                    "id": 2,
+                    "output_name": "anndata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Filter",
+            "outputs": [
+                {
+                    "name": "anndata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 880.8125069180757,
+                "top": 18.953120713801013
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_filter/scanpy_filter/1.7.1+galaxy0",
+            "tool_shed_repository": {
+                "changeset_revision": "b409c2486353",
+                "name": "scanpy_filter",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"adata\": {\"__class__\": \"ConnectedValue\"}, \"advanced_common\": {\"show_log\": \"false\"}, \"method\": {\"method\": \"pp.filter_cells\", \"__current_case__\": 0, \"filter\": {\"filter\": \"min_genes\", \"__current_case__\": 2, \"min_genes\": \"100\"}}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "1.7.1+galaxy0",
+            "type": "tool",
+            "uuid": "c44c71d3-be87-4447-b548-e5da95266d37",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "anndata_out",
+                    "uuid": "c7b0da03-6512-49bb-a27e-400a0f89a633"
+                }
+            ]
+        },
+        "4": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_normalize/scanpy_normalize/1.7.1+galaxy0",
+            "errors": null,
+            "id": 4,
+            "input_connections": {
+                "adata": {
+                    "id": 3,
+                    "output_name": "anndata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Normalize",
+            "outputs": [
+                {
+                    "name": "anndata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 1122.5780719864865,
+                "top": 0.0
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_normalize/scanpy_normalize/1.7.1+galaxy0",
+            "tool_shed_repository": {
+                "changeset_revision": "ab55fe8030b6",
+                "name": "scanpy_normalize",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"adata\": {\"__class__\": \"ConnectedValue\"}, \"advanced_common\": {\"show_log\": \"false\"}, \"method\": {\"method\": \"pp.normalize_total\", \"__current_case__\": 0, \"target_sum\": \"1000.0\", \"exclude_highly_expressed\": {\"exclude_highly_expressed\": \"False\", \"__current_case__\": 1}, \"key_added\": \"\", \"layers\": \"\", \"layer_norm\": \"None\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "1.7.1+galaxy0",
+            "type": "tool",
+            "uuid": "df5ecaaf-82fb-4ce5-9b95-80c6bcb86106",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "anndata_out",
+                    "uuid": "2d7e0162-5d3e-4dbc-bccb-a0d1594a9205"
+                }
+            ]
+        },
+        "5": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_inspect/scanpy_inspect/1.7.1+galaxy0",
+            "errors": null,
+            "id": 5,
+            "input_connections": {
+                "adata": {
+                    "id": 4,
+                    "output_name": "anndata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Inspect and manipulate",
+            "outputs": [
+                {
+                    "name": "anndata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 1367.4375207542266,
+                "top": 0.0
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_inspect/scanpy_inspect/1.7.1+galaxy0",
+            "tool_shed_repository": {
+                "changeset_revision": "c5d3684f7c4c",
+                "name": "scanpy_inspect",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"adata\": {\"__class__\": \"ConnectedValue\"}, \"advanced_common\": {\"show_log\": \"false\"}, \"method\": {\"method\": \"pp.log1p\", \"__current_case__\": 5}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "1.7.1+galaxy0",
+            "type": "tool",
+            "uuid": "5c58998b-7703-430e-9bc7-b7c774045eb8",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "anndata_out",
+                    "uuid": "2d319911-bbc0-438f-a662-c49b29ffca73"
+                }
+            ]
+        },
+        "6": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_filter/scanpy_filter/1.7.1+galaxy0",
+            "errors": null,
+            "id": 6,
+            "input_connections": {
+                "adata": {
+                    "id": 5,
+                    "output_name": "anndata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Filter",
+            "outputs": [
+                {
+                    "name": "anndata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 1616.0780888304962,
+                "top": 5.51563124130729
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_filter/scanpy_filter/1.7.1+galaxy0",
+            "tool_shed_repository": {
+                "changeset_revision": "b409c2486353",
+                "name": "scanpy_filter",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"adata\": {\"__class__\": \"ConnectedValue\"}, \"advanced_common\": {\"show_log\": \"false\"}, \"method\": {\"method\": \"pp.highly_variable_genes\", \"__current_case__\": 3, \"flavor\": {\"flavor\": \"cell_ranger\", \"__current_case__\": 1, \"n_top_genes\": \"5000\"}, \"n_bins\": \"20\", \"subset\": \"false\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "1.7.1+galaxy0",
+            "type": "tool",
+            "uuid": "9881e237-8b74-4a8b-b54b-cdd6c8483db9",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "anndata_out",
+                    "uuid": "3019d567-12b9-4416-9dfb-36160fd72305"
+                }
+            ]
+        },
+        "7": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_cluster_reduce_dimension/scanpy_cluster_reduce_dimension/1.7.1+galaxy0",
+            "errors": null,
+            "id": 7,
+            "input_connections": {
+                "adata": {
+                    "id": 6,
+                    "output_name": "anndata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Cluster, infer trajectories and embed",
+            "outputs": [
+                {
+                    "name": "anndata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 1852.9687567676829,
+                "top": 10.359366953977315
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_cluster_reduce_dimension/scanpy_cluster_reduce_dimension/1.7.1+galaxy0",
+            "tool_shed_repository": {
+                "changeset_revision": "aaa5da8e73a9",
+                "name": "scanpy_cluster_reduce_dimension",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"adata\": {\"__class__\": \"ConnectedValue\"}, \"advanced_common\": {\"show_log\": \"false\"}, \"method\": {\"method\": \"tl.pca\", \"__current_case__\": 3, \"n_comps\": \"50\", \"dtype\": \"float32\", \"pca\": {\"chunked\": \"False\", \"__current_case__\": 1, \"zero_center\": \"true\", \"svd_solver\": \"auto\", \"random_state\": \"0\"}, \"use_highly_variable\": \"false\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "1.7.1+galaxy0",
+            "type": "tool",
+            "uuid": "8b7557e7-4da2-4719-8fa0-92329b453bbc",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "anndata_out",
+                    "uuid": "eb3e8a20-988a-45a6-b675-5f6f91a73c04"
+                }
+            ]
+        },
+        "8": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_inspect/scanpy_inspect/1.7.1+galaxy0",
+            "errors": null,
+            "id": 8,
+            "input_connections": {
+                "adata": {
+                    "id": 7,
+                    "output_name": "anndata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Inspect and manipulate",
+            "outputs": [
+                {
+                    "name": "anndata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 2094.4687880494157,
+                "top": 8.46874714253397
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_inspect/scanpy_inspect/1.7.1+galaxy0",
+            "tool_shed_repository": {
+                "changeset_revision": "c5d3684f7c4c",
+                "name": "scanpy_inspect",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"adata\": {\"__class__\": \"ConnectedValue\"}, \"advanced_common\": {\"show_log\": \"false\"}, \"method\": {\"method\": \"pp.neighbors\", \"__current_case__\": 1, \"n_neighbors\": \"15\", \"n_pcs\": null, \"use_rep\": \"\", \"knn\": \"true\", \"random_state\": \"0\", \"pp_neighbors_method\": \"umap\", \"metric\": \"euclidean\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "1.7.1+galaxy0",
+            "type": "tool",
+            "uuid": "05a591b3-14ae-455c-82ce-20e92a46d27c",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "anndata_out",
+                    "uuid": "745a7e51-7572-47d3-9df2-d6f8f8b2b88e"
+                }
+            ]
+        },
+        "9": {
+            "annotation": "",
+            "content_id": "add_cluster_mappings_anndata",
+            "errors": null,
+            "id": 9,
+            "input_connections": {
+                "mapping_adata": {
+                    "id": 8,
+                    "output_name": "anndata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Add cluster mappings to AnnData",
+            "outputs": [
+                {
+                    "name": "adata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 2333.343800682423,
+                "top": 8.46874714253397
+            },
+            "post_job_actions": {},
+            "tool_id": "add_cluster_mappings_anndata",
+            "tool_state": "{\"mapping_adata\": {\"__class__\": \"ConnectedValue\"}, \"mapping_keys\": \"nan,3.1-MT,4.1-Trm,4.2-RPL32,4.3-TCF7,4.4-FOS,4.5-IL6ST,4.6a-Treg,4.6b-Treg,8.1-Teff,8.2-Tem,8.3a-Trm,8.3b-Trm,8.3c-Trm,8.4-Chrom,8.5-Mitosis,8.6-KLRB1\", \"mapping_values\": \"other,other,CD4_Trm,CD4_RPL32,CD4_TCF7,CD4_FOSS,CD4_IL6ST,CD4_Treg,CD4_Treg,CD8_Teff,CD8_Tem,CD8_Trm,CD8_Trm, CD8_Trm, other, other, other\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "dbf4430d-3ee2-4016-937c-32c4105d97a3",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "adata_out",
+                    "uuid": "d619d565-2de8-485b-afdd-8179189f6dc7"
+                }
+            ]
+        },
+        "10": {
+            "annotation": "",
+            "content_id": "tools_scirpy",
+            "errors": null,
+            "id": 10,
+            "input_connections": {
+                "method|tl_chain_qc_adata": {
+                    "id": 9,
+                    "output_name": "adata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Define, Analyze, Process and Query Clonotypes and Clonal Diversity with Scirpy",
+            "outputs": [
+                {
+                    "name": "tl_adata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 382.4062510527507,
+                "top": 216.4218871066322
+            },
+            "post_job_actions": {},
+            "tool_id": "tools_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"tl_chain_qc\", \"__current_case__\": 1, \"tl_chain_qc_adata\": {\"__class__\": \"ConnectedValue\"}, \"tl_chain_qc_receptor_type\": \"TCR\", \"tl_chain_qc_receptor_subtype\": \"TRA+TRB\", \"tl_chain_qc_chain_pairing\": \"single pair\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "22411e5c-0edb-4812-bb85-c088ece95628",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "tl_adata_out",
+                    "uuid": "7e39da30-ef6e-4db2-8287-9332f5e78af6"
+                }
+            ]
+        },
+        "11": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_plot/scanpy_plot/1.7.1+galaxy1",
+            "errors": null,
+            "id": 11,
+            "input_connections": {
+                "adata": {
+                    "id": 9,
+                    "output_name": "adata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Plot",
+            "outputs": [
+                {
+                    "name": "out_png",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 2619.8281670348288,
+                "top": 3.6718738720528563
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_plot/scanpy_plot/1.7.1+galaxy1",
+            "tool_shed_repository": {
+                "changeset_revision": "aa0c474463c2",
+                "name": "scanpy_plot",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"adata\": {\"__class__\": \"ConnectedValue\"}, \"advanced_common\": {\"show_log\": \"false\"}, \"format\": \"png\", \"method\": {\"method\": \"pl.umap\", \"__current_case__\": 14, \"color\": \"sample,patient,cluster,CD8A,CD4,F0XP3\", \"use_raw\": \"false\", \"edges\": {\"edges\": \"False\", \"__current_case__\": 1}, \"arrows\": \"false\", \"sort_order\": \"true\", \"groups\": \"\", \"plot\": {\"components\": [], \"projection\": \"2d\", \"legend_loc\": \"right margin\", \"legend_fontsize\": null, \"legend_fontweight\": \"normal\", \"size\": null, \"color_map\": \"None\", \"palette\": \"default\", \"frameon\": \"true\", \"ncols\": \"2\", \"wspace\": \"0.7\", \"hspace\": \"0.25\", \"title\": \"\"}, \"matplotlib_pyplot_scatter\": {\"alpha\": null, \"vmin\": null, \"vmax\": null, \"linewidths\": \"0.0\", \"edgecolors\": \"face\"}}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "1.7.1+galaxy1",
+            "type": "tool",
+            "uuid": "6cbd3f38-bbba-4eda-83d7-44d8b443d40e",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "out_png",
+                    "uuid": "2ad23bf2-01ff-4460-bf3a-e0f5a2a6f3f7"
+                }
+            ]
+        },
+        "12": {
+            "annotation": "",
+            "content_id": "plot_scirpy",
+            "errors": null,
+            "id": 12,
+            "input_connections": {
+                "method|group_abundance_adata": {
+                    "id": 10,
+                    "output_name": "tl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Plot with Scirpy",
+            "outputs": [
+                {
+                    "name": "pl_adata_out",
+                    "type": "h5ad"
+                },
+                {
+                    "name": "pl_fig_out",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 667.1094235017252,
+                "top": 201.0624960897834
+            },
+            "post_job_actions": {},
+            "tool_id": "plot_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"pl_group_abundance\", \"__current_case__\": 3, \"group_abundance_adata\": {\"__class__\": \"ConnectedValue\"}, \"group_abundance_groupby\": \"receptor_subtype\", \"group_abundance_target_col\": \"source\", \"group_abundance_normalize\": \"True\", \"group_abundance_max_cols\": \"0\", \"group_abundance_sort\": \"count\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "3d894925-4310-409c-9e84-1ae6503b647b",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "pl_adata_out",
+                    "uuid": "a4ac22af-2806-4a09-bda3-f095b1bdc3d7"
+                },
+                {
+                    "label": null,
+                    "output_name": "pl_fig_out",
+                    "uuid": "1d14b31b-c789-4f50-8839-2bb1e201cd40"
+                }
+            ]
+        },
+        "13": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_plot/scanpy_plot/1.7.1+galaxy1",
+            "errors": null,
+            "id": 13,
+            "input_connections": {
+                "adata": {
+                    "id": 10,
+                    "output_name": "tl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Plot",
+            "outputs": [
+                {
+                    "name": "out_png",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 896.0156697419017,
+                "top": 206.7812480448917
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_plot/scanpy_plot/1.7.1+galaxy1",
+            "tool_shed_repository": {
+                "changeset_revision": "aa0c474463c2",
+                "name": "scanpy_plot",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"adata\": {\"__class__\": \"ConnectedValue\"}, \"advanced_common\": {\"show_log\": \"false\"}, \"format\": \"png\", \"method\": {\"method\": \"pl.umap\", \"__current_case__\": 14, \"color\": \"chain_pairing\", \"use_raw\": \"false\", \"edges\": {\"edges\": \"False\", \"__current_case__\": 1}, \"arrows\": \"false\", \"sort_order\": \"true\", \"groups\": \"multichain\", \"plot\": {\"components\": [], \"projection\": \"2d\", \"legend_loc\": \"right margin\", \"legend_fontsize\": null, \"legend_fontweight\": \"normal\", \"size\": null, \"color_map\": \"None\", \"palette\": \"default\", \"frameon\": \"true\", \"ncols\": \"4\", \"wspace\": \"0.1\", \"hspace\": \"0.25\", \"title\": \"\"}, \"matplotlib_pyplot_scatter\": {\"alpha\": null, \"vmin\": null, \"vmax\": null, \"linewidths\": \"0.0\", \"edgecolors\": \"face\"}}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "1.7.1+galaxy1",
+            "type": "tool",
+            "uuid": "5c40a80a-a104-4865-85da-e36c4bc150a5",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "out_png",
+                    "uuid": "0e5efb40-0089-436c-b428-bfde34eea50b"
+                }
+            ]
+        },
+        "14": {
+            "annotation": "",
+            "content_id": "filter_anndata",
+            "errors": null,
+            "id": 14,
+            "input_connections": {
+                "adata_in": {
+                    "id": 12,
+                    "output_name": "pl_adata_out"
+                }
+            },
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool Filter Observations in AnnData",
+                    "name": "adata_in"
+                }
+            ],
+            "label": null,
+            "name": "Filter Observations in AnnData",
+            "outputs": [
+                {
+                    "name": "adata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 1157.0156504916044,
+                "top": 220.14062342087402
+            },
+            "post_job_actions": {},
+            "tool_id": "filter_anndata",
+            "tool_state": "{\"adata_in\": {\"__class__\": \"RuntimeValue\"}, \"filter_key\": \"chain_pairing\", \"filter_type\": \"not_equal_to\", \"filter_value\": \"multichain\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "6b291f84-312c-4e25-bb4e-56376688442e",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "adata_out",
+                    "uuid": "f4715fc9-59bc-48c9-b4c3-a3f966872640"
+                }
+            ]
+        },
+        "15": {
+            "annotation": "",
+            "content_id": "filter_anndata",
+            "errors": null,
+            "id": 15,
+            "input_connections": {
+                "adata_in": {
+                    "id": 14,
+                    "output_name": "adata_out"
+                }
+            },
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool Filter Observations in AnnData",
+                    "name": "adata_in"
+                }
+            ],
+            "label": null,
+            "name": "Filter Observations in AnnData",
+            "outputs": [
+                {
+                    "name": "adata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 1411.265634850738,
+                "top": 222.46876639283118
+            },
+            "post_job_actions": {
+                "HideDatasetActionadata_out": {
+                    "action_arguments": {},
+                    "action_type": "HideDatasetAction",
+                    "output_name": "adata_out"
+                }
+            },
+            "tool_id": "filter_anndata",
+            "tool_state": "{\"adata_in\": {\"__class__\": \"RuntimeValue\"}, \"filter_key\": \"chain_pairing\", \"filter_type\": \"is_in\", \"filter_value\": \"orphan VDJ, orphan VJ\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "6db37fa1-b323-4a04-a05e-8e96063652cf",
+            "workflow_outputs": []
+        },
+        "16": {
+            "annotation": "",
+            "content_id": "plot_scirpy",
+            "errors": null,
+            "id": 16,
+            "input_connections": {
+                "method|group_abundance_adata": {
+                    "id": 15,
+                    "output_name": "adata_out"
+                }
+            },
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool Plot with Scirpy",
+                    "name": "method"
+                }
+            ],
+            "label": null,
+            "name": "Plot with Scirpy",
+            "outputs": [
+                {
+                    "name": "pl_adata_out",
+                    "type": "h5ad"
+                },
+                {
+                    "name": "pl_fig_out",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 1674.1563557262416,
+                "top": 240.4999783434157
+            },
+            "post_job_actions": {},
+            "tool_id": "plot_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"pl_group_abundance\", \"__current_case__\": 3, \"group_abundance_adata\": {\"__class__\": \"RuntimeValue\"}, \"group_abundance_groupby\": \"chain_pairing\", \"group_abundance_target_col\": \"source\", \"group_abundance_normalize\": \"True\", \"group_abundance_max_cols\": \"0\", \"group_abundance_sort\": \"count\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "5d6ce14f-045b-45c4-8f95-6607b99034ab",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "pl_adata_out",
+                    "uuid": "69532b3b-4c05-46ae-af62-970092b191d0"
+                },
+                {
+                    "label": null,
+                    "output_name": "pl_fig_out",
+                    "uuid": "57f2dba1-1c44-4960-9753-df616b322276"
+                }
+            ]
+        },
+        "17": {
+            "annotation": "",
+            "content_id": "preprocess_scirpy",
+            "errors": null,
+            "id": 17,
+            "input_connections": {
+                "method|ir_dist_adata": {
+                    "id": 16,
+                    "output_name": "pl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Preprocess with Scirpy",
+            "outputs": [
+                {
+                    "name": "pp_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 370.43749909764233,
+                "top": 547.6249945858539
+            },
+            "post_job_actions": {},
+            "tool_id": "preprocess_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"pp_ir_dist\", \"__current_case__\": 2, \"ir_dist_adata\": {\"__class__\": \"ConnectedValue\"}, \"reference\": {\"reference\": \"False\", \"__current_case__\": 1}, \"metric\": \"alignment\", \"cutoff\": \"0\", \"sequence\": \"nt\", \"key_added\": \"custom\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "c88b9f45-5dff-40cf-b168-b9202e64b592",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "pp_out",
+                    "uuid": "31c9dd19-2df4-4e94-a22e-bc35fbf2bebc"
+                }
+            ]
+        },
+        "18": {
+            "annotation": "",
+            "content_id": "tools_scirpy",
+            "errors": null,
+            "id": 18,
+            "input_connections": {
+                "method|tl_define_clonotypes_adata": {
+                    "id": 17,
+                    "output_name": "pp_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Define, Analyze, Process and Query Clonotypes and Clonal Diversity with Scirpy",
+            "outputs": [
+                {
+                    "name": "tl_adata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 635.6406017642897,
+                "top": 518.593741728388
+            },
+            "post_job_actions": {},
+            "tool_id": "tools_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"tl_define_clonotypes\", \"__current_case__\": 2, \"tl_define_clonotypes_adata\": {\"__class__\": \"ConnectedValue\"}, \"tl_define_clonotypes_receptor_arms\": \"all\", \"tl_define_clonotypes_dual_ir\": \"primary_only\", \"tl_define_clonotypes_within_group\": \"receptor_type\", \"tl_define_clonotypes_key_added\": \"clone_id\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "63488165-8ea4-4d32-9c8c-5d9f54f0660e",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "tl_adata_out",
+                    "uuid": "745bc9a5-d21f-42d3-8061-64109f812131"
+                }
+            ]
+        },
+        "19": {
+            "annotation": "",
+            "content_id": "tools_scirpy",
+            "errors": null,
+            "id": 19,
+            "input_connections": {
+                "method|tl_clonotype_network_adata": {
+                    "id": 18,
+                    "output_name": "tl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Define, Analyze, Process and Query Clonotypes and Clonal Diversity with Scirpy",
+            "outputs": [
+                {
+                    "name": "tl_adata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 874.4218895129194,
+                "top": 501.9374822536323
+            },
+            "post_job_actions": {},
+            "tool_id": "tools_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"tl_clonotype_network\", \"__current_case__\": 5, \"tl_clonotype_network_adata\": {\"__class__\": \"ConnectedValue\"}, \"tl_clonotype_network_sequence\": \"nt\", \"tl_clonotype_network_metric\": \"identity\", \"tl_clonotype_network_min_cells\": \"2\", \"tl_clonotype_network_min_nodes\": \"1\", \"tl_clonotype_network_layout\": \"components\", \"tl_clonotype_network_size_aware\": \"False\", \"tl_clonotype_network_size_power\": \"1.0\", \"tl_clonotype_network_key_added\": \"clonotype_network\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "1872a944-c9ae-4f26-8b6a-dce53b022819",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "tl_adata_out",
+                    "uuid": "b7d8ec3e-e233-46ee-95c4-110dd128c2c2"
+                }
+            ]
+        },
+        "20": {
+            "annotation": "",
+            "content_id": "plot_scirpy",
+            "errors": null,
+            "id": 20,
+            "input_connections": {
+                "method|clonotype_network_adata": {
+                    "id": 19,
+                    "output_name": "tl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Plot with Scirpy",
+            "outputs": [
+                {
+                    "name": "pl_adata_out",
+                    "type": "h5ad"
+                },
+                {
+                    "name": "pl_fig_out",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 1112.3905740919877,
+                "top": 505.1093898137052
+            },
+            "post_job_actions": {},
+            "tool_id": "plot_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"pl_clonotype_network\", \"__current_case__\": 8, \"clonotype_network_adata\": {\"__class__\": \"ConnectedValue\"}, \"clonotype_network_color\": \"source\", \"clonotype_network_basis\": \"clonotype_network\", \"clonotype_network_panel_size\": \"7,7\", \"clonotype_network_color_by_n_cells\": \"False\", \"clonotype_network_scale_by_n_cells\": \"True\", \"clonotype_network_show_labels\": \"True\", \"clonotype_network_label_fontweight\": \"bold\", \"clonotype_network_label_fontoutline\": \"3\", \"clonotype_network_label_alpha\": \"0.6\", \"clonotype_network_label_y_offset\": \"2.0\", \"clonotype_network_show_legend\": \"True\", \"clonotype_network_edges\": \"True\", \"clonotype_network_edges_width\": \"0.4\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "d9602903-5ba2-400e-a074-f7058144d986",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "pl_adata_out",
+                    "uuid": "5eab2d2f-c330-45aa-9c30-f7b40b2c8ca8"
+                },
+                {
+                    "label": null,
+                    "output_name": "pl_fig_out",
+                    "uuid": "c73b8248-1f40-4fd1-b358-1d80bceefbe3"
+                }
+            ]
+        },
+        "21": {
+            "annotation": "",
+            "content_id": "preprocess_scirpy",
+            "errors": null,
+            "id": 21,
+            "input_connections": {
+                "method|ir_dist_adata": {
+                    "id": 20,
+                    "output_name": "pl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Preprocess with Scirpy",
+            "outputs": [
+                {
+                    "name": "pp_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 634.7031122917961,
+                "top": 783.4219448575237
+            },
+            "post_job_actions": {},
+            "tool_id": "preprocess_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"pp_ir_dist\", \"__current_case__\": 2, \"ir_dist_adata\": {\"__class__\": \"ConnectedValue\"}, \"reference\": {\"reference\": \"False\", \"__current_case__\": 1}, \"metric\": \"alignment\", \"cutoff\": \"15\", \"sequence\": \"aa\", \"key_added\": \"custom\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "c8636777-4141-4e01-a341-54d4b57ddaab",
+            "workflow_outputs": [
+                {
+                    "label": "Preprocess with Scirpy (pp_merge_with_ir) on input dataset(s)",
+                    "output_name": "pp_out",
+                    "uuid": "c6c6d983-9dcd-4210-95ae-ab817568857d"
+                }
+            ]
+        },
+        "22": {
+            "annotation": "",
+            "content_id": "tools_scirpy",
+            "errors": null,
+            "id": 22,
+            "input_connections": {
+                "method|tl_define_clonotype_clusters_adata": {
+                    "id": 21,
+                    "output_name": "pp_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Define, Analyze, Process and Query Clonotypes and Clonal Diversity with Scirpy",
+            "outputs": [
+                {
+                    "name": "tl_adata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 898.7813358743725,
+                "top": 777.3905861234233
+            },
+            "post_job_actions": {},
+            "tool_id": "tools_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"tl_define_clonotype_clusters\", \"__current_case__\": 3, \"tl_define_clonotype_clusters_adata\": {\"__class__\": \"ConnectedValue\"}, \"tl_define_clonotype_clusters_sequence\": \"aa\", \"tl_define_clonotype_clusters_metric\": \"alignment\", \"tl_define_clonotype_clusters_receptor_arms\": \"all\", \"tl_define_clonotype_clusters_dual_ir\": \"any\", \"tl_define_clonotype_clusters_same_v_gene\": \"False\", \"tl_define_clonotype_clusters_within_group\": \"receptor_type\", \"tl_define_clonotype_clusters_key_added\": \"cc_aa_alignment\", \"tl_define_clonotype_clusters_partitions\": \"leiden\", \"tl_define_clonotype_clusters_resolution\": \"1\", \"tl_define_clonotype_clusters_n_iterations\": \"5\", \"tl_define_clonotype_clusters_distance_key\": \"ir_dist_alignment\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "72d15b0d-8810-47d2-b34d-3d5b2bd0ef71",
+            "workflow_outputs": [
+                {
+                    "label": "Define, Analyze, Process and Query Clonotypes and Clonal Diversity with Scirpy (tl_group_abundance) on input dataset(s)",
+                    "output_name": "tl_adata_out",
+                    "uuid": "87112e93-0a03-4865-8684-64c2c0cf564a"
+                }
+            ]
+        },
+        "23": {
+            "annotation": "",
+            "content_id": "tools_scirpy",
+            "errors": null,
+            "id": 23,
+            "input_connections": {
+                "method|tl_clonotype_network_adata": {
+                    "id": 22,
+                    "output_name": "tl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Define, Analyze, Process and Query Clonotypes and Clonal Diversity with Scirpy",
+            "outputs": [
+                {
+                    "name": "tl_adata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 1168.7343892121335,
+                "top": 778.7500180471537
+            },
+            "post_job_actions": {},
+            "tool_id": "tools_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"tl_clonotype_network\", \"__current_case__\": 5, \"tl_clonotype_network_adata\": {\"__class__\": \"ConnectedValue\"}, \"tl_clonotype_network_sequence\": \"aa\", \"tl_clonotype_network_metric\": \"identity\", \"tl_clonotype_network_min_cells\": \"1\", \"tl_clonotype_network_min_nodes\": \"1\", \"tl_clonotype_network_layout\": \"components\", \"tl_clonotype_network_size_aware\": \"False\", \"tl_clonotype_network_size_power\": \"1.0\", \"tl_clonotype_network_key_added\": \"clonotype_network\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "47fce43c-642b-42fb-bf2c-0923c95d5ebd",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "tl_adata_out",
+                    "uuid": "497401ba-bf06-4192-a0c3-423bbbcd9d4a"
+                }
+            ]
+        },
+        "24": {
+            "annotation": "",
+            "content_id": "plot_scirpy",
+            "errors": null,
+            "id": 24,
+            "input_connections": {
+                "method|clonotype_network_adata": {
+                    "id": 23,
+                    "output_name": "tl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Plot with Scirpy",
+            "outputs": [
+                {
+                    "name": "pl_adata_out",
+                    "type": "h5ad"
+                },
+                {
+                    "name": "pl_fig_out",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 1420.6562907564885,
+                "top": 785.1717968708641
+            },
+            "post_job_actions": {},
+            "tool_id": "plot_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"pl_clonotype_network\", \"__current_case__\": 8, \"clonotype_network_adata\": {\"__class__\": \"ConnectedValue\"}, \"clonotype_network_color\": \"patient\", \"clonotype_network_basis\": \"clonotype_network\", \"clonotype_network_panel_size\": \"7, 7\", \"clonotype_network_color_by_n_cells\": \"False\", \"clonotype_network_scale_by_n_cells\": \"True\", \"clonotype_network_show_labels\": \"True\", \"clonotype_network_label_fontweight\": \"bold\", \"clonotype_network_label_fontoutline\": \"3\", \"clonotype_network_label_alpha\": \"0.6\", \"clonotype_network_label_y_offset\": \"2.0\", \"clonotype_network_show_legend\": \"True\", \"clonotype_network_edges\": \"True\", \"clonotype_network_edges_width\": \"0.4\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "2355bcf2-3bef-4e5e-8b8d-4c70a7edb418",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "pl_adata_out",
+                    "uuid": "4da00811-71ca-4227-817a-2bf7cf823c46"
+                },
+                {
+                    "label": null,
+                    "output_name": "pl_fig_out",
+                    "uuid": "461b1c6c-9261-4dba-adc2-7c56ab559391"
+                }
+            ]
+        },
+        "25": {
+            "annotation": "",
+            "content_id": "tools_scirpy",
+            "errors": null,
+            "id": 25,
+            "input_connections": {
+                "method|tl_define_clonotype_clusters_adata": {
+                    "id": 24,
+                    "output_name": "pl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Define, Analyze, Process and Query Clonotypes and Clonal Diversity with Scirpy",
+            "outputs": [
+                {
+                    "name": "tl_adata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 1929.359470424325,
+                "top": 787.8437381189573
+            },
+            "post_job_actions": {},
+            "tool_id": "tools_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"tl_define_clonotype_clusters\", \"__current_case__\": 3, \"tl_define_clonotype_clusters_adata\": {\"__class__\": \"ConnectedValue\"}, \"tl_define_clonotype_clusters_sequence\": \"aa\", \"tl_define_clonotype_clusters_metric\": \"alignment\", \"tl_define_clonotype_clusters_receptor_arms\": \"all\", \"tl_define_clonotype_clusters_dual_ir\": \"any\", \"tl_define_clonotype_clusters_same_v_gene\": \"True\", \"tl_define_clonotype_clusters_within_group\": \"receptor_type\", \"tl_define_clonotype_clusters_key_added\": \"cc_aa_alignment_same_v\", \"tl_define_clonotype_clusters_partitions\": \"leiden\", \"tl_define_clonotype_clusters_resolution\": \"1\", \"tl_define_clonotype_clusters_n_iterations\": \"5\", \"tl_define_clonotype_clusters_distance_key\": \"ir_dist_alignment\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "dba8a54d-afba-4f34-86e6-74692a3c47ce",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "tl_adata_out",
+                    "uuid": "9cbe81a2-124a-42f3-b4fa-9e4abfed3be6"
+                }
+            ]
+        },
+        "26": {
+            "annotation": "",
+            "content_id": "include_v_gene_clonotype_definition",
+            "errors": null,
+            "id": 26,
+            "input_connections": {
+                "adata_in": {
+                    "id": 25,
+                    "output_name": "tl_adata_out"
+                }
+            },
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool Include V-gene in clonotype definition",
+                    "name": "adata_in"
+                }
+            ],
+            "label": null,
+            "name": "Include V-gene in clonotype definition",
+            "outputs": [
+                {
+                    "name": "adata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 2194.9218919192067,
+                "top": 792.6874738316272
+            },
+            "post_job_actions": {},
+            "tool_id": "include_v_gene_clonotype_definition",
+            "tool_state": "{\"adata_in\": {\"__class__\": \"RuntimeValue\"}, \"groupby\": \"cc_aa_alignment\", \"key_added\": \"cc_aa_alignment_same_v\", \"list\": \"cc_aa_alignment, cc_aa_alignment_same_v, IR_VJ_1_v_call, IR_VDJ_1_v_call\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "b194b42a-c48a-458d-8938-167d958656b3",
+            "workflow_outputs": [
+                {
+                    "label": "Filter Observations in AnnData on input dataset(s)",
+                    "output_name": "adata_out",
+                    "uuid": "667fbe3c-1c74-4aa4-a86c-4d7bc856ec80"
+                }
+            ]
+        },
+        "27": {
+            "annotation": "",
+            "content_id": "tools_scirpy",
+            "errors": null,
+            "id": 27,
+            "input_connections": {
+                "method|tl_clonal_expansion_adata": {
+                    "id": 26,
+                    "output_name": "adata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Define, Analyze, Process and Query Clonotypes and Clonal Diversity with Scirpy",
+            "outputs": [
+                {
+                    "name": "tl_adata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 350.5937513535365,
+                "top": 1029.8437958698487
+            },
+            "post_job_actions": {},
+            "tool_id": "tools_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"tl_clonal_expansion\", \"__current_case__\": 7, \"tl_clonal_expansion_adata\": {\"__class__\": \"ConnectedValue\"}, \"tl_clonal_expansion_target_col\": \"clone_id\", \"tl_clonal_expansion_clip_at\": \"3\", \"tl_clonal_expansion_key_added\": \"clonal_expansion\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "ace033e8-fd65-46e4-9aa5-31bdb00c47a6",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "tl_adata_out",
+                    "uuid": "61aadcfb-6569-4e0f-a0e3-8a1b8d6c8854"
+                }
+            ]
+        },
+        "28": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_plot/scanpy_plot/1.7.1+galaxy1",
+            "errors": null,
+            "id": 28,
+            "input_connections": {
+                "adata": {
+                    "id": 27,
+                    "output_name": "tl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Plot",
+            "outputs": [
+                {
+                    "name": "out_png",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 597.5625514343878,
+                "top": 1035.1406354523097
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_plot/scanpy_plot/1.7.1+galaxy1",
+            "tool_shed_repository": {
+                "changeset_revision": "aa0c474463c2",
+                "name": "scanpy_plot",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"adata\": {\"__class__\": \"ConnectedValue\"}, \"advanced_common\": {\"show_log\": \"false\"}, \"format\": \"png\", \"method\": {\"method\": \"pl.umap\", \"__current_case__\": 14, \"color\": \"clonal_expansion, clone_id_size\", \"use_raw\": \"false\", \"edges\": {\"edges\": \"False\", \"__current_case__\": 1}, \"arrows\": \"false\", \"sort_order\": \"true\", \"groups\": \"\", \"plot\": {\"components\": [], \"projection\": \"2d\", \"legend_loc\": \"right margin\", \"legend_fontsize\": null, \"legend_fontweight\": \"normal\", \"size\": null, \"color_map\": \"None\", \"palette\": \"default\", \"frameon\": \"true\", \"ncols\": \"4\", \"wspace\": \"0.1\", \"hspace\": \"0.25\", \"title\": \"\"}, \"matplotlib_pyplot_scatter\": {\"alpha\": null, \"vmin\": null, \"vmax\": null, \"linewidths\": \"0.0\", \"edgecolors\": \"face\"}}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "1.7.1+galaxy1",
+            "type": "tool",
+            "uuid": "40512af1-fe05-4d34-b110-74f231cf12fd",
+            "workflow_outputs": [
+                {
+                    "label": "Plot (pl.scatter) on input dataset(s)",
+                    "output_name": "out_png",
+                    "uuid": "8e094b52-42b7-44ce-ad4d-8e95876e108e"
+                }
+            ]
+        },
+        "29": {
+            "annotation": "",
+            "content_id": "plot_scirpy",
+            "errors": null,
+            "id": 29,
+            "input_connections": {
+                "method|clonal_expansion_adata": {
+                    "id": 27,
+                    "output_name": "tl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Plot with Scirpy",
+            "outputs": [
+                {
+                    "name": "pl_adata_out",
+                    "type": "h5ad"
+                },
+                {
+                    "name": "pl_fig_out",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 853.125045117884,
+                "top": 1042.9374870662068
+            },
+            "post_job_actions": {},
+            "tool_id": "plot_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"pl_clonal_expansion\", \"__current_case__\": 2, \"clonal_expansion_adata\": {\"__class__\": \"ConnectedValue\"}, \"clonal_expansion_groupby\": \"cluster\", \"clonal_expansion_target_col\": \"clone_id\", \"clonal_expansion_clip_at\": \"4\", \"clonal_expansion_summarize_by\": \"cell\", \"clonal_expansion_normalize\": \"False\", \"clonal_expansion_show_nonexpanded\": \"True\", \"clonal_expansion_viztype\": \"bar\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "5e0bb27d-8917-44f3-8d99-61e015c0445a",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "pl_adata_out",
+                    "uuid": "59f854ed-033b-4ed9-8bfc-c1e6098beaf4"
+                },
+                {
+                    "label": null,
+                    "output_name": "pl_fig_out",
+                    "uuid": "d59cff54-6b3d-4c90-92d5-632afe3f021d"
+                }
+            ]
+        },
+        "30": {
+            "annotation": "",
+            "content_id": "plot_scirpy",
+            "errors": null,
+            "id": 30,
+            "input_connections": {
+                "method|clonal_expansion_adata": {
+                    "id": 29,
+                    "output_name": "pl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Plot with Scirpy",
+            "outputs": [
+                {
+                    "name": "pl_adata_out",
+                    "type": "h5ad"
+                },
+                {
+                    "name": "pl_fig_out",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 1120.5625658721106,
+                "top": 1050.3749596946905
+            },
+            "post_job_actions": {},
+            "tool_id": "plot_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"pl_clonal_expansion\", \"__current_case__\": 2, \"clonal_expansion_adata\": {\"__class__\": \"ConnectedValue\"}, \"clonal_expansion_groupby\": \"cluster\", \"clonal_expansion_target_col\": \"clone_id\", \"clonal_expansion_clip_at\": \"3\", \"clonal_expansion_summarize_by\": \"cell\", \"clonal_expansion_normalize\": \"True\", \"clonal_expansion_show_nonexpanded\": \"True\", \"clonal_expansion_viztype\": \"bar\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "0a48e5a8-513f-48f4-927a-9fccf9e2028d",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "pl_adata_out",
+                    "uuid": "9a5d9ee0-96cb-4ff2-b368-e22901305ed2"
+                },
+                {
+                    "label": null,
+                    "output_name": "pl_fig_out",
+                    "uuid": "7532e762-d5ae-4cf1-8a75-3925b260b9de"
+                }
+            ]
+        },
+        "31": {
+            "annotation": "",
+            "content_id": "plot_scirpy",
+            "errors": null,
+            "id": 31,
+            "input_connections": {
+                "method|alpha_diversity_adata": {
+                    "id": 30,
+                    "output_name": "pl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Plot with Scirpy",
+            "outputs": [
+                {
+                    "name": "pl_adata_out",
+                    "type": "h5ad"
+                },
+                {
+                    "name": "pl_fig_out",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 1382.8594150797203,
+                "top": 1051.8750391021663
+            },
+            "post_job_actions": {},
+            "tool_id": "plot_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"pl_alpha_diversity\", \"__current_case__\": 1, \"alpha_diversity_adata\": {\"__class__\": \"ConnectedValue\"}, \"alpha_diversity_groupby\": \"cluster\", \"alpha_diversity_target_col\": \"clone_id\", \"alpha_diversity_metric\": \"normalized_shannon_entropy\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "afc086ab-79a2-4679-9d6c-79f4afaef0c5",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "pl_adata_out",
+                    "uuid": "3cf07cf1-1d07-4258-8c3e-633706a5cc50"
+                },
+                {
+                    "label": null,
+                    "output_name": "pl_fig_out",
+                    "uuid": "6933ce6e-648d-4a96-8a52-dd9f27d6567a"
+                }
+            ]
+        },
+        "32": {
+            "annotation": "",
+            "content_id": "plot_scirpy",
+            "errors": null,
+            "id": 32,
+            "input_connections": {
+                "method|group_abundance_adata": {
+                    "id": 31,
+                    "output_name": "pl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Plot with Scirpy",
+            "outputs": [
+                {
+                    "name": "pl_adata_out",
+                    "type": "h5ad"
+                },
+                {
+                    "name": "pl_fig_out",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 588.6249993984283,
+                "top": 1302.5937970729924
+            },
+            "post_job_actions": {},
+            "tool_id": "plot_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"pl_group_abundance\", \"__current_case__\": 3, \"group_abundance_adata\": {\"__class__\": \"ConnectedValue\"}, \"group_abundance_groupby\": \"clone_id\", \"group_abundance_target_col\": \"cluster\", \"group_abundance_normalize\": \"True\", \"group_abundance_max_cols\": \"10\", \"group_abundance_sort\": \"count\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "68373b75-368d-4397-8ee7-2ecabe2dd760",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "pl_adata_out",
+                    "uuid": "3e4bd695-149a-4668-9579-bd53bc7b9db8"
+                },
+                {
+                    "label": null,
+                    "output_name": "pl_fig_out",
+                    "uuid": "f458c868-de60-42e8-8aa0-4fba8e06f5a5"
+                }
+            ]
+        },
+        "33": {
+            "annotation": "",
+            "content_id": "plot_scirpy",
+            "errors": null,
+            "id": 33,
+            "input_connections": {
+                "method|group_abundance_adata": {
+                    "id": 32,
+                    "output_name": "pl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": "Plot with Scirpy [ADD normalize=\"sample\"]",
+            "name": "Plot with Scirpy",
+            "outputs": [
+                {
+                    "name": "pl_adata_out",
+                    "type": "h5ad"
+                },
+                {
+                    "name": "pl_fig_out",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 871.0469514748135,
+                "top": 1307.4531736521185
+            },
+            "post_job_actions": {},
+            "tool_id": "plot_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"pl_group_abundance\", \"__current_case__\": 3, \"group_abundance_adata\": {\"__class__\": \"ConnectedValue\"}, \"group_abundance_groupby\": \"clone_id\", \"group_abundance_target_col\": \"cluster\", \"group_abundance_normalize\": \"True\", \"group_abundance_max_cols\": \"10\", \"group_abundance_sort\": \"count\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "2dfa9bb8-d0a5-4d77-b711-a57c29ff9750",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "pl_adata_out",
+                    "uuid": "56577502-1dcd-4c1f-be31-7e93f6d68f5a"
+                },
+                {
+                    "label": null,
+                    "output_name": "pl_fig_out",
+                    "uuid": "81c3f58d-372d-491f-b4c7-9834b150e6b9"
+                }
+            ]
+        },
+        "34": {
+            "annotation": "",
+            "content_id": "plot_scirpy",
+            "errors": null,
+            "id": 34,
+            "input_connections": {
+                "method|group_abundance_adata": {
+                    "id": 33,
+                    "output_name": "pl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Plot with Scirpy",
+            "outputs": [
+                {
+                    "name": "pl_adata_out",
+                    "type": "h5ad"
+                },
+                {
+                    "name": "pl_fig_out",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 1128.2655722872723,
+                "top": 1313.609418689151
+            },
+            "post_job_actions": {},
+            "tool_id": "plot_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"pl_group_abundance\", \"__current_case__\": 3, \"group_abundance_adata\": {\"__class__\": \"ConnectedValue\"}, \"group_abundance_groupby\": \"clone_id\", \"group_abundance_target_col\": \"source\", \"group_abundance_normalize\": \"True\", \"group_abundance_max_cols\": \"15\", \"group_abundance_sort\": \"count\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "5e469f05-3322-44be-b5fb-d02218f5e8e6",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "pl_adata_out",
+                    "uuid": "7b98f7ab-1277-4a06-9b2f-4bd7852f75d1"
+                },
+                {
+                    "label": null,
+                    "output_name": "pl_fig_out",
+                    "uuid": "a8ac7386-0fae-4eda-930b-02a768f15815"
+                }
+            ]
+        },
+        "35": {
+            "annotation": "",
+            "content_id": "plot_scirpy",
+            "errors": null,
+            "id": 35,
+            "input_connections": {
+                "method|group_abundance_adata": {
+                    "id": 34,
+                    "output_name": "pl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Plot with Scirpy",
+            "outputs": [
+                {
+                    "name": "pl_adata_out",
+                    "type": "h5ad"
+                },
+                {
+                    "name": "pl_fig_out",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 1378.328135753096,
+                "top": 1323.2343266486678
+            },
+            "post_job_actions": {},
+            "tool_id": "plot_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"pl_group_abundance\", \"__current_case__\": 3, \"group_abundance_adata\": {\"__class__\": \"ConnectedValue\"}, \"group_abundance_groupby\": \"clone_id\", \"group_abundance_target_col\": \"patient\", \"group_abundance_normalize\": \"True\", \"group_abundance_max_cols\": \"15\", \"group_abundance_sort\": \"count\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "66456559-1eb0-44c6-a5ad-ce411ee0d415",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "pl_adata_out",
+                    "uuid": "3c8c8ba9-6e0a-45cc-8266-38348a2b0c26"
+                },
+                {
+                    "label": null,
+                    "output_name": "pl_fig_out",
+                    "uuid": "a9f12784-d97b-4174-b32e-8d045e6b2005"
+                }
+            ]
+        },
+        "36": {
+            "annotation": "",
+            "content_id": "plot_scirpy",
+            "errors": null,
+            "id": 36,
+            "input_connections": {
+                "method|group_abundance_adata": {
+                    "id": 35,
+                    "output_name": "pl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": "Plot with Scirpy [5- Gene Usage]",
+            "name": "Plot with Scirpy",
+            "outputs": [
+                {
+                    "name": "pl_adata_out",
+                    "type": "h5ad"
+                },
+                {
+                    "name": "pl_fig_out",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 335.95317846469254,
+                "top": 1569.8906703434736
+            },
+            "post_job_actions": {},
+            "tool_id": "plot_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"pl_group_abundance\", \"__current_case__\": 3, \"group_abundance_adata\": {\"__class__\": \"ConnectedValue\"}, \"group_abundance_groupby\": \"IR_VJ_1_v_call\", \"group_abundance_target_col\": \"cluster\", \"group_abundance_normalize\": \"True\", \"group_abundance_max_cols\": \"10\", \"group_abundance_sort\": \"count\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "4b897d46-febe-4b09-9a9a-c04cf2d2b230",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "pl_adata_out",
+                    "uuid": "0e35ba31-6164-4f24-8171-3090b4d21169"
+                },
+                {
+                    "label": null,
+                    "output_name": "pl_fig_out",
+                    "uuid": "3201b2c4-c184-463f-94b9-eb416528ab2a"
+                }
+            ]
+        },
+        "37": {
+            "annotation": "",
+            "content_id": "plot_scirpy",
+            "errors": null,
+            "id": 37,
+            "input_connections": {
+                "method|vdj_usage_adata": {
+                    "id": 36,
+                    "output_name": "pl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Plot with Scirpy",
+            "outputs": [
+                {
+                    "name": "pl_adata_out",
+                    "type": "h5ad"
+                },
+                {
+                    "name": "pl_fig_out",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 603.9062462401763,
+                "top": 1546.4687134545138
+            },
+            "post_job_actions": {},
+            "tool_id": "plot_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"pl_vdj_usage\", \"__current_case__\": 5, \"vdj_usage_adata\": {\"__class__\": \"ConnectedValue\"}, \"vdj_usage_vdj_cols\": \"IR_VJ_1_v_call, IR_VJ_1_j_call, IR_VDJ_1_v_call, IR_VDJ_1_d_call, IR_VDJ_1_j_call\", \"vdj_usage_normalize_to\": \"False\", \"vdj_usage_max_segments\": \"0\", \"vdj_usage_max_labelled_segments\": \"5\", \"vdj_usage_max_ribbons\": \"30\", \"vdj_usage_barwidth\": \"0.4\", \"vdj_usage_draw_bars\": \"True\", \"vdj_usage_full_combination\": \"False\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "59837e68-e107-409e-bc0b-650e3d5932e9",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "pl_adata_out",
+                    "uuid": "75025a48-1b07-4402-bb80-7f0424e06396"
+                },
+                {
+                    "label": null,
+                    "output_name": "pl_fig_out",
+                    "uuid": "74232dbc-05c0-44de-a5e8-03bd7e849ba0"
+                }
+            ]
+        },
+        "38": {
+            "annotation": "",
+            "content_id": "filter_anndata",
+            "errors": null,
+            "id": 38,
+            "input_connections": {
+                "adata_in": {
+                    "id": 36,
+                    "output_name": "pl_adata_out"
+                }
+            },
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool Filter Observations in AnnData",
+                    "name": "adata_in"
+                }
+            ],
+            "label": null,
+            "name": "Filter Observations in AnnData",
+            "outputs": [
+                {
+                    "name": "adata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 569.6718786846272,
+                "top": 1834.4843206329497
+            },
+            "post_job_actions": {},
+            "tool_id": "filter_anndata",
+            "tool_state": "{\"adata_in\": {\"__class__\": \"RuntimeValue\"}, \"filter_key\": \"IR_VDJ_1_v_call\", \"filter_type\": \"is_in\", \"filter_value\": \"TRBV20-1, TRBV7-2, TRBV28, TRBV5-1, TRBV7-9\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "35c0f5c9-320b-42aa-a60a-0f674f364d65",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "adata_out",
+                    "uuid": "d5b522a2-5cbd-41f3-a9da-86e3b886266c"
+                }
+            ]
+        },
+        "39": {
+            "annotation": "",
+            "content_id": "filter_anndata",
+            "errors": null,
+            "id": 39,
+            "input_connections": {
+                "adata_in": {
+                    "id": 37,
+                    "output_name": "pl_adata_out"
+                }
+            },
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool Filter Observations in AnnData",
+                    "name": "adata_in"
+                }
+            ],
+            "label": null,
+            "name": "Filter Observations in AnnData",
+            "outputs": [
+                {
+                    "name": "adata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 857.7969719282543,
+                "top": 1578.656293162776
+            },
+            "post_job_actions": {},
+            "tool_id": "filter_anndata",
+            "tool_state": "{\"adata_in\": {\"__class__\": \"RuntimeValue\"}, \"filter_key\": \"clone_id\", \"filter_type\": \"is_in\", \"filter_value\": \"68, 101, 127, 161\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "61270f18-3a33-4eec-8aa9-5005dd3cc78f",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "adata_out",
+                    "uuid": "c6ebec0e-9d41-4bc1-8c77-077090d2ee65"
+                }
+            ]
+        },
+        "40": {
+            "annotation": "",
+            "content_id": "plot_scirpy",
+            "errors": null,
+            "id": 40,
+            "input_connections": {
+                "method|spectratype_adata": {
+                    "id": 37,
+                    "output_name": "pl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": "Plot with Scirpy [6- Spectratype Plots]",
+            "name": "Plot with Scirpy",
+            "outputs": [
+                {
+                    "name": "pl_adata_out",
+                    "type": "h5ad"
+                },
+                {
+                    "name": "pl_fig_out",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 339.98437116497985,
+                "top": 2071.9530990572166
+            },
+            "post_job_actions": {},
+            "tool_id": "plot_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"pl_spectratype\", \"__current_case__\": 4, \"spectratype_adata\": {\"__class__\": \"ConnectedValue\"}, \"spectratype_cdr3_col\": \"IR_VJ_1_junction_aa\", \"spectratype_color\": \"cluster\", \"spectratype_normalize\": \"True\", \"spectratype_viztype\": \"bar\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "35019c09-1cad-41a1-a3b4-41040b8d89c5",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "pl_adata_out",
+                    "uuid": "daaa3c07-d84e-4ad9-991c-bc028fc71423"
+                },
+                {
+                    "label": null,
+                    "output_name": "pl_fig_out",
+                    "uuid": "e8862d1f-5d2f-450a-9be6-b206faa6a50d"
+                }
+            ]
+        },
+        "41": {
+            "annotation": "",
+            "content_id": "plot_scirpy",
+            "errors": null,
+            "id": 41,
+            "input_connections": {
+                "method|group_abundance_adata": {
+                    "id": 38,
+                    "output_name": "adata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Plot with Scirpy",
+            "outputs": [
+                {
+                    "name": "pl_adata_out",
+                    "type": "h5ad"
+                },
+                {
+                    "name": "pl_fig_out",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 854.2501046734909,
+                "top": 1804.531339483803
+            },
+            "post_job_actions": {},
+            "tool_id": "plot_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"pl_group_abundance\", \"__current_case__\": 3, \"group_abundance_adata\": {\"__class__\": \"ConnectedValue\"}, \"group_abundance_groupby\": \"cluster\", \"group_abundance_target_col\": \"IR_VDJ_1_v_call\", \"group_abundance_normalize\": \"True\", \"group_abundance_max_cols\": \"0\", \"group_abundance_sort\": \"count\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "37e735d5-8ea4-428e-a08e-443325097216",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "pl_adata_out",
+                    "uuid": "6fcd2d6b-cb43-4008-a778-cdfec97b8fbb"
+                },
+                {
+                    "label": null,
+                    "output_name": "pl_fig_out",
+                    "uuid": "9fa7706e-2944-4a4f-8932-b13874077070"
+                }
+            ]
+        },
+        "42": {
+            "annotation": "",
+            "content_id": "plot_scirpy",
+            "errors": null,
+            "id": 42,
+            "input_connections": {
+                "method|vdj_usage_adata": {
+                    "id": 39,
+                    "output_name": "adata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Plot with Scirpy",
+            "outputs": [
+                {
+                    "name": "pl_adata_out",
+                    "type": "h5ad"
+                },
+                {
+                    "name": "pl_fig_out",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 1085.3281453782442,
+                "top": 1570.1094018451408
+            },
+            "post_job_actions": {},
+            "tool_id": "plot_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"pl_vdj_usage\", \"__current_case__\": 5, \"vdj_usage_adata\": {\"__class__\": \"ConnectedValue\"}, \"vdj_usage_vdj_cols\": \"IR_VJ_1_v_call, IR_VJ_1_j_call, IR_VDJ_1_v_call, IR_VDJ_1_d_call, IR_VDJ_1_j_call\", \"vdj_usage_normalize_to\": \"False\", \"vdj_usage_max_segments\": \"100\", \"vdj_usage_max_labelled_segments\": \"5\", \"vdj_usage_max_ribbons\": \"10\", \"vdj_usage_barwidth\": \"0.4\", \"vdj_usage_draw_bars\": \"True\", \"vdj_usage_full_combination\": \"True\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "c024d910-87de-4996-bcb4-d5d1957d16c7",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "pl_adata_out",
+                    "uuid": "ec22fe4a-ff98-44b4-bf68-caa7c77dd28f"
+                },
+                {
+                    "label": null,
+                    "output_name": "pl_fig_out",
+                    "uuid": "f938112a-4014-4b2f-beff-edbf32615837"
+                }
+            ]
+        },
+        "43": {
+            "annotation": "",
+            "content_id": "plot_scirpy",
+            "errors": null,
+            "id": 43,
+            "input_connections": {
+                "method|spectratype_adata": {
+                    "id": 40,
+                    "output_name": "pl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": "Plot with Scirpy [ADD extra params for spectratype plots [45]]",
+            "name": "Plot with Scirpy",
+            "outputs": [
+                {
+                    "name": "pl_adata_out",
+                    "type": "h5ad"
+                },
+                {
+                    "name": "pl_fig_out",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 595.0625394029521,
+                "top": 2081.906224583592
+            },
+            "post_job_actions": {},
+            "tool_id": "plot_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"pl_spectratype\", \"__current_case__\": 4, \"spectratype_adata\": {\"__class__\": \"ConnectedValue\"}, \"spectratype_cdr3_col\": \"IR_VDJ_1_junction_aa\", \"spectratype_color\": \"cluster\", \"spectratype_normalize\": \"True\", \"spectratype_viztype\": \"curve\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "9952a0d8-d6ac-4e7a-8df9-7ef3017b7978",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "pl_adata_out",
+                    "uuid": "b5e49067-e471-4191-b5a8-b48e17063949"
+                },
+                {
+                    "label": null,
+                    "output_name": "pl_fig_out",
+                    "uuid": "4832bc30-d65a-4b3b-88b8-7d01cc959b88"
+                }
+            ]
+        },
+        "44": {
+            "annotation": "",
+            "content_id": "filter_anndata",
+            "errors": null,
+            "id": 44,
+            "input_connections": {
+                "adata_in": {
+                    "id": 43,
+                    "output_name": "pl_adata_out"
+                }
+            },
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool Filter Observations in AnnData",
+                    "name": "adata_in"
+                }
+            ],
+            "label": null,
+            "name": "Filter Observations in AnnData",
+            "outputs": [
+                {
+                    "name": "adata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 875.9687712054055,
+                "top": 2105.2811385588266
+            },
+            "post_job_actions": {},
+            "tool_id": "filter_anndata",
+            "tool_state": "{\"adata_in\": {\"__class__\": \"RuntimeValue\"}, \"filter_key\": \"IR_VDJ_1_v_call\", \"filter_type\": \"is_in\", \"filter_value\": \"TRBV20-1, TRBV7-2, TRBV28, TRBV5-1, TRBV7-9\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "447a6ae4-6fb1-4b4f-bf05-b989b4bf005d",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "adata_out",
+                    "uuid": "a2d061aa-8aca-4c0b-85f6-840df70d4e1e"
+                }
+            ]
+        },
+        "45": {
+            "annotation": "",
+            "content_id": "tools_scirpy",
+            "errors": null,
+            "id": 45,
+            "input_connections": {
+                "method|tl_repertoire_overlap_adata": {
+                    "id": 43,
+                    "output_name": "pl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": "7- Comparing Repertoires",
+            "name": "Define, Analyze, Process and Query Clonotypes and Clonal Diversity with Scirpy",
+            "outputs": [
+                {
+                    "name": "tl_adata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 1371.3437669944033,
+                "top": 2093.0312119505843
+            },
+            "post_job_actions": {},
+            "tool_id": "tools_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"tl_repertoire_overlap\", \"__current_case__\": 10, \"tl_repertoire_overlap_adata\": {\"__class__\": \"ConnectedValue\"}, \"tl_repertoire_overlap_group_by\": \"sample\", \"tl_repertoire_overlap_target_col\": \"clone_id\", \"tl_repertoire_overlap_overlap_measure\": \"jaccard\", \"tl_repertoire_overlap_fraction\": \"False\", \"tl_repertoire_overlap_added_key\": \"repertoire_overlap\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "5392669a-9aec-4da1-8929-2e0dfa6d07df",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "tl_adata_out",
+                    "uuid": "1f483c44-07ed-47cc-a85a-aaf2b809ad39"
+                }
+            ]
+        },
+        "46": {
+            "annotation": "",
+            "content_id": "plot_scirpy",
+            "errors": null,
+            "id": 46,
+            "input_connections": {
+                "method|repertoire_overlap_adata": {
+                    "id": 43,
+                    "output_name": "pl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": "Plot with Scirpy [ADD heatmap_cats=[\"patient\", \"source\"]",
+            "name": "Plot with Scirpy",
+            "outputs": [
+                {
+                    "name": "pl_adata_out",
+                    "type": "h5ad"
+                },
+                {
+                    "name": "pl_fig_out",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 1616.7500445163123,
+                "top": 2098.8438391830173
+            },
+            "post_job_actions": {},
+            "tool_id": "plot_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"pl_repertoire_overlap\", \"__current_case__\": 6, \"repertoire_overlap_adata\": {\"__class__\": \"ConnectedValue\"}, \"repertoire_overlap_groupby\": \"sample\", \"repertoire_overlap_target_col\": \"clone_id\", \"repertoire_overlap_dendro_only\": \"False\", \"repertoire_overlap_overlap_measure\": \"jaccard\", \"repertoire_overlap_fraction\": \"True\", \"repertoire_overlap_added_key\": \"repertoire_overlap\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "0866265b-c569-4176-9f7b-ad6f14378833",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "pl_adata_out",
+                    "uuid": "32a35fe7-ca49-4d4b-90c1-bb32b148a6b0"
+                },
+                {
+                    "label": null,
+                    "output_name": "pl_fig_out",
+                    "uuid": "30ebae42-8cf3-4094-a365-ebc845112640"
+                }
+            ]
+        },
+        "47": {
+            "annotation": "",
+            "content_id": "plot_scirpy",
+            "errors": null,
+            "id": 47,
+            "input_connections": {
+                "method|spectratype_adata": {
+                    "id": 44,
+                    "output_name": "adata_out"
+                }
+            },
+            "inputs": [],
+            "label": "Plot with Scirpy [ADD normalize=\"sample\"",
+            "name": "Plot with Scirpy",
+            "outputs": [
+                {
+                    "name": "pl_adata_out",
+                    "type": "h5ad"
+                },
+                {
+                    "name": "pl_fig_out",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 1125.3282175668587,
+                "top": 2089.8594848620473
+            },
+            "post_job_actions": {},
+            "tool_id": "plot_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"pl_spectratype\", \"__current_case__\": 4, \"spectratype_adata\": {\"__class__\": \"ConnectedValue\"}, \"spectratype_cdr3_col\": \"IR_VDJ_1_junction_aa\", \"spectratype_color\": \"IR_VDJ_1_v_call\", \"spectratype_normalize\": \"True\", \"spectratype_viztype\": \"bar\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "2000fa33-3f15-46a4-a4ba-b9ec193df4e7",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "pl_adata_out",
+                    "uuid": "bf901117-8440-4408-8bfd-742909b2b394"
+                },
+                {
+                    "label": null,
+                    "output_name": "pl_fig_out",
+                    "uuid": "edbcea66-1efe-4686-abdf-9c466ab2a527"
+                }
+            ]
+        },
+        "48": {
+            "annotation": "",
+            "content_id": "plot_scirpy",
+            "errors": null,
+            "id": 48,
+            "input_connections": {
+                "method|repertoire_overlap_adata": {
+                    "id": 46,
+                    "output_name": "pl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Plot with Scirpy",
+            "outputs": [
+                {
+                    "name": "pl_adata_out",
+                    "type": "h5ad"
+                },
+                {
+                    "name": "pl_fig_out",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 1852.9687567676829,
+                "top": 2101.453216965287
+            },
+            "post_job_actions": {},
+            "tool_id": "plot_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"pl_repertoire_overlap\", \"__current_case__\": 6, \"repertoire_overlap_adata\": {\"__class__\": \"ConnectedValue\"}, \"repertoire_overlap_groupby\": \"sample\", \"repertoire_overlap_target_col\": \"clone_id\", \"repertoire_overlap_dendro_only\": \"False\", \"repertoire_overlap_overlap_measure\": \"jaccard\", \"repertoire_overlap_fraction\": \"True\", \"repertoire_overlap_added_key\": \"repertoire_overlap\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "7b940e44-19da-45cb-aee9-c1d52d75ed5c",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "pl_adata_out",
+                    "uuid": "d2c7462f-30fd-4634-87f3-0814b24a0cdc"
+                },
+                {
+                    "label": null,
+                    "output_name": "pl_fig_out",
+                    "uuid": "e8074df2-9f3e-4001-ac4e-940ff26f75bd"
+                }
+            ]
+        },
+        "49": {
+            "annotation": "",
+            "content_id": "tools_scirpy",
+            "errors": null,
+            "id": 49,
+            "input_connections": {
+                "method|tl_clonotype_modularity_adata": {
+                    "id": 48,
+                    "output_name": "pl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": "8- Integrating Gene Expression Data",
+            "name": "Define, Analyze, Process and Query Clonotypes and Clonal Diversity with Scirpy",
+            "outputs": [
+                {
+                    "name": "tl_adata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 327.18749548821165,
+                "top": 2389.4374220964537
+            },
+            "post_job_actions": {},
+            "tool_id": "tools_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"tl_clonotype_modularity\", \"__current_case__\": 11, \"tl_clonotype_modularity_adata\": {\"__class__\": \"ConnectedValue\"}, \"tl_clonotype_modularity_target_col\": \"cc_aa_alignment\", \"tl_clonotype_modularity_connectivity_key\": \"connectivities\", \"tl_clonotype_modularity_permutation_test\": \"approx\", \"tl_clonotype_modularity_n_permutations\": \"1000\", \"tl_clonotype_modularity_key_added\": \"clonotype_modularity\", \"tl_clonotype_modularity_fdr_correction\": \"True\", \"tl_clonotype_modularity_random_state\": \"0\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "0c911f7e-cfc8-4dab-80c0-6b9794efb52e",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "tl_adata_out",
+                    "uuid": "f6c7ad3b-a7f8-4db3-95db-0f58a02ef20e"
+                }
+            ]
+        },
+        "50": {
+            "annotation": "",
+            "content_id": "plot_scirpy",
+            "errors": null,
+            "id": 50,
+            "input_connections": {
+                "method|clonotype_network_adata": {
+                    "id": 49,
+                    "output_name": "tl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Plot with Scirpy",
+            "outputs": [
+                {
+                    "name": "pl_adata_out",
+                    "type": "h5ad"
+                },
+                {
+                    "name": "pl_fig_out",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 569.2500565477479,
+                "top": 2392.078081611635
+            },
+            "post_job_actions": {},
+            "tool_id": "plot_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"pl_clonotype_network\", \"__current_case__\": 8, \"clonotype_network_adata\": {\"__class__\": \"ConnectedValue\"}, \"clonotype_network_color\": \"clonotype_modularity\", \"clonotype_network_basis\": \"clonotype_network\", \"clonotype_network_panel_size\": \"6, 6\", \"clonotype_network_color_by_n_cells\": \"False\", \"clonotype_network_scale_by_n_cells\": \"True\", \"clonotype_network_show_labels\": \"True\", \"clonotype_network_label_fontweight\": \"bold\", \"clonotype_network_label_fontoutline\": \"3\", \"clonotype_network_label_alpha\": \"0.6\", \"clonotype_network_label_y_offset\": \"2.0\", \"clonotype_network_show_legend\": \"True\", \"clonotype_network_edges\": \"True\", \"clonotype_network_edges_width\": \"0.4\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "b84e1460-2159-4d1e-adfe-fe905d9f3bdc",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "pl_adata_out",
+                    "uuid": "3397796a-e1a9-4680-8524-d31d46462207"
+                },
+                {
+                    "label": null,
+                    "output_name": "pl_fig_out",
+                    "uuid": "29ab18c2-5426-47b3-b3dc-f7d090cea8de"
+                }
+            ]
+        },
+        "51": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_plot/scanpy_plot/1.7.1+galaxy1",
+            "errors": null,
+            "id": 51,
+            "input_connections": {
+                "adata": {
+                    "id": 49,
+                    "output_name": "tl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Plot",
+            "outputs": [
+                {
+                    "name": "out_png",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 575.8906270303048,
+                "top": 2636.2813358743724
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_plot/scanpy_plot/1.7.1+galaxy1",
+            "tool_shed_repository": {
+                "changeset_revision": "aa0c474463c2",
+                "name": "scanpy_plot",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"adata\": {\"__class__\": \"ConnectedValue\"}, \"advanced_common\": {\"show_log\": \"false\"}, \"format\": \"png\", \"method\": {\"method\": \"pl.umap\", \"__current_case__\": 14, \"color\": \"clonotype_modularity\", \"use_raw\": \"false\", \"edges\": {\"edges\": \"False\", \"__current_case__\": 1}, \"arrows\": \"false\", \"sort_order\": \"true\", \"groups\": \"\", \"plot\": {\"components\": [], \"projection\": \"2d\", \"legend_loc\": \"right margin\", \"legend_fontsize\": null, \"legend_fontweight\": \"normal\", \"size\": null, \"color_map\": \"None\", \"palette\": \"default\", \"frameon\": \"true\", \"ncols\": \"4\", \"wspace\": \"0.1\", \"hspace\": \"0.25\", \"title\": \"\"}, \"matplotlib_pyplot_scatter\": {\"alpha\": null, \"vmin\": null, \"vmax\": null, \"linewidths\": \"0.0\", \"edgecolors\": \"face\"}}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "1.7.1+galaxy1",
+            "type": "tool",
+            "uuid": "dcd26149-7f78-4ca5-b813-c28234f0be4c",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "out_png",
+                    "uuid": "095dc5ce-628f-42d6-b3f5-baec8d07d95d"
+                }
+            ]
+        },
+        "52": {
+            "annotation": "",
+            "content_id": "plot_scirpy",
+            "errors": null,
+            "id": 52,
+            "input_connections": {
+                "method|clonotype_modularity_adata": {
+                    "id": 50,
+                    "output_name": "pl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": "pl_clonotype_modularity",
+            "name": "Plot with Scirpy",
+            "outputs": [
+                {
+                    "name": "pl_adata_out",
+                    "type": "h5ad"
+                },
+                {
+                    "name": "pl_fig_out",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 842.5625273715162,
+                "top": 2395.468780830554
+            },
+            "post_job_actions": {},
+            "tool_id": "plot_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"pl_clonotype_modularity\", \"__current_case__\": 7, \"clonotype_modularity_adata\": {\"__class__\": \"ConnectedValue\"}, \"clonotype_modularity_target_col\": \"clonotype_modularity\", \"clonotype_modularity_jitter\": \"0.01\", \"clonotype_modularity_base_size\": \"2.0\", \"clonotype_modularity_size_power\": \"1.0\", \"clonotype_modularity_show_labels\": \"True\", \"clonotype_modularity_labels_quantile_cutoff\": \"0.9, 0.9\", \"clonotype_modularity_label_fontsize\": \"10\", \"clonotype_modularity_label_fontweight\": \"300\", \"clonotype_modularity_label_fontoutline\": \"0\", \"clonotype_modularity_label_adjusttext\": \"True\", \"clonotype_modularity_show_size_legend\": \"True\", \"clonotype_modularity_legend_width\": \"2.0\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "73abc974-21a6-4f2e-b02d-51fb1ec7640c",
+            "workflow_outputs": [
+                {
+                    "label": "Plot with Scirpy (pl_embedding) on input dataset(s)",
+                    "output_name": "pl_adata_out",
+                    "uuid": "9ef0415a-86a2-45dd-baa6-b351162b8ec0"
+                },
+                {
+                    "label": "Plot with Scirpy (pl_embedding) on input dataset(s) Plot",
+                    "output_name": "pl_fig_out",
+                    "uuid": "6fc195e3-8617-4970-93f0-41ec460110a8"
+                }
+            ]
+        },
+        "53": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_inspect/scanpy_inspect/1.7.1+galaxy0",
+            "errors": null,
+            "id": 53,
+            "input_connections": {
+                "adata": {
+                    "id": 52,
+                    "output_name": "pl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": "sc.tl.rank_genes_groups [ADD custom list for clonotypes_top_modularity]",
+            "name": "Inspect and manipulate",
+            "outputs": [
+                {
+                    "name": "anndata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 1089.2656733513322,
+                "top": 2405.812446760897
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_inspect/scanpy_inspect/1.7.1+galaxy0",
+            "tool_shed_repository": {
+                "changeset_revision": "c5d3684f7c4c",
+                "name": "scanpy_inspect",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"adata\": {\"__class__\": \"ConnectedValue\"}, \"advanced_common\": {\"show_log\": \"false\"}, \"method\": {\"method\": \"tl.rank_genes_groups\", \"__current_case__\": 4, \"groupby\": \"clone_id\", \"use_raw\": \"false\", \"groups\": \"\", \"ref\": {\"rest\": \"rest\", \"__current_case__\": 0}, \"n_genes\": \"100\", \"tl_rank_genes_groups_method\": {\"method\": \"wilcoxon\", \"__current_case__\": 1, \"corr_method\": \"benjamini-hochberg\"}}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "1.7.1+galaxy0",
+            "type": "tool",
+            "uuid": "c63d486e-db28-4c76-b12c-6d81a00dbdea",
+            "workflow_outputs": [
+                {
+                    "label": "Inspect and manipulate (pp.calculate_qc_metrics) on input dataset(s): Annotated data matrix",
+                    "output_name": "anndata_out",
+                    "uuid": "268ddebb-fec6-4fd9-bacc-7c37f46b5230"
+                }
+            ]
+        },
+        "54": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_plot/scanpy_plot/1.7.1+galaxy1",
+            "errors": null,
+            "id": 54,
+            "input_connections": {
+                "adata": {
+                    "id": 52,
+                    "output_name": "pl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": "UMAP Plot [ADD CUSTOM GROUPS FROM [55]",
+            "name": "Plot",
+            "outputs": [
+                {
+                    "name": "out_png",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 1091.9844168844356,
+                "top": 2675.1250667744685
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_plot/scanpy_plot/1.7.1+galaxy1",
+            "tool_shed_repository": {
+                "changeset_revision": "aa0c474463c2",
+                "name": "scanpy_plot",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"adata\": {\"__class__\": \"ConnectedValue\"}, \"advanced_common\": {\"show_log\": \"false\"}, \"format\": \"png\", \"method\": {\"method\": \"pl.umap\", \"__current_case__\": 14, \"color\": \"antigen.species\", \"use_raw\": \"false\", \"edges\": {\"edges\": \"False\", \"__current_case__\": 1}, \"arrows\": \"false\", \"sort_order\": \"true\", \"groups\": \"\", \"plot\": {\"components\": [], \"projection\": \"2d\", \"legend_loc\": \"right margin\", \"legend_fontsize\": null, \"legend_fontweight\": \"normal\", \"size\": null, \"color_map\": \"None\", \"palette\": \"default\", \"frameon\": \"true\", \"ncols\": \"4\", \"wspace\": \"0.1\", \"hspace\": \"0.25\", \"title\": \"\"}, \"matplotlib_pyplot_scatter\": {\"alpha\": null, \"vmin\": null, \"vmax\": null, \"linewidths\": \"0.0\", \"edgecolors\": \"face\"}}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "1.7.1+galaxy1",
+            "type": "tool",
+            "uuid": "1de8d88d-89e4-44b2-a95e-bbf8cd9d773c",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "out_png",
+                    "uuid": "77536c4f-7670-4dc0-baa0-e2d988f35093"
+                }
+            ]
+        },
+        "55": {
+            "annotation": "",
+            "content_id": "tools_scirpy",
+            "errors": null,
+            "id": 55,
+            "input_connections": {
+                "method|tl_group_abundance_adata": {
+                    "id": 53,
+                    "output_name": "anndata_out"
+                }
+            },
+            "inputs": [],
+            "label": "REPLACE WITH CLONOTYPE_IMBALANCE",
+            "name": "Define, Analyze, Process and Query Clonotypes and Clonal Diversity with Scirpy",
+            "outputs": [
+                {
+                    "name": "tl_adata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 1352.124992179567,
+                "top": 2411.1250475241714
+            },
+            "post_job_actions": {},
+            "tool_id": "tools_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"tl_group_abundance\", \"__current_case__\": 0, \"tl_group_abundance_adata\": {\"__class__\": \"ConnectedValue\"}, \"tl_group_abundance_groupby\": \"sample\", \"tl_group_abundance_target_col\": \"has_ir\", \"tl_group_abundance_sort\": \"count\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "921a8275-4adc-4838-9eb4-e07040c2d2a8",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "tl_adata_out",
+                    "uuid": "5201fbf2-6d6b-4126-8f34-006e53bb0f49"
+                }
+            ]
+        },
+        "56": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_plot/scanpy_plot/1.7.1+galaxy1",
+            "errors": null,
+            "id": 56,
+            "input_connections": {
+                "adata": {
+                    "id": 53,
+                    "output_name": "anndata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Plot",
+            "outputs": [
+                {
+                    "name": "out_png",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 1611.812463604907,
+                "top": 2419.7968251447382
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_plot/scanpy_plot/1.7.1+galaxy1",
+            "tool_shed_repository": {
+                "changeset_revision": "aa0c474463c2",
+                "name": "scanpy_plot",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"adata\": {\"__class__\": \"ConnectedValue\"}, \"advanced_common\": {\"show_log\": \"false\"}, \"format\": \"png\", \"method\": {\"method\": \"pl.umap\", \"__current_case__\": 14, \"color\": \"clone_id\", \"use_raw\": \"false\", \"edges\": {\"edges\": \"False\", \"__current_case__\": 1}, \"arrows\": \"false\", \"sort_order\": \"true\", \"groups\": \"\", \"plot\": {\"components\": [], \"projection\": \"2d\", \"legend_loc\": \"right margin\", \"legend_fontsize\": null, \"legend_fontweight\": \"normal\", \"size\": null, \"color_map\": \"None\", \"palette\": \"default\", \"frameon\": \"true\", \"ncols\": \"4\", \"wspace\": \"0.1\", \"hspace\": \"0.25\", \"title\": \"\"}, \"matplotlib_pyplot_scatter\": {\"alpha\": null, \"vmin\": null, \"vmax\": null, \"linewidths\": \"0.0\", \"edgecolors\": \"face\"}}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "1.7.1+galaxy1",
+            "type": "tool",
+            "uuid": "a5dfef09-6e22-4a22-a3b7-c49840df9aa5",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "out_png",
+                    "uuid": "08485921-2d31-4f6d-957a-4cccd0d7bf99"
+                }
+            ]
+        },
+        "57": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_plot/scanpy_plot/1.7.1+galaxy1",
+            "errors": null,
+            "id": 57,
+            "input_connections": {
+                "adata": {
+                    "id": 53,
+                    "output_name": "anndata_out"
+                }
+            },
+            "inputs": [],
+            "label": "sc.pl.umap [ADD custom 'groups' = top_differential_clonotypes",
+            "name": "Plot",
+            "outputs": [
+                {
+                    "name": "out_png",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 1609.2187266890933,
+                "top": 2579.7968732704812
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_plot/scanpy_plot/1.7.1+galaxy1",
+            "tool_shed_repository": {
+                "changeset_revision": "aa0c474463c2",
+                "name": "scanpy_plot",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"adata\": {\"__class__\": \"ConnectedValue\"}, \"advanced_common\": {\"show_log\": \"false\"}, \"format\": \"png\", \"method\": {\"method\": \"pl.umap\", \"__current_case__\": 14, \"color\": \"clone_id\", \"use_raw\": \"false\", \"edges\": {\"edges\": \"False\", \"__current_case__\": 1}, \"arrows\": \"false\", \"sort_order\": \"true\", \"groups\": \"\", \"plot\": {\"components\": [], \"projection\": \"2d\", \"legend_loc\": \"right margin\", \"legend_fontsize\": null, \"legend_fontweight\": \"normal\", \"size\": null, \"color_map\": \"None\", \"palette\": \"default\", \"frameon\": \"true\", \"ncols\": \"4\", \"wspace\": \"0.1\", \"hspace\": \"0.25\", \"title\": \"\"}, \"matplotlib_pyplot_scatter\": {\"alpha\": null, \"vmin\": null, \"vmax\": null, \"linewidths\": \"0.0\", \"edgecolors\": \"face\"}}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "1.7.1+galaxy1",
+            "type": "tool",
+            "uuid": "a0c2c1a6-ba0b-4d98-892b-d7ec7e50e876",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "out_png",
+                    "uuid": "0183e12b-d143-4aba-8ec4-cf2127130fca"
+                }
+            ]
+        },
+        "58": {
+            "annotation": "",
+            "content_id": "tools_scirpy",
+            "errors": null,
+            "id": 58,
+            "input_connections": {
+                "method|tl_repertoire_overlap_adata": {
+                    "id": 53,
+                    "output_name": "anndata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Define, Analyze, Process and Query Clonotypes and Clonal Diversity with Scirpy",
+            "outputs": [
+                {
+                    "name": "tl_adata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 1856.828200722849,
+                "top": 2425.5312480448915
+            },
+            "post_job_actions": {},
+            "tool_id": "tools_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"tl_repertoire_overlap\", \"__current_case__\": 10, \"tl_repertoire_overlap_adata\": {\"__class__\": \"ConnectedValue\"}, \"tl_repertoire_overlap_group_by\": \"cluster\", \"tl_repertoire_overlap_target_col\": \"clone_id\", \"tl_repertoire_overlap_overlap_measure\": \"jaccard\", \"tl_repertoire_overlap_fraction\": \"False\", \"tl_repertoire_overlap_added_key\": \"repertoire_overlap\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "26b1193b-62fb-445f-a07c-e78129f65d8f",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "tl_adata_out",
+                    "uuid": "ac3c6c1c-25e3-43cd-89b7-653f57bba899"
+                }
+            ]
+        },
+        "59": {
+            "annotation": "",
+            "content_id": "plot_scirpy",
+            "errors": null,
+            "id": 59,
+            "input_connections": {
+                "method|repertoire_overlap_adata": {
+                    "id": 58,
+                    "output_name": "tl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": "Plot with Scirpy [ADD 'pair_to_plot']",
+            "name": "Plot with Scirpy",
+            "outputs": [
+                {
+                    "name": "pl_adata_out",
+                    "type": "h5ad"
+                },
+                {
+                    "name": "pl_fig_out",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 2129.79693342766,
+                "top": 2431.5000433131686
+            },
+            "post_job_actions": {},
+            "tool_id": "plot_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"pl_repertoire_overlap\", \"__current_case__\": 6, \"repertoire_overlap_adata\": {\"__class__\": \"ConnectedValue\"}, \"repertoire_overlap_groupby\": \"cluster\", \"repertoire_overlap_target_col\": \"clone_id\", \"repertoire_overlap_dendro_only\": \"False\", \"repertoire_overlap_overlap_measure\": \"jaccard\", \"repertoire_overlap_fraction\": \"True\", \"repertoire_overlap_added_key\": \"repertoire_overlap\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "4c5b0aa1-0c66-442e-a56d-448cab0cca23",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "pl_adata_out",
+                    "uuid": "54c41087-6aff-48cb-ac85-d79ece01a966"
+                },
+                {
+                    "label": null,
+                    "output_name": "pl_fig_out",
+                    "uuid": "7a674dac-b550-44ab-ae93-4ba52abbaef3"
+                }
+            ]
+        },
+        "60": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_inspect/scanpy_inspect/1.7.1+galaxy0",
+            "errors": null,
+            "id": 60,
+            "input_connections": {
+                "adata": {
+                    "id": 59,
+                    "output_name": "pl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Inspect and manipulate",
+            "outputs": [
+                {
+                    "name": "anndata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 2392.4063593356723,
+                "top": 2438.49993262396
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_inspect/scanpy_inspect/1.7.1+galaxy0",
+            "tool_shed_repository": {
+                "changeset_revision": "c5d3684f7c4c",
+                "name": "scanpy_inspect",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"adata\": {\"__class__\": \"ConnectedValue\"}, \"advanced_common\": {\"show_log\": \"false\"}, \"method\": {\"method\": \"tl.rank_genes_groups\", \"__current_case__\": 4, \"groupby\": \"clone_id\", \"use_raw\": \"false\", \"groups\": \"101\", \"ref\": {\"rest\": \"group_id\", \"__current_case__\": 1, \"reference\": \"68\"}, \"n_genes\": \"100\", \"tl_rank_genes_groups_method\": {\"method\": \"wilcoxon\", \"__current_case__\": 1, \"corr_method\": \"benjamini-hochberg\"}}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "1.7.1+galaxy0",
+            "type": "tool",
+            "uuid": "d106da53-f53f-437c-a1c7-274446442b68",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "anndata_out",
+                    "uuid": "52fe4b4a-2c15-4af6-ac30-034ad9cc6c4a"
+                }
+            ]
+        },
+        "61": {
+            "annotation": "",
+            "content_id": "preprocess_scirpy",
+            "errors": null,
+            "id": 61,
+            "input_connections": {
+                "method|ir_dist_adata": {
+                    "id": 60,
+                    "output_name": "anndata_out"
+                },
+                "method|reference|ir_dist_reference": {
+                    "id": 1,
+                    "output_name": "output"
+                }
+            },
+            "inputs": [],
+            "label": "9- Query Epitope Databases",
+            "name": "Preprocess with Scirpy",
+            "outputs": [
+                {
+                    "name": "pp_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 303.2969141773626,
+                "top": 2816.4686893916423
+            },
+            "post_job_actions": {},
+            "tool_id": "preprocess_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"pp_ir_dist\", \"__current_case__\": 2, \"ir_dist_adata\": {\"__class__\": \"ConnectedValue\"}, \"reference\": {\"reference\": \"True\", \"__current_case__\": 0, \"ir_dist_reference\": {\"__class__\": \"ConnectedValue\"}}, \"metric\": \"identity\", \"cutoff\": \"0\", \"sequence\": \"aa\", \"key_added\": \"custom\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "07860a1a-3776-4069-8bcc-a2db7bcdc7d1",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "pp_out",
+                    "uuid": "b178c653-d673-43eb-aac2-8450bd1cd137"
+                }
+            ]
+        },
+        "62": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_plot/scanpy_plot/1.7.1+galaxy1",
+            "errors": null,
+            "id": 62,
+            "input_connections": {
+                "adata": {
+                    "id": 60,
+                    "output_name": "anndata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Plot",
+            "outputs": [
+                {
+                    "name": "out_png",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 2633.249955483688,
+                "top": 2442.4062991784936
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_plot/scanpy_plot/1.7.1+galaxy1",
+            "tool_shed_repository": {
+                "changeset_revision": "aa0c474463c2",
+                "name": "scanpy_plot",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"adata\": {\"__class__\": \"ConnectedValue\"}, \"advanced_common\": {\"show_log\": \"false\"}, \"format\": \"png\", \"method\": {\"method\": \"pl.rank_genes_groups_stacked_violin\", \"__current_case__\": 27, \"groups\": \"101\", \"n_genes\": \"15\", \"key\": \"\", \"log\": \"false\", \"use_raw\": \"false\", \"dendrogram\": \"false\", \"var_group_positions\": [], \"var_group_rotation\": null, \"figsize\": {\"test\": \"no\", \"__current_case__\": 1}, \"layer\": \"\", \"swap_axes\": \"false\", \"violin_plot\": {\"stripplot\": {\"stripplot\": \"True\", \"__current_case__\": 0, \"jitter\": {\"jitter\": \"True\", \"__current_case__\": 0, \"size\": \"1.0\"}}, \"scale\": \"width\"}, \"row_palette\": \"muted\", \"standard_scale\": \"None\", \"seaborn_violinplot\": {\"bw\": \"scott\", \"orient\": null, \"linewidth\": \"0.0\", \"color\": \"AliceBlue\", \"saturation\": \"0.75\"}}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "1.7.1+galaxy1",
+            "type": "tool",
+            "uuid": "45fd3ce0-4dba-4b86-8063-d3a55139113c",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "out_png",
+                    "uuid": "3be6978c-d860-403c-82d5-75dc581c26d5"
+                }
+            ]
+        },
+        "63": {
+            "annotation": "",
+            "content_id": "tools_scirpy",
+            "errors": null,
+            "id": 63,
+            "input_connections": {
+                "method|tl_ir_query_adata": {
+                    "id": 61,
+                    "output_name": "pp_out"
+                },
+                "method|tl_ir_query_reference": {
+                    "id": 1,
+                    "output_name": "output"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Define, Analyze, Process and Query Clonotypes and Clonal Diversity with Scirpy",
+            "outputs": [
+                {
+                    "name": "tl_adata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 559.9374846599195,
+                "top": 2823.093679164922
+            },
+            "post_job_actions": {},
+            "tool_id": "tools_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"tl_ir_query\", \"__current_case__\": 13, \"tl_ir_query_adata\": {\"__class__\": \"ConnectedValue\"}, \"tl_ir_query_reference\": {\"__class__\": \"ConnectedValue\"}, \"tl_ir_query_sequence\": \"aa\", \"tl_ir_query_metric\": \"identity\", \"tl_ir_query_receptor_arms\": \"any\", \"tl_ir_query_dual_ir\": \"any\", \"tl_ir_query_same_v_gene\": \"False\", \"tl_ir_query_key_added\": \"ir_query_VDJDB_aa_identity\", \"tl_ir_query_distance_key\": \"custom\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "8d27dcd5-dad3-4f64-8931-e21362793471",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "tl_adata_out",
+                    "uuid": "d0709ce2-ef2b-4256-8ce2-76176a240240"
+                }
+            ]
+        },
+        "64": {
+            "annotation": "",
+            "content_id": "tools_scirpy",
+            "errors": null,
+            "id": 64,
+            "input_connections": {
+                "method|tl_ir_query_annotate_df_adata": {
+                    "id": 63,
+                    "output_name": "tl_adata_out"
+                },
+                "method|tl_ir_query_annotate_df_reference": {
+                    "id": 1,
+                    "output_name": "output"
+                }
+            },
+            "inputs": [],
+            "label": "ir.tl.ir_query_annotate_df [ADD include_ref_cols, strategy]]",
+            "name": "Define, Analyze, Process and Query Clonotypes and Clonal Diversity with Scirpy",
+            "outputs": [
+                {
+                    "name": "tl_adata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 800.5781104870806,
+                "top": 2824.687603771133
+            },
+            "post_job_actions": {},
+            "tool_id": "tools_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"tl_ir_query_annotate_df\", \"__current_case__\": 15, \"tl_ir_query_annotate_df_adata\": {\"__class__\": \"ConnectedValue\"}, \"tl_ir_query_annotate_df_reference\": {\"__class__\": \"ConnectedValue\"}, \"tl_ir_query_annotate_df_sequence\": \"aa\", \"tl_ir_query_annotate_df_metric\": \"identity\", \"tl_ir_query_annotate_df_suffix\": \"\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "fe27116c-ee9e-4b3d-a752-99d2da983ef3",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "tl_adata_out",
+                    "uuid": "d2ff724e-3c44-4dff-81ac-20bee92a2467"
+                }
+            ]
+        },
+        "65": {
+            "annotation": "",
+            "content_id": "tools_scirpy",
+            "errors": null,
+            "id": 65,
+            "input_connections": {
+                "method|tl_ir_query_annotate_adata": {
+                    "id": 64,
+                    "output_name": "tl_adata_out"
+                },
+                "method|tl_ir_query_annotate_reference": {
+                    "id": 1,
+                    "output_name": "output"
+                }
+            },
+            "inputs": [],
+            "label": "ir.tl.ir_query_annotate [ADD include_ref_cols and strategy]",
+            "name": "Define, Analyze, Process and Query Clonotypes and Clonal Diversity with Scirpy",
+            "outputs": [
+                {
+                    "name": "tl_adata_out",
+                    "type": "h5ad"
+                }
+            ],
+            "position": {
+                "left": 1071.6094210954384,
+                "top": 2857.937438940464
+            },
+            "post_job_actions": {},
+            "tool_id": "tools_scirpy",
+            "tool_state": "{\"method\": {\"method\": \"tl_ir_query_annotate\", \"__current_case__\": 14, \"tl_ir_query_annotate_adata\": {\"__class__\": \"ConnectedValue\"}, \"tl_ir_query_annotate_reference\": {\"__class__\": \"ConnectedValue\"}, \"tl_ir_query_annotate_sequence\": \"aa\", \"tl_ir_query_annotate_metric\": \"identity\", \"tl_ir_query_annotate_strategy\": \"most-frequent\", \"tl_ir_query_annotate_suffix\": \"suf\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "d4d32e79-77da-4e77-b1bd-9d21157abe68",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "tl_adata_out",
+                    "uuid": "ad28fa61-a904-4318-953d-357d1a188d40"
+                }
+            ]
+        },
+        "66": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_plot/scanpy_plot/1.7.1+galaxy1",
+            "errors": null,
+            "id": 66,
+            "input_connections": {
+                "adata": {
+                    "id": 65,
+                    "output_name": "tl_adata_out"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Plot",
+            "outputs": [
+                {
+                    "name": "out_png",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 1328.7499578899751,
+                "top": 2861.328138159383
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/scanpy_plot/scanpy_plot/1.7.1+galaxy1",
+            "tool_shed_repository": {
+                "changeset_revision": "aa0c474463c2",
+                "name": "scanpy_plot",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"adata\": {\"__class__\": \"ConnectedValue\"}, \"advanced_common\": {\"show_log\": \"false\"}, \"format\": \"png\", \"method\": {\"method\": \"pl.umap\", \"__current_case__\": 14, \"color\": \"antigen.species\", \"use_raw\": \"false\", \"edges\": {\"edges\": \"False\", \"__current_case__\": 1}, \"arrows\": \"false\", \"sort_order\": \"true\", \"groups\": \"\", \"plot\": {\"components\": [], \"projection\": \"2d\", \"legend_loc\": \"right margin\", \"legend_fontsize\": null, \"legend_fontweight\": \"normal\", \"size\": null, \"color_map\": \"None\", \"palette\": \"default\", \"frameon\": \"true\", \"ncols\": \"4\", \"wspace\": \"0.1\", \"hspace\": \"0.25\", \"title\": \"\"}, \"matplotlib_pyplot_scatter\": {\"alpha\": null, \"vmin\": null, \"vmax\": null, \"linewidths\": \"0.0\", \"edgecolors\": \"face\"}}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "1.7.1+galaxy1",
+            "type": "tool",
+            "uuid": "6165eb7f-8533-41b7-9a5a-8543ad520e04",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "out_png",
+                    "uuid": "bf3712f9-990c-4681-b01d-968a08fd40b6"
+                }
+            ]
+        }
+    },
+    "tags": [],
+    "uuid": "86637044-09d3-4d72-a490-ba658a9dcb9d",
+    "version": 4
+}
