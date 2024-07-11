@@ -7,30 +7,11 @@
     <expand macro="requirements">
         <requirement type="package" version="1.83">biopython</requirement>
     </expand>
-    <command detect_errors="exit_code"><![CDATA[python '$script_file' > '$output'
+    <command><![CDATA[python '$script_file' > '$output'
 ]]></command>
 <configfiles>
         <configfile name="script_file"><![CDATA[import RNAformer
-import os
-import argparse
-import torch
-import urllib.request
-import logging
-from collections import defaultdict
-import torch.cuda
-import loralib as lora
-from RNAformer.model.RNAformer import RiboFormer
-from RNAformer.utils.configuration import Config
-
-from Bio import SeqIO
-
-import logging
-import sys
-
-print("Start tool", file=sys.stderr)
-dot_bracket_str_pred = "(((((((((((.()...((...))))...))........((.(((...)))..(((((()).)..))))))))))))...."
-print(f"Predicted Structure: {dot_bracket_str_pred}")
-
+print("$input_type.rna_input_string")
 
 ]]></configfile>
     </configfiles>
@@ -44,7 +25,7 @@ print(f"Predicted Structure: {dot_bracket_str_pred}")
                 <param name="rna_input_string" label="Sequence(s) to fold" type="text" value="GCCCGCAUGGUGAAAUCGGUAAACACAUCGCACUAAUGCGCCGCCUCUGGCUUGCCGGUUCAAGUCCGGCUGCGGGCACCA" help="Enter RNA sequences. Separate multiple RNA sequences by commas."/>
             </when>
             <when value="True">
-                <param format="fasta" name="fasta_input" type="data" label="Sequence to fold (FASTA file)"/>
+                <param name="rna_input_string" label="Sequence(s) to fold" type="text" value="GCCCGCAUGGUGAAAUCGGUAAACACAUCGCACUAAUGCGCCGCCUCUGGCUUGCCGGUUCAAGUCCGGCUGCGGGCACCA" help="Enter RNA sequences. Separate multiple RNA sequences by commas."/>
             </when>
         </conditional>
     </inputs>
